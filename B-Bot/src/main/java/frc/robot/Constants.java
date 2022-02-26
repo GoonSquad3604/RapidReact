@@ -11,25 +11,25 @@ public final class Constants {
     public static final int kBackLeftId = 18;
     public static final int kFrontRightId = 19;
     public static final int kBackRightId = 40;
-    public static final int kCANCoderRightId = 15;
-    public static final int kCANCoderLeftId = 16;
+    public static final int kCANCoderRightId = 21;
+    public static final int kCANCoderLeftId = 20;
     public static final int kPulsesPerMeter = 1024;
 
     //Index IDs
-    public static final int kIndexMotorId = 5;
-    public static final int kIndexMotor1Id = 7;
-    public static final int kSensor0Id = 6;
-    public static final int kSensor1Id = 8;
+    public static final int kIndexMotorId = 15;
+    public static final int kIndexMotor1Id = 16;
+    public static final int kSensor0Id = 0;
+    public static final int kSensor1Id = 1;
 
 
     //Shooter IDs
     //public static final int kTurretId = 4;
-    public static final int kShooterMotor0Id = 2;
-    public static final int kShooterMotor1Id = 3;
+    public static final int kShooterMotor0Id = 17;
+    public static final int kShooterMotor1Id = 2;
 
     //Intake IDs
-    public static final int kPivotId = 10;
-    public static final int kIntakeFrontId = 11;
+    public static final int kPivotId = 6;
+    public static final int kIntakeFrontId = 4;
     
     public static final int kHingeEncoderA = 7;
     public static final int kHingeEncoderB = 8;
@@ -37,8 +37,9 @@ public final class Constants {
     public static final int kHingeBottomPosition = 450;
     
     //Climber IDs
-    public static final int kTelescopeMotorId = 17;
-    public static final int kShuttleMotor0Id = 19;
-    public static final int kShuttleMotor1Id = 20;
+    public static final int kTelescopeMotorRightId = 13;
+    public static final int kTelescopeMotorLeftId = 5;
+    public static final int kShuttleMotorRightId = 14;
+    public static final int kShuttleMotorLeftId = 3;
 
 }
