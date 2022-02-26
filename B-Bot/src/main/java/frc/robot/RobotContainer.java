@@ -56,29 +56,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    /**
-    //JoystickButton operatorAButton = new JoystickButton(m_operatorController, XboxController.Button.kA.value);
-    JoystickButton driverYButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
-    JoystickButton driverXButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
-    JoystickButton driverAButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
-    JoystickButton driverBButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
-
-    //Climber Motors
-    driverBButton.whenHeld(new RunCommand(() -> m_climbMotors.moveMotorsCounterClockwise())); 
-    driverXButton.whenHeld(new RunCommand(() -> m_climbMotors.moveMotorsClockwise()));
-
-    //Telescope Motors
-    driverAButton.whenHeld(new RunCommand(() -> m_climbMotors.moveTelescopeDown()));
-    driverYButton.whenHeld(new RunCommand(() -> m_climbMotors.moveTelescopeUp()));
-
-    //Stop Climber Motors
-    driverYButton.whenInactive(new InstantCommand(() -> m_climbMotors.stopMotors()));
-    driverXButton.whenInactive(new InstantCommand(() -> m_climbMotors.stopMotors()));
-
-    //Stop Telescope Motors
-    driverAButton.whenInactive(new InstantCommand(() -> m_climbMotors.stopTelescopeMotors()));
-    driverBButton.whenInactive(new InstantCommand(() -> m_climbMotors.stopTelescopeMotors()));
-    */
+   
     
   }
 
