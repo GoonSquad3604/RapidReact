@@ -48,6 +48,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     SmartDashboard.putNumber("shooter speed", 4000);
+    SmartDashboard.putNumber("shooterPower", .5);
 
     m_driveTrain.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left
@@ -85,8 +86,10 @@ public class RobotContainer {
     operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.85)), new TakeBallCmd(m_indexer)));
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
     //operatorXButton.whenHeld(new RunCommand(() -> m_indexer.moveIndex()));
-    operatorAButton.whileHeld(new ParallelCommandGroup(new RunCommand(() -> m_shooter.setShooter(.5)), new RunCommand(() -> m_indexer.moveIndex())));
+    operatorAButton.whenPressed(new ParallelCommandGroup(new SetShooterToPowerCmd(m_shooter), new RunCommand(() -> m_indexer.moveIndex())));
     operatorYButton.whenHeld(new RunCommand(() -> m_indexer.reverseIndex()));
+    operatorXButton.whenHeld(new RunCommand(() -> m_intake.moveDown()));
+
     //operatorAButton.whileHeld(new RunCommand(() -> m_shooter.setShooter(.5)));
 
 
@@ -99,9 +102,11 @@ public class RobotContainer {
       m_intake.stopPivot()));
 
     // Operator stop
-    operatorAButton.whenInactive(new InstantCommand(() -> m_shooter.setShooter(0)));
-    operatorAButton.whenReleased(new ParallelCommandGroup(new RunCommand(() -> m_shooter.setShooter(0)), new RunCommand(() -> m_indexer.stopIndex())));
+    // operatorAButton.whenInactive(new InstantCommand(() -> m_shooter.setShooter(0)));
+    operatorAButton.whenReleased(new ParallelCommandGroup(new InstantCommand(() -> m_shooter.setShooter(0), m_shooter), new InstantCommand(() -> m_indexer.stopIndex())));
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
+    operatorXButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
+
     operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
     
     operatorRightBumper.whenInactive(new RunCommand(() -> m_intake.take(0)));

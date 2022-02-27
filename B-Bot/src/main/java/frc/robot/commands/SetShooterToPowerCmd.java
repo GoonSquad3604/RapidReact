@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -12,16 +13,19 @@ private Shooter m_shooter;
 private double m_power;
 
   /** Creates a new ShootPower. */
-  public SetShooterToPowerCmd(Shooter shooter, double power) {
+  public SetShooterToPowerCmd(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
-    m_power = power;
+    //m_power = power;
     addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_power = SmartDashboard.getNumber("shooterPower",0);
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -31,7 +35,9 @@ private double m_power;
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.setShooter(0);
+  }
 
   // Returns true when the command should end.
   @Override
