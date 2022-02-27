@@ -23,7 +23,7 @@ public class Index extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    //System.out.println("Detected: " + sensor0.get());
   }
 
   public boolean detectBall() {
@@ -31,13 +31,13 @@ public class Index extends SubsystemBase {
   }
 
   public void moveIndex() {
-    indexMotor0.set(0.3);
-    indexMotor1.set(0.3);
+    indexMotor0.set(-0.25);
+    indexMotor1.set(0.25);
   }
 
   public void reverseIndex() {
-    indexMotor0.set(-0.3);
-    indexMotor1.set(-0.3);
+    indexMotor0.set(0.35);
+    indexMotor1.set(-0.35);
   }
 
   public void stopIndex() {

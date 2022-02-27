@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
     shooterMotor1.setNeutralMode(NeutralMode.Coast);
 
     shooterMotor0.setInverted(false);
-    shooterMotor1.setInverted(true);
+    shooterMotor1.setInverted(false);
   }
 
   @Override

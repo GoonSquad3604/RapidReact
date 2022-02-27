@@ -8,13 +8,16 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
  
   private CANSparkMax intakeFront = new CANSparkMax(Constants.kIntakeFrontId, MotorType.kBrushless);
-  private CANSparkMax pivot = new CANSparkMax(Constants.kPivotId, MotorType.kBrushless);
+  //private CANSparkMax pivot = new CANSparkMax(Constants.kPivotId, MotorType.kBrushless);
+  private WPI_TalonSRX pivot = new WPI_TalonSRX(Constants.kPivotId);
+
   //private CANSparkMax intakeRear = new CANSparkMax(Constants.kIntakeRear, MotorType.kBrushless);
 
   private int hingeTop;
@@ -24,6 +27,11 @@ public class Intake extends SubsystemBase {
   
   public Intake() {
     calibrate();
+  }
+
+  @Override
+  public void periodic() {
+    //System.out.println("Encoder Value " + hingeEncoder.get());
   }
 
   public void calibrate() {
@@ -61,11 +69,11 @@ public class Intake extends SubsystemBase {
   }
 
   public HingePosition getHingePosition() {
-    if(hingeEncoder.get() < hingeTop+20 ) {
+    if(hingeEncoder.get() > hingeTop-20 ) {
       return HingePosition.Up;
     }
 
-    else if(hingeEncoder.get() > hingeBottom-40) {
+    else if(hingeEncoder.get() < hingeBottom+40) {
       return HingePosition.Down;
     }
 

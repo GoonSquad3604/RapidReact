@@ -7,11 +7,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.commands.SetShooterToPowerCmd;
+import frc.robot.commands.SetShooterToSpeedCmd;
+import frc.robot.commands.TakeBallCmd;
+import frc.robot.commands.ToggleHingeCmd;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -26,7 +34,11 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  
   private final Drivetrain m_driveTrain = new Drivetrain();
+  private final Intake m_intake = new Intake();
+  private final Index m_indexer = new Index();
+  private final Shooter m_shooter = new Shooter();
   //private final Intake m_intake = new Intake();
   //private final Climber m_climbMotors = new Climber();
   XboxController m_driverController = new XboxController(0);
@@ -34,6 +46,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    SmartDashboard.putNumber("shooter speed", 4000);
 
     m_driveTrain.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left
@@ -56,7 +70,46 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-   
+
+    // Operator joysticks
+    final JoystickButton operatorAButton = new JoystickButton(m_operatorController, XboxController.Button.kA.value);
+    final JoystickButton operatorYButton = new JoystickButton(m_operatorController, XboxController.Button.kY.value);
+    final JoystickButton operatorRightBumper = new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value);
+    final JoystickButton operatorLeftBumper = new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value);
+    final JoystickButton operatorXButton = new JoystickButton(m_operatorController, XboxController.Button.kX.value);
+
+    // Driver joysticks
+    final JoystickButton driverBButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+
+    // Operator press buttons
+    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.85)), new TakeBallCmd(m_indexer)));
+    operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
+    //operatorXButton.whenHeld(new RunCommand(() -> m_indexer.moveIndex()));
+    operatorAButton.whileHeld(new ParallelCommandGroup(new RunCommand(() -> m_shooter.setShooter(.5)), new RunCommand(() -> m_indexer.moveIndex())));
+    operatorYButton.whenHeld(new RunCommand(() -> m_indexer.reverseIndex()));
+    //operatorAButton.whileHeld(new RunCommand(() -> m_shooter.setShooter(.5)));
+
+
+    // Driver press buttons
+    driverBButton.whileHeld(new RunCommand(() -> m_intake.moveUp()));
+    driverBButton.whenInactive(new InstantCommand(() -> m_intake.calibrate()));
+
+    // Stop pivot
+    driverBButton.whenInactive(new RunCommand(() ->
+      m_intake.stopPivot()));
+
+    // Operator stop
+    operatorAButton.whenInactive(new InstantCommand(() -> m_shooter.setShooter(0)));
+    operatorAButton.whenReleased(new ParallelCommandGroup(new RunCommand(() -> m_shooter.setShooter(0)), new RunCommand(() -> m_indexer.stopIndex())));
+    operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
+    operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
+    
+    operatorRightBumper.whenInactive(new RunCommand(() -> m_intake.take(0)));
+    
+
+    // Driver stop
+    driverBButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
+
     
   }
 

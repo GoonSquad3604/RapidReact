@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax motor0 = new CANSparkMax(Constants.kShuttleMotor0Id, MotorType.kBrushless);
-  private CANSparkMax motor1 = new CANSparkMax(Constants.kShuttleMotor1Id, MotorType.kBrushless);
-  private CANSparkMax telescopeMotor0 = new CANSparkMax(Constants.kTelescopeMotorId, MotorType.kBrushless);
+  private CANSparkMax motor0 = new CANSparkMax(Constants.kShuttleMotorLeftId, MotorType.kBrushless);
+  private CANSparkMax motor1 = new CANSparkMax(Constants.kShuttleMotorRightId, MotorType.kBrushless);
+  //private CANSparkMax telescopeMotor0 = new CANSparkMax(Constants.kTelescopeMotorId, MotorType.kBrushless);
   private final double[] hook1Positions = {178.25450, -178.49255};
   private final double[] hook2Positions = {-157.11439514160156, 161.04244995117188};
 
@@ -33,13 +33,7 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.print("Motor0: " + getEncoderMotor0() +
-    "\n Motor1: " + getEncoderMotor1() +
-    "\n Telescope: " + getEncoderTelescope() + "\n");
-
-    SmartDashboard.putNumber("Motor0", getEncoderMotor0());
-    SmartDashboard.putNumber("Motor1", getEncoderMotor1());
-    SmartDashboard.putNumber("Telescopic", getEncoderTelescope());
+    
   }
 
   public void moveMotorsCounterClockwise() {
@@ -53,11 +47,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void moveTelescopeUp() {
-    telescopeMotor0.set(0.4);
+    //telescopeMotor0.set(0.4);
   }
 
   public void moveTelescopeDown() {
-    telescopeMotor0.set(-0.4);
+    //telescopeMotor0.set(-0.4);
   }
 
   public void stopMotors() {
@@ -66,12 +60,12 @@ public class Climber extends SubsystemBase {
   }
 
   public void stopTelescopeMotors() {
-    telescopeMotor0.set(0); // lol 69
+    //telescopeMotor0.set(0); // lol 69
   }
 
-  public double getEncoderTelescope() {
-    return telescopeMotor0.getEncoder().getPosition();
-  }
+  // public double getEncoderTelescope() {
+  //   return //telescopeMotor0.getEncoder().getPosition();
+  // }
 
   public double getEncoderMotor0() {
     return motor0.getEncoder().getPosition();
@@ -84,7 +78,7 @@ public class Climber extends SubsystemBase {
   public void reset() {
     motor1.getEncoder().setPosition(0);
     motor0.getEncoder().setPosition(0);
-    telescopeMotor0.getEncoder().setPosition(0);
+    //telescopeMotor0.getEncoder().setPosition(0);
   }
 
   public double[] getHook1() {

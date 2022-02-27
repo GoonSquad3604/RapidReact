@@ -37,6 +37,7 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+    rightSide.setInverted(true);
     drive = new DifferentialDrive(leftSide, rightSide);
   }
 
