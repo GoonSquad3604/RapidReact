@@ -31,7 +31,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println("Encoder Value " + hingeEncoder.get());
+    System.out.println("Encoder Value " + hingeEncoder.get());
   }
 
   public void calibrate() {

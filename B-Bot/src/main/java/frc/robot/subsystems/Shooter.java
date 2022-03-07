@@ -15,6 +15,7 @@ public class Shooter extends SubsystemBase {
 
   private WPI_TalonFX shooterMotor0 = new WPI_TalonFX(Constants.kShooterMotor0Id);
   private WPI_TalonFX shooterMotor1 = new WPI_TalonFX(Constants.kShooterMotor1Id);
+  public boolean isRunning = false;
   
   /** Creates a new Shooter. */
   public Shooter() {
@@ -28,6 +29,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //System.out.println(isRunning);
   }
 
   public void setShooter(double power) {

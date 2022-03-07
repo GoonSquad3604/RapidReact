@@ -23,7 +23,6 @@ public final class Constants {
 
 
     //Shooter IDs
-    //public static final int kTurretId = 4;
     public static final int kShooterMotor0Id = 17;
     public static final int kShooterMotor1Id = 2;
 
@@ -41,5 +40,10 @@ public final class Constants {
     public static final int kTelescopeMotorLeftId = 5;
     public static final int kShuttleMotorRightId = 14;
     public static final int kShuttleMotorLeftId = 3;
+
+    // Climber Positions
+    public static final double shuttleCenter = 0;
+    public static final double shuttleFront = 0;
+    public static final double shuttleBack = 0;
 
 }

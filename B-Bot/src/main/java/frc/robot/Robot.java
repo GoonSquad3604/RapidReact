@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,6 +32,16 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    // Set the resolution
+    camera.setResolution(480, 320);
+    //camera.setFPS(12);
+
+    // Get a CvSink. This will capture Mats from the camera
+    //CvSink cvSink = CameraServer.getVideo();
+    // Setup a CvSource. This will send images back to the Dashboard
+    //CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
+
   }
 
   /**

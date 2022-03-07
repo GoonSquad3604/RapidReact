@@ -31,13 +31,13 @@ public class Index extends SubsystemBase {
   }
 
   public void moveIndex() {
-    indexMotor0.set(-0.25);
-    indexMotor1.set(0.25);
+    indexMotor0.set(-0.65);
+    indexMotor1.set(0.85);
   }
 
   public void reverseIndex() {
-    indexMotor0.set(0.35);
-    indexMotor1.set(-0.35);
+    indexMotor0.set(0.85);
+    indexMotor1.set(-0.85);
   }
 
   public void stopIndex() {

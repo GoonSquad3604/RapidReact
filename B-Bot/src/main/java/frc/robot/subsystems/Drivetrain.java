@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -56,6 +57,29 @@ public class Drivetrain extends SubsystemBase {
 
     return (rightDist+leftDist)/(double)2;
   }
+
+  public double getRightPosition() {
+    return canCoderRight.getPosition();
+  }
+
+  public double getLeftPosition() {
+    return canCoderLeft.getPosition();
+  }
+
+  // public void setBrakeMode(){
+  //   rightFront.setIdleMode(IdleMode.kBrake);
+  //   rightRear.setIdleMode(IdleMode.kBrake);
+  //   leftRear.setIdleMode(IdleMode.kBrake);
+  //   leftFront.setIdleMode(IdleMode.kBrake);
+  // }
+
+  // public void setCoastMode(){
+  //   frontRightMotor.setIdleMode(IdleMode.kCoast);
+  //   backRightMotor.setIdleMode(IdleMode.kCoast);
+  //   backLeftMotor.setIdleMode(IdleMode.kCoast);
+  //   leftFront.setIdleMode(IdleMode.kCoast);
+  // }
+
 
   public double getHeading() {
     double[] ypr = new double[3];

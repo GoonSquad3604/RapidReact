@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,73 +13,101 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax motor0 = new CANSparkMax(Constants.kShuttleMotorLeftId, MotorType.kBrushless);
-  private CANSparkMax motor1 = new CANSparkMax(Constants.kShuttleMotorRightId, MotorType.kBrushless);
-  //private CANSparkMax telescopeMotor0 = new CANSparkMax(Constants.kTelescopeMotorId, MotorType.kBrushless);
+  private CANSparkMax shuttleLeft = new CANSparkMax(Constants.kShuttleMotorLeftId, MotorType.kBrushless);
+  private CANSparkMax shuttleRight = new CANSparkMax(Constants.kShuttleMotorRightId, MotorType.kBrushless);
+  private CANSparkMax telescopeMotorLeft = new CANSparkMax(Constants.kTelescopeMotorLeftId, MotorType.kBrushless);
+  private CANSparkMax telescopeMotorRight = new CANSparkMax(Constants.kTelescopeMotorRightId, MotorType.kBrushless);
   private final double[] hook1Positions = {178.25450, -178.49255};
   private final double[] hook2Positions = {-157.11439514160156, 161.04244995117188};
 
   /** Creates a new climbMotors. */
   public Climber() {
+    //telescopeMotorLeft.restoreFactoryDefaults();
+    //telescopeMotorRight.restoreFactoryDefaults();
+
+
+    telescopeMotorRight.setInverted(true);
+    telescopeMotorLeft.setInverted(true);
+    //telescopeMotorRight.follow(telescopeMotorLeft);
+    
+    telescopeMotorLeft.setIdleMode(IdleMode.kBrake);
+    telescopeMotorRight.setIdleMode(IdleMode.kBrake);
     reset();
   }
 
   //hook1
-  //Motor0: 178.25450134277344
-  //Motor1: -178.4925537109375
+  //shuttleLeft: 178.25450134277344
+  //shuttleRight: -178.4925537109375
 
 //hook 2
-  // Motor0: -157.11439514160156
-  // Motor1: 161.04244995117188
+  // shuttleLeft: -157.11439514160156
+  // shuttleRight: 161.04244995117188
 
   @Override
   public void periodic() {
-    
+    // System.out.println("Left Shuttle: " + getEncoderShuttleLeft());
+    // System.out.println("Right Shuttle: " + getEncoderShuttleRight());
+    // System.out.println("Left Telescope" + getTelescopeLeftPosition());
+    // System.out.println("Right Telescope" + getTelescopeRightPosition());
   }
 
   public void moveMotorsCounterClockwise() {
-    motor0.set(-0.3);
-    motor1.set(0.3);
+    shuttleLeft.set(-0.3);
+    shuttleRight.set(0.3);
   }
 
   public void moveMotorsClockwise() {
-    motor0.set(0.3);
-    motor1.set(-0.3);
+    shuttleLeft.set(0.3);
+    shuttleRight.set(-0.3);
   }
 
   public void moveTelescopeUp() {
-    //telescopeMotor0.set(0.4);
+    
+    telescopeMotorLeft.set(1.0);
+    telescopeMotorRight.set(-1.0);
   }
 
   public void moveTelescopeDown() {
-    //telescopeMotor0.set(-0.4);
+    telescopeMotorLeft.set(-1.0);
+    telescopeMotorRight.set(1.0);
   }
 
   public void stopMotors() {
-    motor0.set(0);
-    motor1.set(0);
+    shuttleLeft.set(0);
+    shuttleRight.set(0);
   }
 
   public void stopTelescopeMotors() {
-    //telescopeMotor0.set(0); // lol 69
+    telescopeMotorLeft.set(0);
+    telescopeMotorRight.set(0);
+  }
+  // L O L M A O 
+
+
+  public double getEncoderTelescope() {
+    return telescopeMotorLeft.getEncoder().getPosition();
   }
 
-  // public double getEncoderTelescope() {
-  //   return //telescopeMotor0.getEncoder().getPosition();
-  // }
-
-  public double getEncoderMotor0() {
-    return motor0.getEncoder().getPosition();
+  public double getEncoderShuttleLeft() {
+    return shuttleLeft.getEncoder().getPosition();
   }
 
-  public double getEncoderMotor1() {
-    return motor1.getEncoder().getPosition();
+  public double getEncoderShuttleRight() {
+    return shuttleRight.getEncoder().getPosition();
   }
 
   public void reset() {
-    motor1.getEncoder().setPosition(0);
-    motor0.getEncoder().setPosition(0);
-    //telescopeMotor0.getEncoder().setPosition(0);
+    shuttleRight.getEncoder().setPosition(0);
+    shuttleLeft.getEncoder().setPosition(0);
+    //telescopeshuttleLeft.getEncoder().setPosition(0);
+  }
+
+  public double getTelescopeLeftPosition() {
+    return telescopeMotorLeft.getEncoder().getPosition();
+  }
+
+  public double getTelescopeRightPosition() {
+    return telescopeMotorRight.getEncoder().getPosition();
   }
 
   public double[] getHook1() {

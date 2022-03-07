@@ -20,8 +20,8 @@ public class ClimberCmd extends CommandBase {
   @Override
   public void initialize() {
     moveForward = false;
-    encoderMotor0 = m_climber.getEncoderMotor0();
-    encoderMotor1 = m_climber.getEncoderMotor1();
+    //encoderMotor0 = m_climber.getEncoderMotor0();
+    //encoderMotor1 = m_climber.getEncoderMotor1();
 
     if(encoderMotor0 > 0) moveForward = false;
     else moveForward = true;

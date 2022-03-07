@@ -16,12 +16,14 @@ import frc.robot.commands.SetShooterToPowerCmd;
 import frc.robot.commands.SetShooterToSpeedCmd;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
+import frc.robot.commands.ToggleShooter;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +41,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Index m_indexer = new Index();
   private final Shooter m_shooter = new Shooter();
+  private final Climber m_climber = new Climber();
   //private final Intake m_intake = new Intake();
   //private final Climber m_climbMotors = new Climber();
   XboxController m_driverController = new XboxController(0);
@@ -63,13 +66,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
   }
+  // Lol 69
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
 
     // Operator joysticks
@@ -78,44 +76,69 @@ public class RobotContainer {
     final JoystickButton operatorRightBumper = new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value);
     final JoystickButton operatorLeftBumper = new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value);
     final JoystickButton operatorXButton = new JoystickButton(m_operatorController, XboxController.Button.kX.value);
+    final JoystickButton operatorStartButton = new JoystickButton(m_operatorController, XboxController.Button.kStart.value);
+    final JoystickButton operatorBButton = new JoystickButton(m_operatorController, XboxController.Button.kB.value);
+    final JoystickButton operatorBackButton = new JoystickButton(m_operatorController, XboxController.Button.kBack.value);
+
+    // Operator Triggers
+    final Trigger operatorRightTriggerP = new Trigger(() -> m_operatorController.getRightTriggerAxis() >= .5);
+    final Trigger operatorLeftTriggerP = new Trigger(() -> m_operatorController.getLeftTriggerAxis() >= .5);
+    final Trigger operatorRightTriggerR = new Trigger(() -> m_operatorController.getRightTriggerAxis() < .5);
+    final Trigger operatorLeftTriggerR = new Trigger(() -> m_operatorController.getLeftTriggerAxis() < .5);
 
     // Driver joysticks
     final JoystickButton driverBButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+    final JoystickButton driverRightBumper = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
+    final JoystickButton driverLeftBumper = new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
 
-    // Operator press buttons
-    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.85)), new TakeBallCmd(m_indexer)));
+    //--------------------------------------------------
+    // Operator Controls!
+    //--------------------------------------------------
+  
+    // Telescope motors
+    operatorBackButton.whenHeld(new RunCommand(() -> m_climber.moveTelescopeUp(), m_climber));
+    operatorStartButton.whenHeld(new RunCommand(() -> m_climber.moveTelescopeDown(), m_climber));
+    operatorBackButton.whenInactive(new InstantCommand(() -> m_climber.stopTelescopeMotors(), m_climber));
+    operatorStartButton.whenInactive(new InstantCommand(() -> m_climber.stopTelescopeMotors(), m_climber));
+  
+    // Move hinge
+    operatorRightTriggerP.whenActive(new InstantCommand(() -> m_intake.moveDown()));
+    operatorLeftTriggerP.whenActive(new InstantCommand(() -> m_intake.moveUp()));
+    operatorRightTriggerR.whenActive(new InstantCommand(() -> m_intake.stopPivot()));
+    operatorLeftTriggerR.whenActive(new InstantCommand(() -> m_intake.stopPivot()));
+
+    //  Toggle hinge
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
-    //operatorXButton.whenHeld(new RunCommand(() -> m_indexer.moveIndex()));
-    operatorAButton.whenPressed(new ParallelCommandGroup(new SetShooterToPowerCmd(m_shooter), new RunCommand(() -> m_indexer.moveIndex())));
-    operatorYButton.whenHeld(new RunCommand(() -> m_indexer.reverseIndex()));
-    operatorXButton.whenHeld(new RunCommand(() -> m_intake.moveDown()));
 
-    //operatorAButton.whileHeld(new RunCommand(() -> m_shooter.setShooter(.5)));
+    // Run intake (In)
+    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.85)), new TakeBallCmd(m_indexer)));
+    operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
 
+    // Run indexer (In)
+    operatorAButton.whenHeld(new RunCommand(() -> m_indexer.moveIndex()));
+    operatorAButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
-    // Driver press buttons
-    driverBButton.whileHeld(new RunCommand(() -> m_intake.moveUp()));
+    // Run indexer (Out)
+    operatorYButton.whileHeld(new RunCommand(() -> m_indexer.reverseIndex()));
+    operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
+
+    // Toggle shooter
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter));
+
+    //--------------------------------------------------
+    // Driver Controls!
+    //--------------------------------------------------
+
+    // Reset homge
+    driverBButton.whenHeld(new RunCommand(() -> m_intake.moveUp()));
+    driverBButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
     driverBButton.whenInactive(new InstantCommand(() -> m_intake.calibrate()));
 
-    // Stop pivot
-    driverBButton.whenInactive(new RunCommand(() ->
-      m_intake.stopPivot()));
-
-    // Operator stop
-    // operatorAButton.whenInactive(new InstantCommand(() -> m_shooter.setShooter(0)));
-    operatorAButton.whenReleased(new ParallelCommandGroup(new InstantCommand(() -> m_shooter.setShooter(0), m_shooter), new InstantCommand(() -> m_indexer.stopIndex())));
-    operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
-    operatorXButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
-
-    operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
-    
-    operatorRightBumper.whenInactive(new RunCommand(() -> m_intake.take(0)));
-    
-
-    // Driver stop
-    driverBButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
-
-    
+    // Shuttle
+    driverLeftBumper.whenHeld(new RunCommand(() -> m_climber.moveMotorsCounterClockwise()));
+    driverRightBumper.whenHeld(new RunCommand(() -> m_climber.moveMotorsClockwise()));
+    driverLeftBumper.whenInactive(new InstantCommand(() -> m_climber.stopMotors()));
+    driverRightBumper.whenInactive(new InstantCommand(() -> m_climber.stopMotors()));
   }
 
   /**
@@ -128,3 +151,21 @@ public class RobotContainer {
   //   return m_autoCommand;
   // }
 }
+
+
+
+// Shooter and indexer don't turn off
+// Pivot doesn't stop moving downward
+
+
+
+
+
+
+
+
+
+
+
+
+//LOL
