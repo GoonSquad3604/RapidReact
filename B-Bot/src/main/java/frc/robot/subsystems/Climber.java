@@ -63,13 +63,13 @@ public class Climber extends SubsystemBase {
 
   public void moveTelescopeUp() {
     
-    telescopeMotorLeft.set(1.0);
-    telescopeMotorRight.set(-1.0);
+    telescopeMotorLeft.set(0.4);
+    telescopeMotorRight.set(-0.4);
   }
 
   public void moveTelescopeDown() {
-    telescopeMotorLeft.set(-1.0);
-    telescopeMotorRight.set(1.0);
+    telescopeMotorLeft.set(-0.4);
+    telescopeMotorRight.set(0.4);
   }
 
   public void stopMotors() {
