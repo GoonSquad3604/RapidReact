@@ -7,13 +7,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class ShuttleForward extends CommandBase {
+public class ClimbTo extends CommandBase {
   /** Creates a new ShuttleForward. */
 
   public Climber m_climber;
+  private double toPosition;
+  private int direction;
 
-  public ShuttleForward(Climber climber) {
+  public ClimbTo(Climber climber, double position) {
     m_climber = climber;
+    toPosition = position;
+
+    if(m_climber.getTelescopeLeftPosition() > toPosition) direction = -1;
+    else direction = 1; 
 
     addRequirements(climber);
   }
@@ -21,7 +27,11 @@ public class ShuttleForward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climber.moveMotorsClockwise();
+    if(m_climber.getTelescopeLeftPosition() > toPosition)
+      m_climber.moveMotorsClockwise();
+    else 
+      m_climber.moveMotorsCounterClockwise();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +47,7 @@ public class ShuttleForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_climber.getEncoderShuttleLeft() < -157.11439514160156;
+    if(direction == 1) return m_climber.getTelescopeLeftPosition() < toPosition;
+    else return m_climber.getTelescopeLeftPosition() > toPosition;
   }
 }

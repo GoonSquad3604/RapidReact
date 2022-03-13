@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.startAutomaticCapture();
     // Set the resolution
-    camera.setResolution(480, 320);
+    camera.setResolution(160, 120);
     //camera.setFPS(12);
 
     // Get a CvSink. This will capture Mats from the camera
@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 public final class Constants {
     
     //Drivetrain IDs
@@ -13,7 +15,7 @@ public final class Constants {
     public static final int kBackRightId = 40;
     public static final int kCANCoderRightId = 21;
     public static final int kCANCoderLeftId = 20;
-    public static final int kPulsesPerMeter = 1024;
+    public static final int kPulsesPerMeter = 45000;
 
     //Index IDs
     public static final int kIndexMotorId = 15;
@@ -42,8 +44,23 @@ public final class Constants {
     public static final int kShuttleMotorLeftId = 3;
 
     // Climber Positions
-    public static final double shuttleCenter = 0;
-    public static final double shuttleFront = 0;
-    public static final double shuttleBack = 0;
+    public static final double kShuttleCenter = 0;
+    public static final double kShuttleFront = 100;
+    public static final double kShuttleBack = -80;
 
+    // Auton
+    public static final double ksVolts = 0.72609;
+    public static final double kvVoltSecondsPerMeter = 0.46945;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.16887;
+    public static final double kPDriveVel = 0.73025;
+    
+    public static final double kTrackwidthMeters = 0.523875;
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(kTrackwidthMeters);
+
+    public static final double kMaxSpeedMetersPerSecond = 3.624072;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
 }
