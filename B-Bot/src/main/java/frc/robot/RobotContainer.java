@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -15,7 +18,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,6 +37,7 @@ import frc.robot.commands.SetShooterToSpeedCmd;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
 import frc.robot.commands.ToggleShooter;
+import frc.robot.commands.TwoBallAuton;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -60,6 +67,15 @@ public class RobotContainer {
   private final Vision m_Vision = new Vision();
   XboxController m_driverController = new XboxController(0);
   XboxController m_operatorController = new XboxController(1);
+
+  private String Auton5Ball1 = "paths/5ball1.wpilib.json";
+  Trajectory Auton5BallTrajectory1 = new Trajectory();
+
+  private String Auton5Ball2 = "paths/5ball2.wpilib.json";
+  Trajectory Auton5BallTrajectory2 = new Trajectory();
+
+  private String Auton5Ball3 = "paths/5ball3.wpilib.json";
+  Trajectory Auton5BallTrajectory3 = new Trajectory();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -168,63 +184,80 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+    return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1);
     // Create a voltage constraint to ensure we don't accelerate too fast
-    DifferentialDriveVoltageConstraint autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(
-                Constants.ksVolts,
-                Constants.kvVoltSecondsPerMeter,
-                Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-            10);
+    // DifferentialDriveVoltageConstraint autoVoltageConstraint =
+    //     new DifferentialDriveVoltageConstraint(
+    //         new SimpleMotorFeedforward(
+    //             Constants.ksVolts,
+    //             Constants.kvVoltSecondsPerMeter,
+    //             Constants.kaVoltSecondsSquaredPerMeter),
+    //         Constants.kDriveKinematics,
+    //         10);
 
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                Constants.kMaxSpeedMetersPerSecond,
-                Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+    // // Create config for trajectory
+    // TrajectoryConfig config =
+    //     new TrajectoryConfig(
+    //             Constants.kMaxSpeedMetersPerSecond,
+    //             Constants.kMaxAccelerationMetersPerSecondSquared)
+    //         // Add kinematics to ensure max speed is actually obeyed
+    //         .setKinematics(Constants.kDriveKinematics)
+    //         // Apply the voltage constraint
+    //         .addConstraint(autoVoltageConstraint);
 
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config);
+    // // An example trajectory to follow.  All units in meters.
+    // // Trajectory exampleTrajectory =
+    // //     TrajectoryGenerator.generateTrajectory(
+    // //         // Start at the origin facing the +X direction
+    // //         new Pose2d(0, 0, new Rotation2d(0)),
+    // //         // Pass through these two interior waypoints, making an 's' curve path
+    // //         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    // //         // End 3 meters straight ahead of where we started, facing forward
+    // //         new Pose2d(3, 0, new Rotation2d(0)),
+    // //         // Pass config
+    // //         config);
 
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
-            exampleTrajectory,
-            m_driveTrain::getPose,
-            new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.ksVolts,
-                Constants.kvVoltSecondsPerMeter,
-                Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-            m_driveTrain::getWheelSpeeds,
-            new PIDController(Constants.kPDriveVel, 0, 0),
-            new PIDController(Constants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            m_driveTrain::tankDriveVolts,
-            m_driveTrain);
+    // RamseteCommand ramseteCommand =
+    //     new RamseteCommand(
+    //       Auton5BallTrajectory1,
+    //         m_driveTrain::getPose,
+    //         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+    //         new SimpleMotorFeedforward(
+    //             Constants.ksVolts,
+    //             Constants.kvVoltSecondsPerMeter,
+    //             Constants.kaVoltSecondsSquaredPerMeter),
+    //         Constants.kDriveKinematics,
+    //         m_driveTrain::getWheelSpeeds,
+    //         new PIDController(Constants.kPDriveVel, 0, 0),
+    //         new PIDController(Constants.kPDriveVel, 0, 0),
+    //         // RamseteCommand passes volts to the callback
+    //         m_driveTrain::tankDriveVolts,
+    //         m_driveTrain);
 
-    // Reset odometry to the starting pose of the trajectory.
-    m_driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
+    // // Reset odometry to the starting pose of the trajectory.
+    // m_driveTrain.resetOdometry(Auton5BallTrajectory1.getInitialPose());
 
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
+    // // Run path following command, then stop at the end.
+    // return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
     
   }
 
+  public void loadTrajectories() {
+    try {
+      Path Auton5Ball1Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball1);
+      Path Auton5Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball2);
+      Path Auton5Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball3);
+
+      Auton5BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton5Ball1Path);
+      Auton5BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton5Ball2Path);
+      Auton5BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton5Ball3Path);
+
+
+    } catch(IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " , ex.getStackTrace());
+    }
+  }
 }
 
 
