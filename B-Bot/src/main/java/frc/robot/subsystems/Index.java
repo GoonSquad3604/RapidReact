@@ -8,10 +8,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Index extends SubsystemBase {
+
+  public int ballCount = 1;
 
   CANSparkMax indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushless);
   CANSparkMax indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushless);
@@ -23,16 +26,30 @@ public class Index extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println("Detected: " + sensor0.get());
+    SmartDashboard.putBoolean("Has Ball", ballCount > 0);
   }
 
   public boolean detectBall() {
     return !sensor0.get();
   }
 
+  public boolean detectExit() {
+    return !sensor1.get();
+  }
+  // public boolean noDetect() {
+  //   if(ballCount > 0 && sensor1.get()) {
+  //     ballCount--;
+  //   }
+  // }
+
   public void moveIndex() {
     indexMotor0.set(-0.65);
     indexMotor1.set(0.85);
+  }
+
+  public void moveIndex(double pwr) {
+    indexMotor0.set(- pwr);
+    indexMotor1.set(pwr + .2);
   }
 
   public void reverseIndex() {

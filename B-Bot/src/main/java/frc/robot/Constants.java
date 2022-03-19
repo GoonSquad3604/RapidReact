@@ -63,4 +63,25 @@ public final class Constants {
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    // Climber Auton
+    public static final double leftTelescopeFull = 439.27;
+    public static final double rightTelescopeFull = -431.45;
+    public static final double leftOnHook = 389.25;
+    public static final double rightOnHook = -377.81;
+    public static final double leftPulled = 3.45;
+    public static final double rightPulled = -2.43;
+
+    public static final double leftShuttleFront = 153.21;
+    public static final double rightShuttleFront = -153.49;
+    public static final double leftShuttleBack = -172.35;
+    public static final double rightShuttleBack = 171.23;
+    public static final boolean isABot = false;
+
+
+
+
+
+
+
 }

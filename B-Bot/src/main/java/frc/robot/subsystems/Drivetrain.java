@@ -108,6 +108,12 @@ public class Drivetrain extends SubsystemBase {
     frontLeftMotor.setNeutralMode(NeutralMode.Coast);
   }
 
+  public void setBrakeMode(){
+    frontRightMotor.setNeutralMode(NeutralMode.Brake);
+    backRightMotor.setNeutralMode(NeutralMode.Brake);
+    backLeftMotor.setNeutralMode(NeutralMode.Brake);
+    frontLeftMotor.setNeutralMode(NeutralMode.Brake);
+  }
 
   public double getHeading() {
     double[] ypr = new double[3];
@@ -140,16 +146,16 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left Encoder", getLeftPosition());;
-    SmartDashboard.putNumber("Right Encoder", getRightPosition());
-    SmartDashboard.putString("Angle2", getRotation().toString());
-    SmartDashboard.putNumber("Right Distance", getRightDistance());
-    SmartDashboard.putNumber("Left Distance", getLeftDistance());
+    // SmartDashboard.putNumber("Left Encoder", getLeftPosition());;
+    // SmartDashboard.putNumber("Right Encoder", getRightPosition());
+    // SmartDashboard.putString("Angle2", getRotation().toString());
+    //SmartDashboard.putNumber("Right Distance", getRightDistance());
+    //SmartDashboard.putNumber("Left Distance", getLeftDistance());
 
-    SmartDashboard.putString("Post", getPose().toString());
-    SmartDashboard.putString("Velocities", getWheelSpeeds().toString());
-    SmartDashboard.putNumber("rightspeed", frontRightMotor.getSelectedSensorVelocity() * -10 / Constants.kPulsesPerMeter);
-    SmartDashboard.putNumber("leftSpeed",frontLeftMotor.getSelectedSensorVelocity() * 10 / Constants.kPulsesPerMeter);
+    //SmartDashboard.putString("Post", getPose().toString());
+    //SmartDashboard.putString("Velocities", getWheelSpeeds().toString());
+    //SmartDashboard.putNumber("rightspeed", frontRightMotor.getSelectedSensorVelocity() * -10 / Constants.kPulsesPerMeter);
+    //SmartDashboard.putNumber("leftSpeed",frontLeftMotor.getSelectedSensorVelocity() * 10 / Constants.kPulsesPerMeter);
    
    
     m_odometry.update(

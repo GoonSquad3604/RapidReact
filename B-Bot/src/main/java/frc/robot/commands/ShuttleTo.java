@@ -5,49 +5,49 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Shuttle;
 
 public class ShuttleTo extends CommandBase {
-  /** Creates a new ShuttleForward. */
+  /** Creates a new ShuttleTo. */
 
-  public Climber m_climber;
-  private double toPosition;
-  private int direction;
+  Shuttle m_shuttle;
+  double leftPos;
+  double rightPos;
+  boolean moveForward;
 
-  public ShuttleTo(Climber climber, double position) {
-    m_climber = climber;
-    toPosition = position;
+  public ShuttleTo(double lpos, double rpos, Shuttle shuttle) {
+    // Use addRequirements() here to declare subsystem dependencies.
 
-    if(m_climber.getEncoderShuttleLeft() > toPosition) direction = -1;
-    else direction = 1; 
-
-    addRequirements(climber);
+    leftPos = lpos;
+    rightPos = rpos;
+    m_shuttle = shuttle;
+    addRequirements(shuttle);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(m_climber.getEncoderShuttleLeft() > toPosition)
-      m_climber.moveMotorsClockwise();
-    else 
-      m_climber.moveMotorsCounterClockwise();
-
+    if(leftPos > m_shuttle.getEncoderShuttleLeft()) {
+      moveForward = true;
+    } else moveForward = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(moveForward) m_shuttle.shuttleForward();
+    else m_shuttle.shuttleBack();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.stopMotors();
+    m_shuttle.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(direction == 1) return m_climber.getEncoderShuttleLeft() < toPosition;
-    else return m_climber.getEncoderShuttleLeft() > toPosition;
+    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 2);
   }
 }

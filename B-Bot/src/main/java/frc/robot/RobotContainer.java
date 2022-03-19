@@ -30,10 +30,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.ClimberAuton;
+import frc.robot.commands.ClimberAuton2;
+import frc.robot.commands.DeployClimber;
 import frc.robot.commands.SetShooterToPowerCmd;
 import frc.robot.commands.SetShooterToSpeedCmd;
+import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
 import frc.robot.commands.ToggleShooter;
@@ -63,8 +67,9 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Index m_indexer = new Index();
   private final Shooter m_shooter = new Shooter();
-  private final Climber m_climber = new Climber();
+  private final Climber m_climber = new Climber(); // LOLLLLLLLLLLLL 69
   private final Vision m_Vision = new Vision();
+  private final Shuttle m_shuttle = new Shuttle();
   XboxController m_driverController = new XboxController(0);
   XboxController m_operatorController = new XboxController(1);
 
@@ -93,10 +98,11 @@ public class RobotContainer {
           m_driveTrain)
       );
 
+    m_Vision.setDefaultCommand(new RunCommand(() -> m_Vision.getTargets(), m_Vision));
     // Configure the button bindings
     configureButtonBindings();
   }
-  // Lol 69
+
 
   private void configureButtonBindings() {
 
@@ -119,6 +125,11 @@ public class RobotContainer {
     // Driver joysticks
     final JoystickButton driverBButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
     final JoystickButton driverAButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+    final JoystickButton driverXButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
+    final JoystickButton driverYButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
+    final JoystickButton driverStartButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
+    final JoystickButton driverBackButton = new JoystickButton(m_driverController, XboxController.Button.kBack.value);
+
     final JoystickButton driverRightBumper = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
     final JoystickButton driverLeftBumper = new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
 
@@ -155,6 +166,8 @@ public class RobotContainer {
 
     // Toggle shooter
     operatorBButton.whenPressed(new ToggleShooter(m_shooter));
+    operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
+    
 
     //--------------------------------------------------
     // Driver Controls!
@@ -166,16 +179,15 @@ public class RobotContainer {
     driverBButton.whenInactive(new InstantCommand(() -> m_intake.calibrate()));
 
     // Shuttle
-    driverLeftBumper.whenHeld(new RunCommand(() -> m_climber.moveMotorsCounterClockwise()));
-    driverRightBumper.whenHeld(new RunCommand(() -> m_climber.moveMotorsClockwise()));
-    driverLeftBumper.whenInactive(new InstantCommand(() -> m_climber.stopMotors()));
-    driverRightBumper.whenInactive(new InstantCommand(() -> m_climber.stopMotors()));
+    driverLeftBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleBack()));
+    driverRightBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleForward()));
+    driverLeftBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors()));
+    driverRightBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors()));
 
+    driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
+    driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
+    driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
 
-    // Vision
-    driverAButton.whileHeld(new RunCommand(() -> m_Vision.getTargets()));
-
-    driverLeftBumper.whenPressed(new ClimberAuton(m_climber));
   }
 
   /**
@@ -185,62 +197,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1);
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    // DifferentialDriveVoltageConstraint autoVoltageConstraint =
-    //     new DifferentialDriveVoltageConstraint(
-    //         new SimpleMotorFeedforward(
-    //             Constants.ksVolts,
-    //             Constants.kvVoltSecondsPerMeter,
-    //             Constants.kaVoltSecondsSquaredPerMeter),
-    //         Constants.kDriveKinematics,
-    //         10);
+    return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
 
-    // // Create config for trajectory
-    // TrajectoryConfig config =
-    //     new TrajectoryConfig(
-    //             Constants.kMaxSpeedMetersPerSecond,
-    //             Constants.kMaxAccelerationMetersPerSecondSquared)
-    //         // Add kinematics to ensure max speed is actually obeyed
-    //         .setKinematics(Constants.kDriveKinematics)
-    //         // Apply the voltage constraint
-    //         .addConstraint(autoVoltageConstraint);
-
-    // // An example trajectory to follow.  All units in meters.
-    // // Trajectory exampleTrajectory =
-    // //     TrajectoryGenerator.generateTrajectory(
-    // //         // Start at the origin facing the +X direction
-    // //         new Pose2d(0, 0, new Rotation2d(0)),
-    // //         // Pass through these two interior waypoints, making an 's' curve path
-    // //         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-    // //         // End 3 meters straight ahead of where we started, facing forward
-    // //         new Pose2d(3, 0, new Rotation2d(0)),
-    // //         // Pass config
-    // //         config);
-
-    // RamseteCommand ramseteCommand =
-    //     new RamseteCommand(
-    //       Auton5BallTrajectory1,
-    //         m_driveTrain::getPose,
-    //         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-    //         new SimpleMotorFeedforward(
-    //             Constants.ksVolts,
-    //             Constants.kvVoltSecondsPerMeter,
-    //             Constants.kaVoltSecondsSquaredPerMeter),
-    //         Constants.kDriveKinematics,
-    //         m_driveTrain::getWheelSpeeds,
-    //         new PIDController(Constants.kPDriveVel, 0, 0),
-    //         new PIDController(Constants.kPDriveVel, 0, 0),
-    //         // RamseteCommand passes volts to the callback
-    //         m_driveTrain::tankDriveVolts,
-    //         m_driveTrain);
-
-    // // Reset odometry to the starting pose of the trajectory.
-    // m_driveTrain.resetOdometry(Auton5BallTrajectory1.getInitialPose());
-
-    // // Run path following command, then stop at the end.
-    // return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
-    
   }
 
   public void loadTrajectories() {
@@ -252,7 +210,6 @@ public class RobotContainer {
       Auton5BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton5Ball1Path);
       Auton5BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton5Ball2Path);
       Auton5BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton5Ball3Path);
-
 
     } catch(IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " , ex.getStackTrace());
@@ -266,14 +223,3 @@ public class RobotContainer {
 // Pivot doesn't stop moving downward
 
 
-
-
-
-
-
-
-
-
-
-
-//LOL

@@ -10,10 +10,16 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,10 +28,22 @@ public class TwoBallAuton extends SequentialCommandGroup {
   /** Creates a new TwoBallAuton. */
   Drivetrain m_driveTrain; 
   Trajectory m_auton1; 
-  public TwoBallAuton(Drivetrain driveTrain, Trajectory auton1) {
+  Trajectory m_auton2;
+  Trajectory m_auton3;
+  Intake m_intake;
+  Index m_index;
+  Shooter m_shooter;
+
+  public TwoBallAuton(Drivetrain driveTrain, Trajectory auton1, Trajectory auton2, Trajectory auton3, Intake intake, Index index, Shooter shooter) {
 
     m_driveTrain = driveTrain;
     m_auton1 = auton1;
+    m_auton2 = auton2;
+    m_auton3 = auton3;
+    m_intake = intake;
+    m_index = index;
+    m_shooter = shooter;
+
 
     DifferentialDriveVoltageConstraint autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
@@ -45,6 +63,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
             .setKinematics(Constants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
+
             
     RamseteCommand ramset1 =
     new RamseteCommand(
@@ -63,11 +82,42 @@ public class TwoBallAuton extends SequentialCommandGroup {
         m_driveTrain::tankDriveVolts,
         m_driveTrain);
 
+        RamseteCommand ramset2 =
+        new RamseteCommand(
+          m_auton1,
+            m_driveTrain::getPose,
+            new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+            new SimpleMotorFeedforward(
+                Constants.ksVolts,
+                Constants.kvVoltSecondsPerMeter,
+                Constants.kaVoltSecondsSquaredPerMeter),
+            Constants.kDriveKinematics,
+            m_driveTrain::getWheelSpeeds,
+            new PIDController(Constants.kPDriveVel, 0, 0),
+            new PIDController(Constants.kPDriveVel, 0, 0),
+            // RamseteCommand passes volts to the callback
+            m_driveTrain::tankDriveVolts,
+            m_driveTrain);
+
 // Reset odometry to the starting pose of the trajectory.
+//m_driveTrain.resetOdometry(m_auton1.getInitialPose());
 m_driveTrain.resetOdometry(m_auton1.getInitialPose());
+
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(ramset1);
+    addCommands(
+      new ToggleHingeCmd(m_intake), 
+
+      new ParallelRaceGroup(new TakeBallCmd(m_index), 
+        new SequentialCommandGroup(
+          new ToggleIntake(m_intake),
+          new ToggleShooter(m_shooter),
+          ramset1
+        )
+      ),
+      new ShootAll(m_index, m_shooter),
+      new ToggleIntake(m_intake)
+    );
   }
 }

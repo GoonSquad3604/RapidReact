@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -11,12 +14,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ConstantsA;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax shuttleLeft = new CANSparkMax(Constants.kShuttleMotorLeftId, MotorType.kBrushless);
-  private CANSparkMax shuttleRight = new CANSparkMax(Constants.kShuttleMotorRightId, MotorType.kBrushless);
-  private CANSparkMax telescopeMotorLeft = new CANSparkMax(Constants.kTelescopeMotorLeftId, MotorType.kBrushless);
-  private CANSparkMax telescopeMotorRight = new CANSparkMax(Constants.kTelescopeMotorRightId, MotorType.kBrushless);
+  private CANSparkMax telescopeMotorLeft;
+  private CANSparkMax telescopeMotorRight;
+  private WPI_TalonFX telescopeMotorLeftA;
+  private WPI_TalonFX telescopeMotorRightA;
+
+  private boolean isRunning;
+
   private final double[] hook1Positions = {178.25450, -178.49255};
   private final double[] hook2Positions = {-157.11439514160156, 161.04244995117188};
 
@@ -25,14 +32,38 @@ public class Climber extends SubsystemBase {
     //telescopeMotorLeft.restoreFactoryDefaults();
     //telescopeMotorRight.restoreFactoryDefaults();
 
+    if(!Constants.isABot) {
+      telescopeMotorLeft = new CANSparkMax(Constants.kTelescopeMotorLeftId, MotorType.kBrushless);
+      telescopeMotorRight = new CANSparkMax(Constants.kTelescopeMotorRightId, MotorType.kBrushless);
+    }
+    else {
+      telescopeMotorLeftA = new WPI_TalonFX(ConstantsA.kTelescopeMotorLeftIdA);
+      telescopeMotorLeftA = new WPI_TalonFX(ConstantsA.kTelescopeMotorRightIdA);
 
-    telescopeMotorRight.setInverted(true);
-    telescopeMotorLeft.setInverted(true);
+    }
+
+    if(Constants.isABot) {
+      telescopeMotorRightA.setInverted(true);
+      telescopeMotorLeftA.setInverted(true);
+    }
+    else {
+      telescopeMotorRight.setInverted(true);
+      telescopeMotorLeft.setInverted(true);
+    }
+
+
     //telescopeMotorRight.follow(telescopeMotorLeft);
-    
-    telescopeMotorLeft.setIdleMode(IdleMode.kBrake);
-    telescopeMotorRight.setIdleMode(IdleMode.kBrake);
-    reset();
+    if(!Constants.isABot) {
+      telescopeMotorLeft.setIdleMode(IdleMode.kBrake);
+      telescopeMotorRight.setIdleMode(IdleMode.kBrake);
+      reset();
+    }
+
+    else {
+      telescopeMotorLeftA.setNeutralMode(NeutralMode.Brake);
+      telescopeMotorRightA.setNeutralMode(NeutralMode.Brake);
+      reset();
+    }
   }
 
   //hook1
@@ -45,61 +76,61 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // System.out.println("Left Shuttle: " + getEncoderShuttleLeft());
-    // System.out.println("Right Shuttle: " + getEncoderShuttleRight());
-    // System.out.println("Left Telescope" + getTelescopeLeftPosition());
-    // System.out.println("Right Telescope" + getTelescopeRightPosition());
-  }
-
-  public void moveMotorsCounterClockwise() {
-    shuttleLeft.set(-0.3);
-    shuttleRight.set(0.3);
-  }
-
-  public void moveMotorsClockwise() {
-    shuttleLeft.set(0.3);
-    shuttleRight.set(-0.3);
+     SmartDashboard.putNumber("Telescope Left", getTelescopeLeftPosition());
+     SmartDashboard.putNumber("Telescope Right", getTelescopeRightPosition());
+    SmartDashboard.putBoolean("Telescopes Running", isRunning);
   }
 
   public void moveTelescopeUp() {
     
-    telescopeMotorLeft.set(0.4);
-    telescopeMotorRight.set(-0.4);
+    if(!Constants.isABot) {
+      telescopeMotorLeft.set(1.0);
+      telescopeMotorRight.set(-1.0);
+    }
+    else {
+      telescopeMotorLeftA.set(1.0);
+      telescopeMotorRightA.set(1.0);
+    }
+    isRunning = true;
   }
 
   public void moveTelescopeDown() {
-    telescopeMotorLeft.set(-0.4);
-    telescopeMotorRight.set(0.4);
-  }
-
-  public void stopMotors() {
-    shuttleLeft.set(0);
-    shuttleRight.set(0);
+    if(!Constants.isABot) {
+      telescopeMotorLeft.set(-1.0);
+      telescopeMotorRight.set(1.0);
+    }
+    else {
+      telescopeMotorLeftA.set(-1.0);
+      telescopeMotorRightA.set(1.0);      
+    }
+    isRunning = true;
   }
 
   public void stopTelescopeMotors() {
-    telescopeMotorLeft.set(0);
-    telescopeMotorRight.set(0);
+    if(!Constants.isABot) {
+      telescopeMotorLeft.set(0);
+      telescopeMotorRight.set(0);
+    }
+    else {
+      telescopeMotorLeftA.set(0);
+      telescopeMotorRightA.set(0); 
+    }
+    isRunning = false;
   }
   // L O L M A O 
 
 
-  public double getEncoderTelescope() {
-    return telescopeMotorLeft.getEncoder().getPosition();
-  }
-
-  public double getEncoderShuttleLeft() {
-    return shuttleLeft.getEncoder().getPosition();
-  }
-
-  public double getEncoderShuttleRight() {
-    return shuttleRight.getEncoder().getPosition();
+  public void getEncoderTelescope() {
+    //double
+   // if(!Constants.isABot) return telescopeMotorLeft.getEncoder().getPosition();
+   // else return telescopeMotorLeftA.
   }
 
   public void reset() {
-    shuttleRight.getEncoder().setPosition(0);
-    shuttleLeft.getEncoder().setPosition(0);
-    //telescopeshuttleLeft.getEncoder().setPosition(0);
+    if(!Constants.isABot) {
+      telescopeMotorLeft.getEncoder().setPosition(0);
+      telescopeMotorRight.getEncoder().setPosition(0);
+    }
   }
 
   public double getTelescopeLeftPosition() {

@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.can.BaseMotorControllerConfiguration;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Index;
 
@@ -34,10 +36,11 @@ public class TakeBallCmd extends CommandBase {
     
     if(detected) {
       System.out.println("The ball has been seen");
-      m_indexer.moveIndex();
+      m_indexer.moveIndex(.35);
       
       if(!m_indexer.detectBall())
       {
+        m_indexer.ballCount++;
         System.out.println("NO BALL");
           m_indexer.stopIndex();
           detected = false;

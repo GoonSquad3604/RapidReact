@@ -6,54 +6,41 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Climber;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TurnPID extends PIDCommand {
-  
-  private Drivetrain m_driveTrain; 
-  /** Creates a new TurnPID. */
-  public TurnPID(double angle, Drivetrain driveTrain) {
+public class TelescopePID extends PIDCommand {
+
+  Climber m_climber;
+  double leftPos;
+  double rightPos;
+
+  /** Creates a new TelescopePID. */
+  public TelescopePID(Climber climber, double lpos, double rpos) {
     super(
         // The controller that the command will use
-        new PIDController(4, 0, 0),
+        new PIDController(0, 0, 0),
         // This should return the measurement
-        driveTrain::getHeading,
+        () -> 0,
         // This should return the setpoint (can also be a constant)
-        angle,
+        () -> 0,
         // This uses the output
-        a -> driveTrain.ArcadeDrive(0, -a));
+        output -> {
+          // Use the output here
+        });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    m_driveTrain = driveTrain; 
-    addRequirements(m_driveTrain);
-
-    getController().setTolerance(1);
-
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public void initialize() {
-    m_driveTrain.reset();
-    m_driveTrain.setCoastMode();
-    super.initialize();
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    m_driveTrain.setBrakeMode();
-    m_driveTrain.reset();
-    m_driveTrain.ArcadeDrive(0, 0);
-    super.end(interrupted);
-    
+        leftPos = lpos;
+        rightPos = rpos;
+        m_climber = climber;
+        addRequirements(climber);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atSetpoint();
+    return false;
   }
 }

@@ -22,6 +22,7 @@ public class Intake extends SubsystemBase {
 
   private int hingeTop;
   private int hingeBottom;
+  public boolean isToggled = false;
   
   private Encoder hingeEncoder = new Encoder(Constants.kHingeEncoderA, Constants.kHingeEncoderB, Constants.kHingeEncoderIndex);
   

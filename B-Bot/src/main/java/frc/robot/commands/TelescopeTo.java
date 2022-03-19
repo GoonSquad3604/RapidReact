@@ -7,47 +7,51 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class ClimbTo extends CommandBase {
-  /** Creates a new ShuttleForward. */
+public class TelescopeTo extends CommandBase {
 
-  public Climber m_climber;
-  private double toPosition;
-  private int direction;
+  Climber m_climber;
+  double leftPos;
+  double rightPos;
+  boolean moveUp;
 
-  public ClimbTo(Climber climber, double position) {
+  /** Creates a new TelescopeTo. */
+  public TelescopeTo(double lpos, double rpos, Climber climber) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    leftPos = lpos;
+    rightPos = rpos;
     m_climber = climber;
-    toPosition = position;
-
-    if(m_climber.getTelescopeLeftPosition() > toPosition) direction = -1;
-    else direction = 1; 
-
     addRequirements(climber);
   }
+
+  // public TelescopeTo(Climber m_climber2, int i) {
+  // }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(m_climber.getTelescopeLeftPosition() > toPosition)
-      m_climber.moveMotorsClockwise();
-    else 
-      m_climber.moveMotorsCounterClockwise();
-
+    if(leftPos < m_climber.getTelescopeLeftPosition()) {
+      moveUp = false;
+    } else moveUp = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(moveUp) m_climber.moveTelescopeUp();
+    else m_climber.moveTelescopeDown();
+
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.stopMotors();
+    m_climber.stopTelescopeMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(direction == 1) return m_climber.getTelescopeLeftPosition() < toPosition;
-    else return m_climber.getTelescopeLeftPosition() > toPosition;
+    return (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos) < 3);
   }
 }

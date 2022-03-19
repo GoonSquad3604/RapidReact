@@ -16,22 +16,20 @@ import frc.robot.subsystems.Shuttle;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ClimberAuton extends SequentialCommandGroup {
+public class ClimberAuton2 extends SequentialCommandGroup {
 
   private Climber m_climber;
   private Shuttle m_shuttle;
   private Drivetrain m_driveTrain; 
 
-  public ClimberAuton(Climber climber, Shuttle shuttle, Drivetrain drivetrain) {
+  public ClimberAuton2(Climber climber, Shuttle shuttle, Drivetrain drivetrain) {
     m_climber = climber;
     m_shuttle = shuttle;
     m_driveTrain = drivetrain;
 
     addCommands(
-      new TelescopeTo(0, 0, m_climber),
       new TelescopeTo(140, -140, m_climber),
-      new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle),
-      new TelescopeTo(Constants.leftTelescopeFull, Constants.rightTelescopeFull, m_climber)
+      new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle)
       // new ShuttleTo(Constants.leftShuttleFront - 10, Constants.rightShuttleFront + 10, m_shuttle)
       // new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle),
       // new ShuttleTo(0, 0, m_shuttle)
