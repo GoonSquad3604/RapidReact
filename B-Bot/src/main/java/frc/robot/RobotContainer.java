@@ -35,8 +35,6 @@ import frc.robot.subsystems.Vision;
 import frc.robot.commands.ClimberAuton;
 import frc.robot.commands.ClimberAuton2;
 import frc.robot.commands.DeployClimber;
-import frc.robot.commands.SetShooterToPowerCmd;
-import frc.robot.commands.SetShooterToSpeedCmd;
 import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
@@ -44,6 +42,7 @@ import frc.robot.commands.ToggleShooter;
 import frc.robot.commands.TwoBallAuton;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -85,7 +84,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    SmartDashboard.putNumber("shooterVelo", 6000);
+    SmartDashboard.putNumber("shooterVelo", 14500);
     //SmartDashboard.putNumber("shooter speed", 4000);
     SmartDashboard.putNumber("shooterPower", .5);
     SmartDashboard.putBoolean("isABot", Constants.isABot);
@@ -123,6 +122,11 @@ public class RobotContainer {
     final Trigger operatorLeftTriggerP = new Trigger(() -> m_operatorController.getLeftTriggerAxis() >= .5);
     final Trigger operatorRightTriggerR = new Trigger(() -> m_operatorController.getRightTriggerAxis() < .5);
     final Trigger operatorLeftTriggerR = new Trigger(() -> m_operatorController.getLeftTriggerAxis() < .5);
+
+    //Operator POVs
+    final Trigger operatorControlPadUp = new Trigger(() -> m_operatorController.getPOV() == 0);
+    final Trigger operatorControlPadDown = new Trigger(() -> m_operatorController.getPOV() == 180);
+
 
     // Driver joysticks
     final JoystickButton driverBButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
@@ -167,8 +171,10 @@ public class RobotContainer {
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
     // Toggle shooter
-    operatorBButton.whenPressed(new ToggleShooter(m_shooter));
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 15000));
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
+    operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 8000));
+    operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 14000));
     
 
     //--------------------------------------------------
@@ -190,7 +196,7 @@ public class RobotContainer {
     driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
     driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
 
-    //operatorRightStick.whenHeld(new InstantCommand( () -> ));
+    operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));
 
   }
 

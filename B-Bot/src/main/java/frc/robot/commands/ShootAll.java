@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -15,17 +16,21 @@ public class ShootAll extends CommandBase {
   Shooter m_shooter;
   Index m_index;
   boolean detected = false;
+  boolean shot = false; //keeps track of if a shot has already been made. Used with timer
+  Timer m_timer; 
 
   public ShootAll(Index index, Shooter shooter) {
     m_index = index;
     m_shooter = shooter;
+    m_timer = new Timer();
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if(!m_shooter.isRunning) {
-      
+      m_shooter.setShooterVelo(14500);
     }
   }
 
@@ -38,11 +43,22 @@ public class ShootAll extends CommandBase {
 
     if(detected) {
       if(!m_index.detectExit() ) {
-        m_index.ballCount--;
+        m_index.decrementBallCount();
+        shot = true;
+        m_timer.reset();
+        m_timer.start();
       }
     }
 
-    m_index.moveIndex();
+    if(!shot) {
+      m_index.moveIndex();
+    }
+    else if(shot && m_timer.get() > .5) {
+      m_index.moveIndex();
+    }
+    else {
+      m_index.stopIndex();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -56,6 +72,6 @@ public class ShootAll extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_index.ballCount == 0;
+    return m_index.getBallCount() == 0;
   }
 }

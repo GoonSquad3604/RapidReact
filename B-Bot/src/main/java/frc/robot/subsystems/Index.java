@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Index extends SubsystemBase {
 
-  public int ballCount = 1;
+  private int ballCount = 0;
 
   CANSparkMax indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushed);
   CANSparkMax indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushed);
@@ -89,6 +89,23 @@ public class Index extends SubsystemBase {
   public void stopIndex() {
     indexMotor0.set(0);
     indexMotor1.set(0);
+ 
   }
 
+  public void incrementBallCount() {
+    ballCount++;
+    if(ballCount > 2) 
+      ballCount = 2;
+  }
+
+  public void decrementBallCount() {
+    ballCount--;
+    if(ballCount < 0) {
+      ballCount = 0;
+    }
+  }
+
+  public int getBallCount() {
+    return ballCount;
+  }
 }
