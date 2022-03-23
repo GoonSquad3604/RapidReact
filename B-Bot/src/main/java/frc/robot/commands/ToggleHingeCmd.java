@@ -46,11 +46,11 @@ public class ToggleHingeCmd extends CommandBase {
   @Override
   public void execute() {
     if(moveUp) {
-      m_intake.moveUp();
+      m_intake.moveUpAuto();
     }
 
     else {
-      m_intake.moveDown();
+      m_intake.moveDownAuto();
     }
   }
 

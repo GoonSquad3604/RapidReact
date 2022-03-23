@@ -85,8 +85,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    SmartDashboard.putNumber("shooter speed", 4000);
+    SmartDashboard.putNumber("shooterVelo", 6000);
+    //SmartDashboard.putNumber("shooter speed", 4000);
     SmartDashboard.putNumber("shooterPower", .5);
+    SmartDashboard.putBoolean("isABot", Constants.isABot);
 
     m_driveTrain.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left
@@ -98,7 +100,7 @@ public class RobotContainer {
           m_driveTrain)
       );
 
-    m_Vision.setDefaultCommand(new RunCommand(() -> m_Vision.getTargets(), m_Vision));
+    //m_Vision.setDefaultCommand(new RunCommand(() -> m_Vision.getTargets(), m_Vision));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -115,7 +117,7 @@ public class RobotContainer {
     final JoystickButton operatorStartButton = new JoystickButton(m_operatorController, XboxController.Button.kStart.value);
     final JoystickButton operatorBButton = new JoystickButton(m_operatorController, XboxController.Button.kB.value);
     final JoystickButton operatorBackButton = new JoystickButton(m_operatorController, XboxController.Button.kBack.value);
-
+    final JoystickButton operatorRightStick = new JoystickButton(m_operatorController, XboxController.Button.kRightStick.value);
     // Operator Triggers
     final Trigger operatorRightTriggerP = new Trigger(() -> m_operatorController.getRightTriggerAxis() >= .5);
     final Trigger operatorLeftTriggerP = new Trigger(() -> m_operatorController.getLeftTriggerAxis() >= .5);
@@ -153,7 +155,7 @@ public class RobotContainer {
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
 
     // Run intake (In)
-    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.85)), new TakeBallCmd(m_indexer)));
+    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-1)), new TakeBallCmd(m_indexer)));
     operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
 
     // Run indexer (In)
@@ -187,6 +189,8 @@ public class RobotContainer {
     driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
     driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
     driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
+
+    //operatorRightStick.whenHeld(new InstantCommand( () -> ));
 
   }
 

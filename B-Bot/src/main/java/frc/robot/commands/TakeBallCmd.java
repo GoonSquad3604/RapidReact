@@ -36,7 +36,7 @@ public class TakeBallCmd extends CommandBase {
     
     if(detected) {
       System.out.println("The ball has been seen");
-      m_indexer.moveIndex(.35);
+      m_indexer.moveIndexAuto();
       
       if(!m_indexer.detectBall())
       {

@@ -14,18 +14,26 @@ public class ToggleShooter extends CommandBase {
   
   private Shooter m_shooter;
   private boolean fin;
+  private double m_power;
 
   public ToggleShooter(Shooter shooter) {
     m_shooter = shooter;
-
+    m_power = SmartDashboard.getNumber("shooterPower",0);
     addRequirements(shooter);
   }
 
+  public ToggleShooter(Shooter shooter, double pwr) {
+    m_shooter = shooter;
+    m_power = pwr;
+
+    addRequirements(shooter);
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if(!m_shooter.isRunning) {
-      m_shooter.setShooter(SmartDashboard.getNumber("shooterPower",0));
+      m_shooter.setShooterVelo(SmartDashboard.getNumber("shooterVelo",6000));
+      //m_shooter.setShooter(m_power);
       m_shooter.isRunning = true;
       //System.out.println("toggle on");
     }

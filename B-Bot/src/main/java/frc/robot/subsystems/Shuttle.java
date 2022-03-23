@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +18,10 @@ public class Shuttle extends SubsystemBase {
   private CANSparkMax shuttleLeft = new CANSparkMax(Constants.kShuttleMotorLeftId, MotorType.kBrushless);
   private CANSparkMax shuttleRight = new CANSparkMax(Constants.kShuttleMotorRightId, MotorType.kBrushless);
   /** Creates a new Shuttle. */
-  public Shuttle() {}
+  public Shuttle() {
+    shuttleLeft.setIdleMode(IdleMode.kBrake);
+    shuttleRight.setIdleMode(IdleMode.kBrake);
+  }
 
   public void shuttleBack() {
     shuttleLeft.set(-0.7);
@@ -49,8 +54,8 @@ public class Shuttle extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Shuttle Left", getEncoderShuttleLeft());
-    // SmartDashboard.putNumber("Shuttle Right", getEncoderShuttleRight());
+    SmartDashboard.putNumber("Shuttle Left", getEncoderShuttleLeft());
+    SmartDashboard.putNumber("Shuttle Right", getEncoderShuttleRight());
     
   }
 }

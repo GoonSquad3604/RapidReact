@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -43,6 +44,8 @@ public class TwoBallAuton extends SequentialCommandGroup {
     m_intake = intake;
     m_index = index;
     m_shooter = shooter;
+
+    m_driveTrain.setBrakeMode();
 
 
     DifferentialDriveVoltageConstraint autoVoltageConstraint =
@@ -107,17 +110,23 @@ m_driveTrain.resetOdometry(m_auton1.getInitialPose());
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ToggleHingeCmd(m_intake), 
+      //new ToggleHingeCmd(m_intake), 
 
       new ParallelRaceGroup(new TakeBallCmd(m_index), 
         new SequentialCommandGroup(
           new ToggleIntake(m_intake),
-          new ToggleShooter(m_shooter),
-          ramset1
+          new ToggleShooter(m_shooter, .67),
+          new ParallelCommandGroup(
+            ramset1, 
+            new ToggleHingeCmd(intake)
+          )
+          
         )
       ),
       new ShootAll(m_index, m_shooter),
-      new ToggleIntake(m_intake)
+      new InstantCommand(() -> m_driveTrain.setCoastMode()),
+      new ToggleIntake(m_intake),
+      new ToggleHingeCmd(m_intake)
     );
   }
 }

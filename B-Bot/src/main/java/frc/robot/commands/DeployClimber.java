@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
+import frc.robot.ConstantsA;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Shuttle;
 
@@ -23,8 +24,8 @@ public class DeployClimber extends ParallelCommandGroup {
     m_climber = climber;
 
     addCommands(
-      new TelescopeTo(Constants.leftTelescopeFull, Constants.rightTelescopeFull, m_climber), 
-      new ShuttleTo(Constants.leftShuttleFront-10, Constants.rightShuttleFront+10, m_shuttle)
+      new TelescopeTo(ConstantsA.kTelescopeFullLeftA, Constants.rightTelescopeFull, m_climber), 
+      new ShuttleTo(Constants.leftShuttleFront-13, Constants.rightShuttleFront+13, m_shuttle)
     );
   }
 }

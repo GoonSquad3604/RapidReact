@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ConstantsA;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -32,13 +34,13 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println("Encoder Value " + hingeEncoder.get());
+    SmartDashboard.putNumber("Hinge Encoder", hingeEncoder.get());
   }
 
   public void calibrate() {
     hingeEncoder.reset();
     hingeTop = 0;
-    hingeBottom = Constants.kHingeBottomPosition;
+    hingeBottom = Constants.isABot ? ConstantsA.kHingeBottomPositionA : Constants.kHingeBottomPosition;
 
     System.out.println("encoder: " + hingeEncoder.get());
     System.out.println("Position: " + getHingePosition().toString());
@@ -51,6 +53,15 @@ public class Intake extends SubsystemBase {
 
   public void moveDown() {
     pivot.set(0.35);
+  }
+
+  public void moveUpAuto() {
+    pivot.set(-0.85);
+    //System.out.println("move up");
+  }
+
+  public void moveDownAuto() {
+    pivot.set(0.85);
   }
   
   public void stopPivot() {

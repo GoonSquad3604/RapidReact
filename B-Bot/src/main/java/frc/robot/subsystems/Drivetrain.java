@@ -140,22 +140,18 @@ public class Drivetrain extends SubsystemBase {
     return new DifferentialDriveWheelSpeeds(frontLeftMotor.getSelectedSensorVelocity()* 10 / Constants.kPulsesPerMeter, frontRightMotor.getSelectedSensorVelocity()* -10 / Constants.kPulsesPerMeter);
   }
 
-
-
-
-
   @Override
   public void periodic() {
     // SmartDashboard.putNumber("Left Encoder", getLeftPosition());;
     // SmartDashboard.putNumber("Right Encoder", getRightPosition());
     // SmartDashboard.putString("Angle2", getRotation().toString());
-    //SmartDashboard.putNumber("Right Distance", getRightDistance());
-    //SmartDashboard.putNumber("Left Distance", getLeftDistance());
+    SmartDashboard.putNumber("Right Distance", getRightDistance());
+    SmartDashboard.putNumber("Left Distance", getLeftDistance());
 
-    //SmartDashboard.putString("Post", getPose().toString());
+    SmartDashboard.putString("Post", getPose().toString());
     //SmartDashboard.putString("Velocities", getWheelSpeeds().toString());
-    //SmartDashboard.putNumber("rightspeed", frontRightMotor.getSelectedSensorVelocity() * -10 / Constants.kPulsesPerMeter);
-    //SmartDashboard.putNumber("leftSpeed",frontLeftMotor.getSelectedSensorVelocity() * 10 / Constants.kPulsesPerMeter);
+    SmartDashboard.putNumber("rightspeed", frontRightMotor.getSelectedSensorVelocity() * -10 / Constants.kPulsesPerMeter);
+    SmartDashboard.putNumber("leftSpeed",frontLeftMotor.getSelectedSensorVelocity() * 10 / Constants.kPulsesPerMeter);
    
    
     m_odometry.update(
@@ -171,7 +167,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    System.out.println("Pose " + m_odometry.getPoseMeters());
+    //System.out.println("Pose " + m_odometry.getPoseMeters());
     return m_odometry.getPoseMeters();
   }
 

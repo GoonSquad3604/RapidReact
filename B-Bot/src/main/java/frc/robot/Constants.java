@@ -8,6 +8,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
     
+    public static final boolean isABot = true;
+
     //Drivetrain IDs
     public static final int kFrontLeftId = 1;
     public static final int kBackLeftId = 18;
@@ -15,7 +17,6 @@ public final class Constants {
     public static final int kBackRightId = 40;
     public static final int kCANCoderRightId = 21;
     public static final int kCANCoderLeftId = 20;
-    public static final int kPulsesPerMeter = 45000;
 
     //Index IDs
     public static final int kIndexMotorId = 15;
@@ -48,11 +49,28 @@ public final class Constants {
     public static final double kShuttleFront = 100;
     public static final double kShuttleBack = -80;
 
-    // Auton
-    public static final double ksVolts = 0.72609;
-    public static final double kvVoltSecondsPerMeter = 0.46945;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.16887;
-    public static final double kPDriveVel = 0.73025;
+    // // Auton B bot
+    // public static final double ksVolts = 0.72609;
+    // public static final double kvVoltSecondsPerMeter = 0.46945;
+    // public static final double kaVoltSecondsSquaredPerMeter = 0.16887;
+    // public static final double kPDriveVel = 0.73025;
+    // public static final int kPulsesPerMeter = 45000;
+
+    
+    // public static final double kTrackwidthMeters = 0.523875;
+    // public static final DifferentialDriveKinematics kDriveKinematics =
+    //     new DifferentialDriveKinematics(kTrackwidthMeters);
+
+    // public static final double kMaxSpeedMetersPerSecond = 3.624072;
+    // public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+
+    // Auton A bot
+    public static final double ksVolts = 0.68837;
+    public static final double kvVoltSecondsPerMeter = 4.5959;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.76263;
+    public static final double kPDriveVel = 6.5058;
+    public static final double kPulsesPerMeter = 41451.52;
+
     
     public static final double kTrackwidthMeters = 0.523875;
     public static final DifferentialDriveKinematics kDriveKinematics =
@@ -76,10 +94,13 @@ public final class Constants {
     public static final double rightShuttleFront = -153.49;
     public static final double leftShuttleBack = -172.35;
     public static final double rightShuttleBack = 171.23;
-    public static final boolean isABot = false;
 
 
-
+    //Shooter Constants
+    public static final int kSlotIdx = 0;
+	public static final int kPIDLoopIdx = 0;
+    public static final int kTimeoutMs = 30;  
+    public final static Gains kGains_Velocit  = new Gains( 0.038253, 0, 0, 1023.0/20660.0,  300,  1.00);
 
 
 

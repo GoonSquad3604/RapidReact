@@ -16,8 +16,8 @@ public class Index extends SubsystemBase {
 
   public int ballCount = 1;
 
-  CANSparkMax indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushless);
-  CANSparkMax indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushless);
+  CANSparkMax indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushed);
+  CANSparkMax indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushed);
   DigitalInput sensor0 = new DigitalInput(Constants.kSensor0Id);
   DigitalInput sensor1 = new DigitalInput(Constants.kSensor1Id);
 
@@ -41,20 +41,49 @@ public class Index extends SubsystemBase {
   //     ballCount--;
   //   }
   // }
+  public void moveIndexAuto() {
 
+    if(!Constants.isABot) {
+      indexMotor0.set(-0.65);
+      indexMotor1.set(0.85);
+    }
+    else {
+      indexMotor0.set(-0.65);
+      indexMotor1.set(-0.65);   
+    }
+  }
   public void moveIndex() {
-    indexMotor0.set(-0.65);
-    indexMotor1.set(0.85);
+
+    if(!Constants.isABot) {
+      indexMotor0.set(-0.65);
+      indexMotor1.set(0.85);
+    }
+    else {
+      indexMotor0.set(-0.65);
+      indexMotor1.set(-0.85);   
+    }
   }
 
   public void moveIndex(double pwr) {
-    indexMotor0.set(- pwr);
-    indexMotor1.set(pwr + .2);
+    if(!Constants.isABot) {
+      indexMotor0.set(- pwr);
+      indexMotor1.set(pwr + .2);
+    }
+    else {
+      indexMotor0.set(-pwr);
+      indexMotor1.set(-pwr + .2);
+    }
   }
 
   public void reverseIndex() {
-    indexMotor0.set(0.85);
-    indexMotor1.set(-0.85);
+    if(!Constants.isABot) {
+      indexMotor0.set(0.85);
+      indexMotor1.set(-0.85);
+    }
+    else {
+      indexMotor0.set(0.85);
+      indexMotor1.set(0.85);   
+    }
   }
 
   public void stopIndex() {

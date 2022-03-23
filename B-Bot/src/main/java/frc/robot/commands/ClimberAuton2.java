@@ -9,6 +9,7 @@ import javax.swing.tree.TreePath;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.ConstantsA;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shuttle;
@@ -28,8 +29,11 @@ public class ClimberAuton2 extends SequentialCommandGroup {
     m_driveTrain = drivetrain;
 
     addCommands(
-      new TelescopeTo(140, -140, m_climber),
-      new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle)
+      new ShuttleTo(ConstantsA.kShuttleBackLeft, ConstantsA.kShuttleBackLeft, m_shuttle)
+      // new TelescopeTo(Constants.leftTelescopeFull, Constants.rightTelescopeFull, m_climber),
+      // new TelescopeTo(0, 0, m_climber),
+      // new ShuttleTo(Constants.leftShuttleFront, Constants.rightShuttleFront, m_shuttle)
+
       // new ShuttleTo(Constants.leftShuttleFront - 10, Constants.rightShuttleFront + 10, m_shuttle)
       // new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle),
       // new ShuttleTo(0, 0, m_shuttle)

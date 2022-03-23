@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -38,7 +40,7 @@ public class Climber extends SubsystemBase {
     }
     else {
       telescopeMotorLeftA = new WPI_TalonFX(ConstantsA.kTelescopeMotorLeftIdA);
-      telescopeMotorLeftA = new WPI_TalonFX(ConstantsA.kTelescopeMotorRightIdA);
+      telescopeMotorRightA = new WPI_TalonFX(ConstantsA.kTelescopeMotorRightIdA);
 
     }
 
@@ -60,6 +62,12 @@ public class Climber extends SubsystemBase {
     }
 
     else {
+      TalonFXConfiguration configs = new TalonFXConfiguration();
+			/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
+			configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+
+      telescopeMotorLeftA.configAllSettings(configs);
+      telescopeMotorRightA.configAllSettings(configs);
       telescopeMotorLeftA.setNeutralMode(NeutralMode.Brake);
       telescopeMotorRightA.setNeutralMode(NeutralMode.Brake);
       reset();
@@ -88,8 +96,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(-1.0);
     }
     else {
-      telescopeMotorLeftA.set(1.0);
-      telescopeMotorRightA.set(1.0);
+      telescopeMotorLeftA.set(-0.3);
+      telescopeMotorRightA.set(0.3);
     }
     isRunning = true;
   }
@@ -100,8 +108,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(1.0);
     }
     else {
-      telescopeMotorLeftA.set(-1.0);
-      telescopeMotorRightA.set(1.0);      
+      telescopeMotorLeftA.set(0.6);
+      telescopeMotorRightA.set(-0.6);      
     }
     isRunning = true;
   }
@@ -131,14 +139,27 @@ public class Climber extends SubsystemBase {
       telescopeMotorLeft.getEncoder().setPosition(0);
       telescopeMotorRight.getEncoder().setPosition(0);
     }
+    else {
+      telescopeMotorLeftA.setSelectedSensorPosition(0);
+      telescopeMotorRightA.setSelectedSensorPosition(0);
+    }
   }
 
   public double getTelescopeLeftPosition() {
-    return telescopeMotorLeft.getEncoder().getPosition();
+    if(!Constants.isABot) {
+      return telescopeMotorLeft.getEncoder().getPosition();
+    } 
+    else {
+      return -telescopeMotorLeftA.getSelectedSensorPosition(0);
+    }
+
   }
 
   public double getTelescopeRightPosition() {
-    return telescopeMotorRight.getEncoder().getPosition();
+    if(!Constants.isABot) 
+      return telescopeMotorRight.getEncoder().getPosition();
+    else 
+      return telescopeMotorRightA.getSelectedSensorPosition(0);
   }
 
   public double[] getHook1() {
