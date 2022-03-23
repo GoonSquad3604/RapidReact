@@ -52,6 +52,10 @@ public class Vision extends SubsystemBase {
 
   }
 
+  public double getDistance() {
+    return 4;
+  }
+
   public void setDriverMode() {
     if(pCamera.getDriverMode()) {
       pCamera.setDriverMode(false);
