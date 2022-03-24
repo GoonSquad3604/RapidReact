@@ -115,7 +115,7 @@ m_driveTrain.resetOdometry(m_auton1.getInitialPose());
       new ParallelRaceGroup(new TakeBallCmd(m_index), 
         new SequentialCommandGroup(
           new ToggleIntake(m_intake),
-          new ToggleShooter(m_shooter, .67),
+          new ToggleShooter(m_shooter, 14000),
           new ParallelCommandGroup(
             ramset1, 
             new ToggleHingeCmd(intake)

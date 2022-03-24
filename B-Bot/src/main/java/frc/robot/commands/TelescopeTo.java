@@ -54,6 +54,6 @@ public class TelescopeTo extends CommandBase {
   @Override
   public boolean isFinished() {
     SmartDashboard.putNumber("telescope Calc", (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos)));
-    return (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos) < 1000);
+    return (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos) < 1500);
   }
 }

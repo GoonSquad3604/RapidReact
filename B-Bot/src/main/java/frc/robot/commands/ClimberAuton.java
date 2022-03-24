@@ -28,8 +28,9 @@ public class ClimberAuton extends SequentialCommandGroup {
     m_driveTrain = drivetrain;
 
     addCommands(
-      new TelescopeTo(-1000, -1000, m_climber)
-     // new TelescopeTo(90000, -90000, m_climber)
+      new TelescopeTo(15000, 15000, m_climber),
+      new Pause(0.5),
+      new TelescopeTo(90000, -90000, m_climber)
       // new ShuttleTo(Constants.leftShuttleFront - 10, Constants.rightShuttleFront + 10, m_shuttle)
       // new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle),
       // new ShuttleTo(0, 0, m_shuttle)

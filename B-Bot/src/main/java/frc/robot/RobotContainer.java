@@ -34,6 +34,8 @@ import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.ClimberAuton;
 import frc.robot.commands.ClimberAuton2;
+import frc.robot.commands.ClimberAuton3;
+import frc.robot.commands.ClimberAuton4;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
@@ -195,6 +197,10 @@ public class RobotContainer {
     driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
     driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
     driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
+    driverXButton.whenPressed(new ClimberAuton3(m_climber, m_shuttle, m_driveTrain));
+    driverAButton.whenPressed(new ClimberAuton4(m_climber, m_shuttle, m_driveTrain));
+
+
 
     operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));
 

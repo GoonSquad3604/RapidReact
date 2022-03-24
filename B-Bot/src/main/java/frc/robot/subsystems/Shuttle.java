@@ -21,6 +21,7 @@ public class Shuttle extends SubsystemBase {
   public Shuttle() {
     shuttleLeft.setIdleMode(IdleMode.kBrake);
     shuttleRight.setIdleMode(IdleMode.kBrake);
+    reset();
   }
 
   public void shuttleBack() {
