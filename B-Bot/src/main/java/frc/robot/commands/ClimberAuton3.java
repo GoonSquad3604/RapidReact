@@ -30,7 +30,7 @@ public class ClimberAuton3 extends SequentialCommandGroup {
 
     addCommands(
       new ShuttleTo(Constants.leftShuttleFront-13, Constants.rightShuttleFront+13, m_shuttle),
-      new TelescopeTo(15000, 15000, m_climber),
+      new TelescopeTo(13000, 13000, m_climber),
       new Pause(0.5)
       // new TelescopeTo(Constants.leftTelescopeFull, Constants.rightTelescopeFull, m_climber),
       // new TelescopeTo(0, 0, m_climber),

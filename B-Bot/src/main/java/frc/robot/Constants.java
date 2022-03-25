@@ -103,6 +103,11 @@ public final class Constants {
     public final static Gains kGains_Velocit  = new Gains( 0.038253, 0, 0, 1023.0/20660.0,  300,  1.00);
 
 
+    //Vision Constants
+    public final static double visionAngleDeg = 15.8;
+    public final static double visionTargetHeight = 2.6416;
+    public final static double visionHeight = 0.734;
+    // 28.875
 
 
 }

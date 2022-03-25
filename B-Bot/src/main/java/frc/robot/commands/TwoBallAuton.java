@@ -85,26 +85,9 @@ public class TwoBallAuton extends SequentialCommandGroup {
         m_driveTrain::tankDriveVolts,
         m_driveTrain);
 
-        RamseteCommand ramset2 =
-        new RamseteCommand(
-          m_auton1,
-            m_driveTrain::getPose,
-            new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.ksVolts,
-                Constants.kvVoltSecondsPerMeter,
-                Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-            m_driveTrain::getWheelSpeeds,
-            new PIDController(Constants.kPDriveVel, 0, 0),
-            new PIDController(Constants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            m_driveTrain::tankDriveVolts,
-            m_driveTrain);
-
 // Reset odometry to the starting pose of the trajectory.
 //m_driveTrain.resetOdometry(m_auton1.getInitialPose());
-m_driveTrain.resetOdometry(m_auton1.getInitialPose());
+    m_driveTrain.resetOdometry(m_auton1.getInitialPose());
 
 
     // Add your commands in the addCommands() call, e.g.
