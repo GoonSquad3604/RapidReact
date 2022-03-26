@@ -126,6 +126,7 @@ public class RobotContainer {
     //Operator POVs
     final Trigger operatorControlPadUp = new Trigger(() -> m_operatorController.getPOV() == 0);
     final Trigger operatorControlPadDown = new Trigger(() -> m_operatorController.getPOV() == 180);
+    final Trigger operatorControlPadLeft = new Trigger(() -> m_operatorController.getPOV() == 270);
 
 
     // Driver joysticks
@@ -171,10 +172,12 @@ public class RobotContainer {
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
     // Toggle shooter
-    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 13750));
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 14000));
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
     operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 18000));
-    operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 5000));
+    operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 6000));
+    operatorControlPadLeft.whenActive(new ToggleShooter(m_shooter, m_Vision));
+
     
 
     //--------------------------------------------------

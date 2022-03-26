@@ -19,6 +19,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX shooterMotor0 = new WPI_TalonFX(Constants.kShooterMotor0Id);
   //private WPI_TalonFX shooterMotor1 = new WPI_TalonFX(Constants.kShooterMotor1Id);
   public boolean isRunning = false;
+  public double velo;
   
   /** Creates a new Shooter. */
   public Shooter() {
@@ -56,6 +57,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     //System.out.println(isRunning);
     SmartDashboard.putBoolean("Shooter Running", isRunning);
+    SmartDashboard.putNumber("shooterVelo", velo);
   }
 
   public void setShooter(double power) {
@@ -71,8 +73,9 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterVelo(double velocity) {
 
-    System.out.println("velo: " + velocity);
+    //System.out.println("velo: " + velocity);
     shooterMotor0.set(ControlMode.Velocity, velocity);
+    velo = velocity;
     //shooterMotor1.set(ControlMode.Velocity, -velocity);
   }
 

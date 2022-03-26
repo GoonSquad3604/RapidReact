@@ -59,8 +59,8 @@ public class Index extends SubsystemBase {
       indexMotor1.set(0.85);
     }
     else {
-      indexMotor0.set(-0.65);
-      indexMotor1.set(-0.85);   
+      indexMotor0.set(-0.85);
+      indexMotor1.set(-0.9);   
     }
   }
 

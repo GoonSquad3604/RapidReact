@@ -9,9 +9,12 @@ import javax.sound.sampled.SourceDataLine;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class ToggleShooter extends CommandBase {
   
+  private Vision m_vision;
+  private boolean hasVision;
   private Shooter m_shooter;
   private boolean fin;
   private double m_velocity;
@@ -23,6 +26,7 @@ public class ToggleShooter extends CommandBase {
     //m_power = SmartDashboard.getNumber("shooterPower",0);
     m_override = false;
     addRequirements(shooter);
+    hasVision = false;
   }
 
   public ToggleShooter(Shooter shooter, double velocity) {
@@ -30,18 +34,30 @@ public class ToggleShooter extends CommandBase {
     m_velocity = velocity;
     m_override = false;
     addRequirements(shooter);
+    hasVision = false;
   }
   public ToggleShooter(Shooter shooter, double velocity, boolean override) {
     m_shooter = shooter;
     m_velocity = velocity;
     m_override = override;
     addRequirements(shooter);
+    hasVision = false;
+  }
+
+  public ToggleShooter(Shooter shooter, Vision vision) {
+    m_shooter = shooter;
+    m_vision = vision;
+    hasVision = true;
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if(!m_shooter.isRunning || m_override) {
+      if(hasVision) {
+        double distance = m_vision.getDistance();
+        m_velocity = m_shooter.getSpeedForDistance(distance);
+      } 
       m_shooter.setShooterVelo(m_velocity);
       //m_shooter.setShooter(m_power);
       m_shooter.isRunning = true;

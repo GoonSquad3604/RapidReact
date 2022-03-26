@@ -48,6 +48,6 @@ public class ShuttleTo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 2);
+    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 3);
   }
 }

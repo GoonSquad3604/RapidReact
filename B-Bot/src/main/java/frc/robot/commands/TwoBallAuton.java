@@ -102,11 +102,18 @@ public class TwoBallAuton extends SequentialCommandGroup {
           new ParallelCommandGroup(
             ramset1, 
             new ToggleHingeCmd(intake)
-          )
+          ),
+          new Pause(1)
           
         )
       ),
-      new ShootAll(m_index, m_shooter),
+      new ParallelCommandGroup
+      (
+        new InstantCommand(() -> m_index.moveIndex()),
+        new Pause(2)
+      ),
+      new InstantCommand(() -> m_index.stopIndex()),
+      //new ShootAll(m_index, m_shooter),
       new InstantCommand(() -> m_driveTrain.setCoastMode()),
       new ToggleIntake(m_intake),
       new ToggleHingeCmd(m_intake)

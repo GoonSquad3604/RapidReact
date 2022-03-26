@@ -34,7 +34,7 @@ public class AimAndShoot extends SequentialCommandGroup {
     double angle = m_vision.tx;
     //set shooter based on distance
     // aim
-    //shoot all
+    //shoot all+
     
     addCommands(
       new ToggleShooter(m_shooter, speed, true),
