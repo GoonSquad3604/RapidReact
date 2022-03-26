@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 
@@ -17,19 +18,28 @@ public class AimAndShoot extends SequentialCommandGroup {
   private Shooter m_shooter;
   private Vision m_vision;
   private Drivetrain m_driveTrain;
+  private Index m_index;
   
   /** Creates a new AimAndShoot. */
-  public AimAndShoot(Vision vision, Shooter shooter, Drivetrain driveTrain) {
+  public AimAndShoot(Vision vision, Shooter shooter, Drivetrain driveTrain, Index index) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     m_shooter = shooter;
     m_vision = vision;
     m_driveTrain = driveTrain;
+    m_index = index;
 
+    double distance = m_vision.getDistance();
+    double speed = m_shooter.getSpeedForDistance(distance);
+    double angle = m_vision.tx;
     //set shooter based on distance
     // aim
     //shoot all
     
-    addCommands();
+    addCommands(
+      new ToggleShooter(m_shooter, speed, true),
+      new TurnPID(angle, m_driveTrain),
+      new ShootAll(m_index, m_shooter)
+      );
   }
 }

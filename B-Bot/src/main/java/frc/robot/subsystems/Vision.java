@@ -7,20 +7,22 @@ package frc.robot.subsystems;
 import org.photonvision.PhotonCamera;
 import org.photonvision.common.hardware.VisionLEDMode;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
 
-  PhotonCamera pCamera = new PhotonCamera("photonvision");
-
+  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight"); 
   boolean hasTarget = false;
+  public double tv, ty, ta, tx;
   
   public Vision() {
-    pCamera.setPipelineIndex(0);
-    pCamera.setDriverMode(true);
-    pCamera.setLED(VisionLEDMode.kDefault);
+
 
   }
 
@@ -28,45 +30,37 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Has Target", hasTarget);
 
-    //getTargets();
+    updateTargetInfo();
+    SmartDashboard.putNumber("Target Distance", getDistance());
   }
 
-  public void getTargets() {
-    var results = pCamera.getLatestResult();
-    //SmartDashboard.putBoolean("targetCheck", test );
-    //SmartDashboard.putString("photonVision", pCamera.getLatestResult().toString());
-    //SmartDashboard.putString("photontargets", results.getBestTarget().toString());
-    System.out.println("pipeline  " + pCamera.getPipelineIndex());
-    if(results.hasTargets()) {
-      var x = results.getBestTarget().getYaw();
-      hasTarget = true;
-      System.out.println(x);
-      SmartDashboard.putString("sup", results.getBestTarget().toString());
-    }
+  public void updateTargetInfo() {
+    tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
-    else {
-      System.out.println("nope");
-      hasTarget = false;
-    }
-
+    hasTarget = tv > 0;
 
   }
 
   public double getDistance() {
-    return 4;
-  }
+    
+    double targetOffsetAngle_Vertical = ty;
 
-  public void setDriverMode() {
-    if(pCamera.getDriverMode()) {
-      pCamera.setDriverMode(false);
+    if(targetOffsetAngle_Vertical > 0) {
+
+      
+      double angleToGoalDegrees = Constants.visionAngleDeg + targetOffsetAngle_Vertical;
+      double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+      //calculate distance
+      double distanceFromLimeLight = (Constants.visionTargetHeight - Constants.visionHeight)/Math.tan(angleToGoalRadians);
+
+      return distanceFromLimeLight; //meters  
     }
-    else {
-      pCamera.setDriverMode(true);
-
-    }
+    else return 0;
   }
 
-  public PhotonCamera getPhotonCamera() {
-    return pCamera;
-  }
+
 }

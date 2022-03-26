@@ -101,8 +101,6 @@ public class RobotContainer {
           m_driveTrain)
       );
 
-    //m_Vision.setDefaultCommand(new RunCommand(() -> m_Vision.getTargets(), m_Vision));
-    // Configure the button bindings
     configureButtonBindings();
   }
 
@@ -173,10 +171,10 @@ public class RobotContainer {
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
     // Toggle shooter
-    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 15000));
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 13750));
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
-    operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 8000));
-    operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 14000));
+    operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 18000));
+    operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 5000));
     
 
     //--------------------------------------------------
