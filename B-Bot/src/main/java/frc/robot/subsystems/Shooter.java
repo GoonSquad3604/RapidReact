@@ -58,6 +58,7 @@ public class Shooter extends SubsystemBase {
     //System.out.println(isRunning);
     SmartDashboard.putBoolean("Shooter Running", isRunning);
     SmartDashboard.putNumber("shooterVelo", velo);
+    SmartDashboard.putNumber("shooter real speed", shooterMotor0.getSelectedSensorVelocity());
   }
 
   public void setShooter(double power) {

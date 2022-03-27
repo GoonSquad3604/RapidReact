@@ -27,6 +27,10 @@ public class Index extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Has Ball", ballCount > 0);
+    SmartDashboard.putNumber("BallCount", ballCount);
+
+    //SmartDashboard.putBoolean("Sensor 0", detectBall());
+    //SmartDashboard.putBoolean("Sensor 1", detectExit());
   }
 
   public boolean detectBall() {
@@ -48,8 +52,8 @@ public class Index extends SubsystemBase {
       indexMotor1.set(0.85);
     }
     else {
-      indexMotor0.set(-0.65);
-      indexMotor1.set(-0.65);   
+      indexMotor0.set(-0.5);
+      indexMotor1.set(-0.5);   
     }
   }
   public void moveIndex() {
@@ -59,8 +63,8 @@ public class Index extends SubsystemBase {
       indexMotor1.set(0.85);
     }
     else {
-      indexMotor0.set(-0.85);
-      indexMotor1.set(-0.9);   
+      indexMotor0.set(-0.9);
+      indexMotor1.set(-0.85);   
     }
   }
 
@@ -107,5 +111,9 @@ public class Index extends SubsystemBase {
 
   public int getBallCount() {
     return ballCount;
+  }
+
+  public void setBallCount0() {
+    ballCount = 0;
   }
 }

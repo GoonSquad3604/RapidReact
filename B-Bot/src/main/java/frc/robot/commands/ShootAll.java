@@ -31,6 +31,7 @@ public class ShootAll extends CommandBase {
   public void initialize() {
     if(!m_shooter.isRunning) {
       m_shooter.setShooterVelo(14500);
+      m_shooter.isRunning = true;
     }
   }
 
@@ -43,6 +44,7 @@ public class ShootAll extends CommandBase {
 
     if(detected) {
       if(!m_index.detectExit() ) {
+        detected = false;
         m_index.decrementBallCount();
         shot = true;
         m_timer.reset();
@@ -64,8 +66,8 @@ public class ShootAll extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setShooter(0);
-    m_shooter.isRunning = false;
+    //m_shooter.setShooter(0);
+    //m_shooter.isRunning = false;
     m_index.stopIndex();
   }
 

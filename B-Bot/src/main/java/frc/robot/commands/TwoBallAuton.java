@@ -47,6 +47,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
 
     m_driveTrain.setBrakeMode();
 
+    m_index.incrementBallCount();
 
     DifferentialDriveVoltageConstraint autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(

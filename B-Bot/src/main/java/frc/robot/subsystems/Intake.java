@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Hinge Encoder", hingeEncoder.get());
+    //SmartDashboard.putNumber("Hinge Encoder", hingeEncoder.get());
   }
 
   public void calibrate() {

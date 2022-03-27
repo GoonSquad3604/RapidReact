@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ConstantsA;
 import frc.robot.subsystems.Shuttle;
 
 public class ShuttleTo extends CommandBase {
@@ -14,6 +15,8 @@ public class ShuttleTo extends CommandBase {
   double leftPos;
   double rightPos;
   boolean moveForward;
+  double max;
+  double min;
 
   public ShuttleTo(double lpos, double rpos, Shuttle shuttle) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,6 +24,8 @@ public class ShuttleTo extends CommandBase {
     leftPos = lpos;
     rightPos = rpos;
     m_shuttle = shuttle;
+    max = ConstantsA.kShuttleForwardLeft;
+    min = ConstantsA.kShuttleBackLeft;
     addRequirements(shuttle);
   }
 
@@ -48,6 +53,6 @@ public class ShuttleTo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 3);
+    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 2) || (m_shuttle.getEncoderShuttleLeft() > max) || (m_shuttle.getEncoderShuttleLeft() < min);
   }
 }
