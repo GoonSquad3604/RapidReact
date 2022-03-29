@@ -113,7 +113,7 @@ public class Shooter extends SubsystemBase {
       speed = 18750;
     }  
 
-    return speed;
+    return speed + 500;
   }
 
 }
