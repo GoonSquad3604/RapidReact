@@ -32,6 +32,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.Aim;
+import frc.robot.commands.AimAndShoot;
 import frc.robot.commands.ClimberAuton;
 import frc.robot.commands.ClimberAuton2;
 import frc.robot.commands.ClimberAuton3;
@@ -140,6 +142,11 @@ public class RobotContainer {
     final JoystickButton driverRightBumper = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
     final JoystickButton driverLeftBumper = new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
 
+    final Trigger driverRightTriggerP = new Trigger(() -> m_driverController.getRightTriggerAxis() >= .5);
+    final Trigger driverLeftTriggerP = new Trigger(() -> m_driverController.getLeftTriggerAxis() >= .5);
+    final Trigger driverRightTriggerR = new Trigger(() -> m_driverController.getRightTriggerAxis() < .5);
+    final Trigger driverLeftTriggerR = new Trigger(() -> m_driverController.getLeftTriggerAxis() < .5);
+
     //--------------------------------------------------
     // Operator Controls!
     //--------------------------------------------------
@@ -160,7 +167,7 @@ public class RobotContainer {
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
 
     // Run intake (In)
-    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-1)), new TakeBallCmd(m_indexer)));
+    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.75)), new TakeBallCmd(m_indexer)));
     operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
 
     // Run indexer (In)
@@ -172,11 +179,11 @@ public class RobotContainer {
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
     // Toggle shooter
-    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 14500));
+    operatorControlPadLeft.whenActive(new ToggleShooter(m_shooter, 14500));
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
     operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 18000));
     operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 8000));
-    operatorControlPadLeft.whenActive(new ToggleShooter(m_shooter, m_Vision));
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter, m_Vision));
 
     operatorRightStick.whenActive(new InstantCommand(() -> m_indexer.setBallCount0()));
 
@@ -203,6 +210,9 @@ public class RobotContainer {
     driverXButton.whenPressed(new ClimberAuton3(m_climber, m_shuttle, m_driveTrain));
     driverAButton.whenPressed(new ClimberAuton4(m_climber, m_shuttle, m_driveTrain));
 
+
+    //driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
+    driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
 
 
     //operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));

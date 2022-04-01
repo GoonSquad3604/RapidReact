@@ -16,13 +16,21 @@ public class Index extends SubsystemBase {
 
   private int ballCount = 0;
 
-  CANSparkMax indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushed);
-  CANSparkMax indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushed);
+  CANSparkMax indexMotor0;
+  CANSparkMax indexMotor1;
+  
+  
   DigitalInput sensor0 = new DigitalInput(Constants.kSensor0Id);
   DigitalInput sensor1 = new DigitalInput(Constants.kSensor1Id);
 
   /** Creates a new Index. */
-  public Index() {}
+  public Index() {
+    indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushed);
+    indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushed);
+
+    
+    
+  }
 
   @Override
   public void periodic() {
@@ -57,7 +65,7 @@ public class Index extends SubsystemBase {
     }
   }
   public void moveIndex() {
-
+    
     if(!Constants.isABot) {
       indexMotor0.set(-0.65);
       indexMotor1.set(0.85);

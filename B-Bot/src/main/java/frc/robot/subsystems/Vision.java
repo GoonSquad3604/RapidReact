@@ -18,17 +18,18 @@ public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
 
   NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight"); 
-  boolean hasTarget = false;
+  public boolean hasTarget = false;
   public double tv, ty, ta, tx;
   
   public Vision() {
-
 
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Has Target", hasTarget);
+    
+    SmartDashboard.putNumber("TX", tx);
 
     updateTargetInfo();
     SmartDashboard.putNumber("Target Distance", getDistance());

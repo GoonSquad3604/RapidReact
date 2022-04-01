@@ -41,7 +41,6 @@ public class Climber extends SubsystemBase {
     else {
       telescopeMotorLeftA = new WPI_TalonFX(ConstantsA.kTelescopeMotorLeftIdA);
       telescopeMotorRightA = new WPI_TalonFX(ConstantsA.kTelescopeMotorRightIdA);
-
     }
 
     if(Constants.isABot) {
@@ -96,8 +95,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(-1.0);
     }
     else {
-      telescopeMotorLeftA.set(-0.3);
-      telescopeMotorRightA.set(0.3);
+      telescopeMotorLeftA.set(-0.75);
+      telescopeMotorRightA.set(0.75);
     }
     isRunning = true;
   }
@@ -108,8 +107,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(1.0);
     }
     else {
-      telescopeMotorLeftA.set(0.5);
-      telescopeMotorRightA.set(-0.5);      
+      telescopeMotorLeftA.set(0.6);
+      telescopeMotorRightA.set(-0.6);      
     }
     isRunning = true;
   }

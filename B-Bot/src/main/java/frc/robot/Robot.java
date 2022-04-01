@@ -34,7 +34,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.startAutomaticCapture();
     // Set the resolution
-    camera.setResolution(160, 120);
+    camera.setResolution(130, 90
+    
+    );
 
     //Load Trajectory Files
 
