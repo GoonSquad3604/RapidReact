@@ -35,7 +35,7 @@ public class Aim extends CommandBase {
     if(m_vision.tx > 0) direction = -1.0;
     else direction = 1.0;
 
-    m_drive.TankDrive(-(speed*direction), (speed*direction));
+    m_drive.TankDrive(-speed*direction, speed*direction);
   }
 
   // Called once the command ends or is interrupted.

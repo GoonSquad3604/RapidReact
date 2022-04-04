@@ -167,7 +167,7 @@ public class RobotContainer {
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
 
     // Run intake (In)
-    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.75)), new TakeBallCmd(m_indexer)));
+    operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.8)), new TakeBallCmd(m_indexer)));
     operatorRightBumper.whenInactive(new InstantCommand(() -> m_intake.take(0)));
 
     // Run indexer (In)

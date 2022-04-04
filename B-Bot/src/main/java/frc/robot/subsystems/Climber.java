@@ -95,8 +95,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(-1.0);
     }
     else {
-      telescopeMotorLeftA.set(-0.75);
-      telescopeMotorRightA.set(0.75);
+      telescopeMotorLeftA.set(-0.6);
+      telescopeMotorRightA.set(0.6);
     }
     isRunning = true;
   }
@@ -107,8 +107,8 @@ public class Climber extends SubsystemBase {
       telescopeMotorRight.set(1.0);
     }
     else {
-      telescopeMotorLeftA.set(0.6);
-      telescopeMotorRightA.set(-0.6);      
+      telescopeMotorLeftA.set(0.5);
+      telescopeMotorRightA.set(-0.5);      
     }
     isRunning = true;
   }

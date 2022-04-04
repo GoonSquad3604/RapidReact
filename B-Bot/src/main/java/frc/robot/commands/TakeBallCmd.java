@@ -36,15 +36,30 @@ public class TakeBallCmd extends CommandBase {
     
     if(detected) {
       System.out.println("The ball has been seen");
-      m_indexer.moveIndexAuto();
-      
-      if(!m_indexer.detectBall())
-      {
-        m_indexer.incrementBallCount();
-        System.out.println("NO BALL");
+
+      if(m_indexer.getBallCount() == 0) {
+        m_indexer.moveIndexAuto();
+        if(m_indexer.detectExit())
+        {
+          m_indexer.incrementBallCount();
+          //System.out.println("NO BALL");
           m_indexer.stopIndex();
           detected = false;
+        }
       }
+      else if(m_indexer.getBallCount() >= 1) {
+        
+        m_indexer.moveButtomIndex();
+      
+        if(!m_indexer.detectBall()) {
+          m_indexer.incrementBallCount();
+          System.out.println();
+          m_indexer.stopIndex();
+          detected = false;
+        }
+      }
+      
+      
     } 
     
   }

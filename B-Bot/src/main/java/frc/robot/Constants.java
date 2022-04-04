@@ -8,7 +8,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
     
-    public static final boolean isABot = true;
+    public static final boolean isABot = false;
 
     //Drivetrain IDs
     public static final int kFrontLeftId = 1;

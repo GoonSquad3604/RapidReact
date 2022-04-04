@@ -48,6 +48,16 @@ public class ToggleShooter extends CommandBase {
     m_shooter = shooter;
     m_vision = vision;
     hasVision = true;
+
+    addRequirements(shooter);
+  }
+
+  public ToggleShooter(Shooter shooter, Vision vision, boolean override) {
+    m_shooter = shooter;
+    m_vision = vision;
+    hasVision = true;
+    m_override = override;
+    addRequirements(shooter);
   }
   
   // Called when the command is initially scheduled.
