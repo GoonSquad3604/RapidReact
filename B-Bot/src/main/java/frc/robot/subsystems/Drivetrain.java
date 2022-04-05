@@ -37,8 +37,8 @@ public class Drivetrain extends SubsystemBase {
   private MotorControllerGroup leftSide = new MotorControllerGroup(frontLeftMotor, backLeftMotor);
   private MotorControllerGroup rightSide = new MotorControllerGroup(frontRightMotor, backRightMotor);
 
-  private CANCoder canCoderRight = new CANCoder(Constants.kCANCoderRightId);
-  private CANCoder canCoderLeft = new CANCoder(Constants.kCANCoderLeftId);
+  // private CANCoder canCoderRight = new CANCoder(Constants.kCANCoderRightId);
+  // private CANCoder canCoderLeft = new CANCoder(Constants.kCANCoderLeftId);
   
   private PigeonIMU pigeon = new PigeonIMU(new WPI_TalonSRX(Constants.kPivotId));
 

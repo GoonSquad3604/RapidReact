@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,7 +29,8 @@ public class Index extends SubsystemBase {
     indexMotor0 = new CANSparkMax(Constants.kIndexMotorId, MotorType.kBrushed);
     indexMotor1 = new CANSparkMax(Constants.kIndexMotor1Id, MotorType.kBrushed);
 
-    
+    indexMotor0.setIdleMode(IdleMode.kBrake);
+    indexMotor1.setIdleMode(IdleMode.kBrake);
     
   }
 

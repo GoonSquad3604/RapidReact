@@ -38,8 +38,10 @@ public class TelescopeTo extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(moveUp) m_climber.moveTelescopeUp();
-    else m_climber.moveTelescopeDown();
+    //if(moveUp) m_climber.moveTelescopeUp();
+    //else m_climber.moveTelescopeDown();
+
+    m_climber.setTelescopeToPosition(leftPos);
 
 
   }
