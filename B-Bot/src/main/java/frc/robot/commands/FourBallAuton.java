@@ -109,7 +109,8 @@ public class FourBallAuton extends SequentialCommandGroup {
 
     addCommands(
 
-      new ParallelRaceGroup(new TakeBallCmd(m_index), 
+      new InstantCommand(() -> m_driveTrain.resetOdometry(m_auton1.getInitialPose())),
+      new ParallelRaceGroup(new TakeBallCmd(m_index),  
         new SequentialCommandGroup(
           new ToggleIntake(m_intake),
           new ToggleShooter(m_shooter, 14000),
