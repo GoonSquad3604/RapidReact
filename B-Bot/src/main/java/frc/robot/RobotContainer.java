@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Index;
@@ -39,6 +40,7 @@ import frc.robot.commands.ClimberAuton2;
 import frc.robot.commands.ClimberAuton3;
 import frc.robot.commands.ClimberAuton4;
 import frc.robot.commands.DeployClimber;
+import frc.robot.commands.FourBallAuton;
 import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
@@ -65,7 +67,7 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  
+  //Subsystems
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Intake m_intake = new Intake();
   private final Index m_indexer = new Index();
@@ -73,9 +75,12 @@ public class RobotContainer {
   private final Climber m_climber = new Climber(); // LOLLLLLLLLLLLL 69
   private final Vision m_Vision = new Vision();
   private final Shuttle m_shuttle = new Shuttle();
+
+  //Controllers
   XboxController m_driverController = new XboxController(0);
   XboxController m_operatorController = new XboxController(1);
 
+  //Paths
   private String Auton5Ball1 = "paths/5ball1.wpilib.json";
   Trajectory Auton5BallTrajectory1 = new Trajectory();
 
@@ -84,6 +89,19 @@ public class RobotContainer {
 
   private String Auton5Ball3 = "paths/5ball3.wpilib.json";
   Trajectory Auton5BallTrajectory3 = new Trajectory();
+
+  private String Auton4Ball1 = "paths/4ball1.wpilib.json";
+  Trajectory Auton4BallTrajectory1 = new Trajectory();
+
+  private String Auton4Ball2 = "paths/4ball2.wpilib.json";
+  Trajectory Auton4BallTrajectory2 = new Trajectory();
+
+  private String Auton4Ball3 = "paths/4ball3.wpilib.json";
+  Trajectory Auton4BallTrajectory3 = new Trajectory();
+
+  private SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private TwoBallAuton twoBall; 
+  private FourBallAuton fourBall;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -226,23 +244,44 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
-
+    //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
+    return m_chooser.getSelected();
   }
 
   public void loadTrajectories() {
     try {
       Path Auton5Ball1Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball1);
-      Path Auton5Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball2);
-      Path Auton5Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball3);
+      //Path Auton5Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball2);
+      //Path Auton5Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball3);
+
+      Path Auton4Ball1Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball1);
+      Path Auton4Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball2);
+      Path Auton4Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball3);
 
       Auton5BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton5Ball1Path);
-      Auton5BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton5Ball2Path);
-      Auton5BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton5Ball3Path);
+      //Auton5BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton5Ball2Path);
+      //Auton5BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton5Ball3Path);
 
+      Auton4BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton4Ball1Path);
+      Auton4BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton4Ball2Path);
+      Auton4BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton4Ball3Path);
     } catch(IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " , ex.getStackTrace());
     }
+
+    twoBall = new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter);
+
+    fourBall = new FourBallAuton(m_driveTrain, Auton4BallTrajectory1, Auton4BallTrajectory2, Auton4BallTrajectory3, m_intake, m_indexer, m_shooter, m_Vision);
+
+    m_chooser.setDefaultOption("TWO BALL AUTON", twoBall);
+    m_chooser.addOption("FOUR BALL AUTON", fourBall);
+
+    SmartDashboard.putData(m_chooser);
+
+  }
+
+  public void setCoastMode() {
+    m_driveTrain.setCoastMode();
   }
 }
 

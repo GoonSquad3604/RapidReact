@@ -108,12 +108,11 @@ public class Climber extends SubsystemBase {
     }
 
     else {
-      // TalonFXConfiguration configs = new TalonFXConfiguration();
-			// /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-			// configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+      TalonFXConfiguration configs = new TalonFXConfiguration();
+			configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
 
-      // telescopeMotorLeftA.configAllSettings(configs);
-      // telescopeMotorRightA.configAllSettings(configs);
+      telescopeMotorLeftA.configAllSettings(configs);
+      telescopeMotorRightA.configAllSettings(configs);
       telescopeMotorLeftA.setNeutralMode(NeutralMode.Brake);
       telescopeMotorRightA.setNeutralMode(NeutralMode.Brake);
       reset();
@@ -205,7 +204,7 @@ public class Climber extends SubsystemBase {
       return telescopeMotorLeft.getEncoder().getPosition();
     } 
     else {
-      return -telescopeMotorLeftA.getSelectedSensorPosition(0);
+      return telescopeMotorLeftA.getSelectedSensorPosition(0);
     }
 
   }

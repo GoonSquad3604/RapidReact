@@ -48,6 +48,7 @@ public class ToggleShooter extends CommandBase {
     m_shooter = shooter;
     m_vision = vision;
     hasVision = true;
+    m_override = false;
 
     addRequirements(shooter);
   }

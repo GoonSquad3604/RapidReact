@@ -37,7 +37,7 @@ public class AimAndShoot extends SequentialCommandGroup {
     //shoot all+
     
     addCommands(
-      new ToggleShooter(m_shooter, m_vision),
+      new ToggleShooter(m_shooter, m_vision, true),
       new Aim(m_vision, m_driveTrain),
       new ShootAll(m_index, m_shooter),
       new ToggleShooter(m_shooter, m_vision)

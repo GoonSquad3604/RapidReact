@@ -21,12 +21,12 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoBallAuton extends SequentialCommandGroup {
-  /** Creates a new TwoBallAuton. */
+public class FourBallAuton extends SequentialCommandGroup {
   Drivetrain m_driveTrain; 
   Trajectory m_auton1; 
   Trajectory m_auton2;
@@ -34,38 +34,23 @@ public class TwoBallAuton extends SequentialCommandGroup {
   Intake m_intake;
   Index m_index;
   Shooter m_shooter;
+  Vision m_vision;
 
-  public TwoBallAuton(Drivetrain driveTrain, Trajectory auton1, Intake intake, Index index, Shooter shooter) {
-
+  /** Creates a new FourBallAuton. */
+  public FourBallAuton(Drivetrain driveTrain, Trajectory auton1, Trajectory auton2, Trajectory auton3, Intake intake, Index index, Shooter shooter, Vision vision) {
+    
     m_driveTrain = driveTrain;
     m_auton1 = auton1;
+    m_auton2 = auton2;
+    m_auton3 = auton3;
     m_intake = intake;
     m_index = index;
     m_shooter = shooter;
+    m_vision = vision;
 
     m_driveTrain.setBrakeMode();
 
     m_index.incrementBallCount();
-
-    DifferentialDriveVoltageConstraint autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(
-                Constants.ksVolts,
-                Constants.kvVoltSecondsPerMeter,
-                Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
-            10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                Constants.kMaxSpeedMetersPerSecond,
-                Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
             
     RamseteCommand ramset1 =
     new RamseteCommand(
@@ -84,15 +69,45 @@ public class TwoBallAuton extends SequentialCommandGroup {
         m_driveTrain::tankDriveVolts,
         m_driveTrain);
 
+    RamseteCommand ramset2 =
+    new RamseteCommand(
+      m_auton2,
+        m_driveTrain::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+            Constants.ksVolts,
+            Constants.kvVoltSecondsPerMeter,
+            Constants.kaVoltSecondsSquaredPerMeter),
+        Constants.kDriveKinematics,
+        m_driveTrain::getWheelSpeeds,
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_driveTrain::tankDriveVolts,
+        m_driveTrain);
+
+    RamseteCommand ramset3 =
+    new RamseteCommand(
+      m_auton3,
+        m_driveTrain::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+            Constants.ksVolts,
+            Constants.kvVoltSecondsPerMeter,
+            Constants.kaVoltSecondsSquaredPerMeter),
+        Constants.kDriveKinematics,
+        m_driveTrain::getWheelSpeeds,
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_driveTrain::tankDriveVolts,
+        m_driveTrain);
+
 // Reset odometry to the starting pose of the trajectory.
 //m_driveTrain.resetOdometry(m_auton1.getInitialPose());
     m_driveTrain.resetOdometry(m_auton1.getInitialPose());
 
-
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      //new ToggleHingeCmd(m_intake), 
 
       new ParallelRaceGroup(new TakeBallCmd(m_index), 
         new SequentialCommandGroup(
@@ -106,13 +121,22 @@ public class TwoBallAuton extends SequentialCommandGroup {
           
         )
       ),
-      new ParallelCommandGroup
-      (
-        new InstantCommand(() -> m_index.moveIndex()),
-        new Pause(2)
+      // new ParallelCommandGroup
+      // (
+      //   new InstantCommand(() -> m_index.moveIndex()),
+      //   new Pause(2)
+      // ),
+      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
+      new ParallelRaceGroup(
+        new TakeBallCmd(m_index),
+        new SequentialCommandGroup(
+          ramset2,
+          new Pause(2)
+        )
       ),
-      new InstantCommand(() -> m_index.stopIndex()),
-      //new ShootAll(m_index, m_shooter),
+      new ToggleShooter(m_shooter, m_vision, true),
+      ramset3,
+      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
       new InstantCommand(() -> m_driveTrain.setCoastMode()),
       new ToggleIntake(m_intake),
       new ToggleHingeCmd(m_intake)
