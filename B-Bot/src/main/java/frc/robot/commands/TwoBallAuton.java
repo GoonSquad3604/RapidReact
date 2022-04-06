@@ -43,7 +43,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
     m_index = index;
     m_shooter = shooter;
 
-    m_driveTrain.setBrakeMode();
+    //m_driveTrain.setBrakeMode();
 
     //m_index.incrementBallCount();
 

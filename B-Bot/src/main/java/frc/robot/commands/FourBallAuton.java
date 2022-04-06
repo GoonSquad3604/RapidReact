@@ -48,7 +48,7 @@ public class FourBallAuton extends SequentialCommandGroup {
     m_shooter = shooter;
     m_vision = vision;
 
-    m_driveTrain.setBrakeMode();
+    //m_driveTrain.setBrakeMode();
             
     RamseteCommand ramset1 =
     new RamseteCommand(
