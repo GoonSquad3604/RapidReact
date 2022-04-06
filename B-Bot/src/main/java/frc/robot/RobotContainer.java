@@ -222,9 +222,9 @@ public class RobotContainer {
 
     driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
     driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
-    driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
-    driverXButton.whenPressed(new ClimberAuton3(m_climber, m_shuttle, m_driveTrain));
-    driverAButton.whenPressed(new ClimberAuton4(m_climber, m_shuttle, m_driveTrain));
+    // driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
+    // driverXButton.whenPressed(new ClimberAuton3(m_climber, m_shuttle, m_driveTrain));
+    // driverAButton.whenPressed(new ClimberAuton4(m_climber, m_shuttle, m_driveTrain));
 
 
     //driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
