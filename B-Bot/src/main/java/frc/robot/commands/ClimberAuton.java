@@ -9,6 +9,7 @@ import javax.swing.tree.TreePath;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.ConstantsA;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shuttle;
@@ -28,12 +29,33 @@ public class ClimberAuton extends SequentialCommandGroup {
     m_driveTrain = drivetrain;
 
     addCommands(
-      new TelescopeTo(13000, 13000, m_climber),
-      new Pause(1),
-      new TelescopeTo(90000, -90000, m_climber)
-      // new ShuttleTo(Constants.leftShuttleFront - 10, Constants.rightShuttleFront + 10, m_shuttle)
-      // new ShuttleTo(Constants.leftShuttleBack, Constants.rightShuttleBack, m_shuttle),
-      // new ShuttleTo(0, 0, m_shuttle)
+      new TelescopeTo(10000, 10000, m_climber),
+      //new Pause(1),
+      new TelescopeTo(40000, 40000, m_climber),
+      new TelescopeTo(90000, 90000, m_climber),
+
+      //auton 2
+      new ShuttleTo(ConstantsA.kShuttleBackLeft+23, ConstantsA.kShuttleBackLeft+10, m_shuttle),
+      new TelescopeTo(ConstantsA.kTelescopeFullLeftA-18000, ConstantsA.kTelescopeFullLeftA, m_climber),
+      new TelescopeTo(90000-1000, 90000-1000, m_climber),
+
+      //auton 3
+
+      new ShuttleTo(Constants.leftShuttleFront-13, Constants.rightShuttleFront+13, m_shuttle),
+      new TelescopeTo(9000, 9000, m_climber),
+      new Pause(0.5),
+
+      //auton 4
+
+      new TelescopeTo(40000, 40000, m_climber),
+      new TelescopeTo(90000-1000, 90000-1000, m_climber),
+      //new Pause(.5),
+      new ShuttleTo(ConstantsA.kShuttleBackLeft+21, ConstantsA.kShuttleBackLeft+10, m_shuttle),
+
+      new TelescopeTo(ConstantsA.kTelescopeFullLeftA-20000, ConstantsA.kTelescopeFullLeftA, m_climber),
+      new TelescopeTo(90000-1000, 90000-1000, m_climber),
+      //new Pause(.5),
+      new ShuttleTo(0,0,m_shuttle)
     );
   }
 }

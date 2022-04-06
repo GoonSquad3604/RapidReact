@@ -42,13 +42,13 @@ public class Shuttle extends SubsystemBase {
   }
 
   public void shuttleBack() {
-    shuttleLeft.set(-0.7);
-    shuttleRight.set(0.7);
+    shuttleLeft.set(-0.9);
+    shuttleRight.set(0.9);
   }
 
   public void shuttleForward() {
-    shuttleLeft.set(0.7);
-    shuttleRight.set(-0.7);
+    shuttleLeft.set(0.9);
+    shuttleRight.set(-0.9);
   }
 
   public double getEncoderShuttleLeft() {

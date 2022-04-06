@@ -19,9 +19,9 @@ public class Aim extends CommandBase {
   @Override
   public void initialize() {
     //m_drive.setBrakeMode();
-    if(!m_vision.hasTarget){
-      end(false);
-    }    
+    // if(!m_vision.hasTarget){
+    //   end(false);
+    // }    
     if(m_vision.tx > 0) direction = -1.0;
     else direction = 1.0;
   }
@@ -51,6 +51,6 @@ public class Aim extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_vision.tx) < 0.1 && m_vision.hasTarget;
+    return (Math.abs(m_vision.tx) < 0.1 && m_vision.hasTarget) || !m_vision.hasTarget;
   }
 }

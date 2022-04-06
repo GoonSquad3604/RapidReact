@@ -49,8 +49,6 @@ public class FourBallAuton extends SequentialCommandGroup {
     m_vision = vision;
 
     m_driveTrain.setBrakeMode();
-
-    m_index.incrementBallCount();
             
     RamseteCommand ramset1 =
     new RamseteCommand(
@@ -110,6 +108,7 @@ public class FourBallAuton extends SequentialCommandGroup {
     addCommands(
 
       new InstantCommand(() -> m_driveTrain.resetOdometry(m_auton1.getInitialPose())),
+      new InstantCommand(() -> m_index.incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(m_index),  
         new SequentialCommandGroup(
           new ToggleIntake(m_intake),

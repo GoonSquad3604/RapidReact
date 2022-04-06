@@ -66,7 +66,7 @@ public class Climber extends SubsystemBase {
       telescopeMotorLeftA.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Telescope.kD, Constants.kTimeoutMs);
 
       telescopeMotorRightA.configNominalOutputForward(0, Constants.kTimeoutMs);
-		  telescopeMotorRightA.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		  telescopeMotorRightA.configNominalOutputReverse(0, Constants.kTimeoutMs); // Hahahahahahah 69
 		  telescopeMotorRightA.configPeakOutputForward(1, Constants.kTimeoutMs);
 		  telescopeMotorRightA.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
@@ -108,11 +108,11 @@ public class Climber extends SubsystemBase {
     }
 
     else {
-      TalonFXConfiguration configs = new TalonFXConfiguration();
-			configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+      // TalonFXConfiguration configs = new TalonFXConfiguration();
+			// configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
 
-      telescopeMotorLeftA.configAllSettings(configs);
-      telescopeMotorRightA.configAllSettings(configs);
+      // telescopeMotorLeftA.configAllSettings(configs);
+      // telescopeMotorRightA.configAllSettings(configs);
       telescopeMotorLeftA.setNeutralMode(NeutralMode.Brake);
       telescopeMotorRightA.setNeutralMode(NeutralMode.Brake);
       reset();
@@ -132,6 +132,8 @@ public class Climber extends SubsystemBase {
      SmartDashboard.putNumber("Telescope Left", getTelescopeLeftPosition());
      SmartDashboard.putNumber("Telescope Right", getTelescopeRightPosition());
     SmartDashboard.putBoolean("Telescopes Running", isRunning);
+
+    SmartDashboard.putNumber("Left Telescope Speed", getLeftVelocity());
   }
 
   public void moveTelescopeUp() {
@@ -179,8 +181,6 @@ public class Climber extends SubsystemBase {
       telescopeMotorRightA.set(TalonFXControlMode.Position, position); 
     }
   }
-  // L O L M A O 
-
 
   public void getEncoderTelescope() {
     //double
@@ -223,5 +223,18 @@ public class Climber extends SubsystemBase {
   public double[] getHook2() {
     return hook2Positions;
   }
+
+  public double getMotorOutput() {
+    double x = 5;//telescopeMotorRightA.ge
+
+    return x;
+  }
+
+  public double getLeftVelocity() {
+    return telescopeMotorLeftA.getSelectedSensorVelocity();
+  }
   
+  public double getRightVelocity() {
+    return telescopeMotorRightA.getSelectedSensorVelocity();
+  }
 }

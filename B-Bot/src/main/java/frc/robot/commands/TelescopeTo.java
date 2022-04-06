@@ -14,6 +14,7 @@ public class TelescopeTo extends CommandBase {
   double leftPos;
   double rightPos;
   boolean moveUp;
+  boolean moving = false;
 
   /** Creates a new TelescopeTo. */
   public TelescopeTo(double lpos, double rpos, Climber climber) {
@@ -40,7 +41,9 @@ public class TelescopeTo extends CommandBase {
   public void execute() {
     //if(moveUp) m_climber.moveTelescopeUp();
     //else m_climber.moveTelescopeDown();
-
+    if(Math.abs(m_climber.getLeftVelocity()) > 600) {
+      moving = true;
+    }
     m_climber.setTelescopeToPosition(leftPos);
 
 
@@ -56,6 +59,6 @@ public class TelescopeTo extends CommandBase {
   @Override
   public boolean isFinished() {
     SmartDashboard.putNumber("telescope Calc", (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos)));
-    return (Math.abs(m_climber.getTelescopeLeftPosition()-leftPos) < 1500);
+    return (moving && Math.abs(m_climber.getLeftVelocity()) < 400);
   }
 }
