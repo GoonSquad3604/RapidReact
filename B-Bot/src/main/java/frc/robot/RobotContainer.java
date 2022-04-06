@@ -281,6 +281,10 @@ public class RobotContainer {
   public void setCoastMode() {
     m_driveTrain.setCoastMode();
   }
+
+  public void setBrakeMode() {
+    m_driveTrain.setBrakeMode();
+  }
 }
 
 

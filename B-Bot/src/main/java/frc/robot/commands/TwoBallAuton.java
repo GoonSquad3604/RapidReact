@@ -94,6 +94,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
     addCommands(
       //new ToggleHingeCmd(m_intake), 
       new InstantCommand(() -> m_driveTrain.resetOdometry(m_auton1.getInitialPose())),
+      new InstantCommand(() -> m_index.setBallCount0()),
       new InstantCommand(() -> m_index.incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(m_index), 
         new SequentialCommandGroup(
