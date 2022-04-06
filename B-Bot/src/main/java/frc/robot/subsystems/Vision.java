@@ -49,7 +49,7 @@ public class Vision extends SubsystemBase {
     
     double targetOffsetAngle_Vertical = ty;
 
-    if(targetOffsetAngle_Vertical > 0) {
+    if(hasTarget) {
 
       
       double angleToGoalDegrees = Constants.visionAngleDeg + targetOffsetAngle_Vertical;
