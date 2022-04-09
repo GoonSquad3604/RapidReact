@@ -21,6 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -32,16 +33,18 @@ public class TwoBallAuton extends SequentialCommandGroup {
   Trajectory m_auton2;
   Trajectory m_auton3;
   Intake m_intake;
+  Vision m_vision;
   Index m_index;
   Shooter m_shooter;
 
-  public TwoBallAuton(Drivetrain driveTrain, Trajectory auton1, Intake intake, Index index, Shooter shooter) {
+  public TwoBallAuton(Drivetrain driveTrain, Trajectory auton1, Intake intake, Index index, Shooter shooter, Vision vision) {
 
     m_driveTrain = driveTrain;
     m_auton1 = auton1;
     m_intake = intake;
     m_index = index;
     m_shooter = shooter;
+    m_vision = vision;
 
     //m_driveTrain.setBrakeMode();
 
@@ -108,12 +111,9 @@ public class TwoBallAuton extends SequentialCommandGroup {
           
         )
       ),
-      new ParallelCommandGroup
-      (
-        new InstantCommand(() -> m_index.moveIndex()),
-        new Pause(2)
-      ),
-      new InstantCommand(() -> m_index.stopIndex()),
+      
+      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
+
       //new ShootAll(m_index, m_shooter),
       new InstantCommand(() -> m_driveTrain.setCoastMode()),
       new ToggleIntake(m_intake),

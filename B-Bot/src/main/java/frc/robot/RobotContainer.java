@@ -91,10 +91,10 @@ public class RobotContainer {
   private String Auton4Ball1 = "paths/4ball1.wpilib.json";
   Trajectory Auton4BallTrajectory1 = new Trajectory();
 
-  private String Auton4Ball2 = "paths/4ball2.wpilib.json";
+  private String Auton4Ball2 = "paths/4Ball2.wpilib.json";
   Trajectory Auton4BallTrajectory2 = new Trajectory();
 
-  private String Auton4Ball3 = "paths/4ball3.wpilib.json";
+  private String Auton4Ball3 = "paths/4Ball3.wpilib.json";
   Trajectory Auton4BallTrajectory3 = new Trajectory();
 
   private SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -267,7 +267,7 @@ public class RobotContainer {
       DriverStation.reportError("Unable to open trajectory: " , ex.getStackTrace());
     }
 
-    twoBall = new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter);
+    twoBall = new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter, m_Vision);
 
     fourBall = new FourBallAuton(m_driveTrain, Auton4BallTrajectory1, Auton4BallTrajectory2, Auton4BallTrajectory3, m_intake, m_indexer, m_shooter, m_Vision);
 

@@ -122,21 +122,25 @@ public class FourBallAuton extends SequentialCommandGroup {
           
         )
       ),
-      // new ParallelCommandGroup
-      // (
-      //   new InstantCommand(() -> m_index.moveIndex()),
-      //   new Pause(2)
-      // ),
-      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
+      new ParallelCommandGroup(
+        new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index), 
+        new ToggleHingeCmd(m_intake)
+      ),
       new ParallelRaceGroup(
         new TakeBallCmd(m_index),
         new SequentialCommandGroup(
-          ramset2,
+          new ParallelCommandGroup(
+            ramset2, 
+            new ToggleHingeCmd(m_intake)
+          ),
           new Pause(2)
         )
       ),
       new ToggleShooter(m_shooter, m_vision, true),
-      ramset3,
+      new ParallelRaceGroup(
+        ramset3, 
+        new TakeBallCmd(m_index)
+      ),
       new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
       new InstantCommand(() -> m_driveTrain.setCoastMode()),
       new ToggleIntake(m_intake),

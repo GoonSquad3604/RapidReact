@@ -101,10 +101,10 @@ public class Shooter extends SubsystemBase {
       speed = 15400;
     } 
     else if(meters >= 4.25 && meters < 4.75 ) {
-      speed = 16250;
+      speed = 16000;
     }  
     else if(meters >= 4.75 && meters < 5.5 ) {
-      speed = 17250;
+      speed = 17000;
     } 
     else if(meters >= 5.5 && meters < 6.25 ) {
       speed = 17750;

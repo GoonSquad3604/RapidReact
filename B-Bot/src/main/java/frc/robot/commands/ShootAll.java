@@ -69,11 +69,12 @@ public class ShootAll extends CommandBase {
     //m_shooter.setShooter(0);
     //m_shooter.isRunning = false;
     m_index.stopIndex();
+    m_index.setBallCount0();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_index.getBallCount() == 0;
+    return m_index.getBallCount() == 0 || m_timer.get() > 1.5;
   }
 }
