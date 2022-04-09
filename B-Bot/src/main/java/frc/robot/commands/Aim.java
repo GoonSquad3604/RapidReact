@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -10,10 +11,12 @@ public class Aim extends CommandBase {
   private Drivetrain m_drive;
   private double direction;
   private double speed;
+  private Timer timer;
 
   public Aim(Vision vision, Drivetrain drive) {
     m_vision = vision;
     m_drive = drive;
+    timer = new Timer();
   }
 
   @Override
@@ -24,6 +27,7 @@ public class Aim extends CommandBase {
     // }    
     if(m_vision.tx > 0) direction = -1.0;
     else direction = 1.0;
+    timer.start();
   }
 
   @Override
@@ -46,11 +50,12 @@ public class Aim extends CommandBase {
   public void end(boolean interrupted) {
     m_drive.TankDrive(0, 0);
     //m_drive.setCoastMode();
+    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(m_vision.tx) < 0.1 && m_vision.hasTarget) || !m_vision.hasTarget;
+    return (Math.abs(m_vision.tx) < 0.1 && m_vision.hasTarget) || !m_vision.hasTarget || timer.get() > 1.75;
   }
 }

@@ -97,7 +97,9 @@ public class RobotContainer {
   private String Auton4Ball3 = "paths/4Ball3.wpilib.json";
   Trajectory Auton4BallTrajectory3 = new Trajectory();
 
-  private SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+
+  private SendableChooser<String> testchooser = new SendableChooser<String>();
   private TwoBallAuton twoBall; 
   private FourBallAuton fourBall;
 
@@ -210,8 +212,8 @@ public class RobotContainer {
     //--------------------------------------------------
 
     // Reset homge
-    driverBButton.whenHeld(new RunCommand(() -> m_intake.moveUp()));
-    driverBButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot()));
+    driverBButton.whenHeld(new RunCommand(() -> m_intake.moveUp(), m_intake));
+    driverBButton.whenInactive(new InstantCommand(() -> m_intake.stopPivot(), m_intake));
     driverBButton.whenInactive(new InstantCommand(() -> m_intake.calibrate()));
 
     // Shuttle
@@ -243,7 +245,15 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
-    return m_chooser.getSelected();
+    
+    if(testchooser.getSelected().equals("2")){
+      return new FourBallAuton(m_driveTrain, Auton4BallTrajectory1, Auton4BallTrajectory2, Auton4BallTrajectory3, m_intake, m_indexer, m_shooter, m_Vision);
+    }
+    else
+    {
+      return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter, m_Vision);
+    }
+    //return m_chooser.getSelected();
   }
 
   public void loadTrajectories() {
@@ -273,8 +283,11 @@ public class RobotContainer {
 
     m_chooser.setDefaultOption("TWO BALL AUTON", twoBall);
     m_chooser.addOption("FOUR BALL AUTON", fourBall);
+    testchooser.setDefaultOption("Two Ball Auton", "1");
+    testchooser.addOption("Four Ball Auton", "2");
 
-    SmartDashboard.putData(m_chooser);
+    SmartDashboard.putData(testchooser);
+    //SmartDashboard.putData(m_chooser);
 
   }
 
