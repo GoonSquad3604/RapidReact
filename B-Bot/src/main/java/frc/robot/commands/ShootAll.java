@@ -33,6 +33,9 @@ public class ShootAll extends CommandBase {
       m_shooter.setShooterVelo(14500);
       m_shooter.isRunning = true;
     }
+
+    m_timer.reset();
+    m_timer.stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -69,12 +72,14 @@ public class ShootAll extends CommandBase {
     //m_shooter.setShooter(0);
     //m_shooter.isRunning = false;
     m_index.stopIndex();
+    m_timer.stop();
+    m_timer.reset();
     m_index.setBallCount0();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_index.getBallCount() == 0 || m_timer.get() > 1.5;
+    return m_index.getBallCount() == 0;
   }
 }

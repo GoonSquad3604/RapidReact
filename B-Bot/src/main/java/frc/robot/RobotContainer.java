@@ -35,6 +35,7 @@ import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.Aim;
 import frc.robot.commands.AimAndShoot;
+import frc.robot.commands.AimAndShootTeleop;
 import frc.robot.commands.ClimberAuton;
 import frc.robot.commands.ClimberAuton2;
 import frc.robot.commands.ClimberAuton3;
@@ -137,6 +138,7 @@ public class RobotContainer {
     final JoystickButton operatorBButton = new JoystickButton(m_operatorController, XboxController.Button.kB.value);
     final JoystickButton operatorBackButton = new JoystickButton(m_operatorController, XboxController.Button.kBack.value);
     final JoystickButton operatorRightStick = new JoystickButton(m_operatorController, XboxController.Button.kRightStick.value);
+    final JoystickButton operatorLeftStick = new JoystickButton(m_operatorController, XboxController.Button.kLeftStick.value);
     // Operator Triggers
     final Trigger operatorRightTriggerP = new Trigger(() -> m_operatorController.getRightTriggerAxis() >= .5);
     final Trigger operatorLeftTriggerP = new Trigger(() -> m_operatorController.getLeftTriggerAxis() >= .5);
@@ -204,6 +206,9 @@ public class RobotContainer {
     operatorBButton.whenPressed(new ToggleShooter(m_shooter, m_Vision));
 
     operatorRightStick.whenActive(new InstantCommand(() -> m_indexer.setBallCount0()));
+    operatorLeftStick.whenActive(new InstantCommand(()-> {m_indexer.incrementBallCount(); m_indexer.incrementBallCount();}));
+
+    
 
     
 
