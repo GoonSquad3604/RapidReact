@@ -222,10 +222,10 @@ public class RobotContainer {
     driverBButton.whenInactive(new InstantCommand(() -> m_intake.calibrate()));
 
     // Shuttle
-    driverLeftBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleBack()));
-    driverRightBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleForward()));
-    driverLeftBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors()));
-    driverRightBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors()));
+    driverLeftBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleBack(), m_shuttle));
+    driverRightBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleForward(), m_shuttle));
+    driverLeftBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors(), m_shuttle));
+    driverRightBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors(), m_shuttle));
 
     driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
     driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
@@ -235,7 +235,7 @@ public class RobotContainer {
 
 
     //driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
-    driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
+    driverLeftTriggerP.whenActive(new AimAndShootTeleop(m_Vision, m_shooter, m_driveTrain, m_indexer));
 
 
     //operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));

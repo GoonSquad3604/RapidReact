@@ -133,7 +133,9 @@ public class FourBallAuton extends SequentialCommandGroup {
             ramset2, 
             new ToggleHingeCmd(m_intake)
           ),
-          new Pause(2)
+          new ParallelCommandGroup(new InstantCommand( () -> m_intake.moveUp()), new Pause(.25)),
+          new InstantCommand(() -> m_intake.stopPivot()),
+          new Pause(1.75)
         )
       ),
       new ToggleShooter(m_shooter, m_vision, true),

@@ -13,25 +13,13 @@ public class Aim extends CommandBase {
   private double direction;
   private double speed;
   private Timer timer;
-  private XboxController m_controller;
-  private boolean hasController = false;
 
 
   public Aim(Vision vision, Drivetrain drive) {
     m_vision = vision;
     m_drive = drive;
     timer = new Timer();
-    hasController = false;
     
-  }
-
-
-  public Aim(Vision vision, Drivetrain drive, XboxController controller) {
-    m_vision = vision;
-    m_drive = drive;
-    timer = new Timer();
-    m_controller = controller;
-    hasController = true;
   }
 
   @Override

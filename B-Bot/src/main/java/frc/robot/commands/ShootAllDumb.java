@@ -10,35 +10,21 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class ShootAll extends CommandBase {
-  /** Creates a new ShootAll. */
-
+public class ShootAllDumb extends CommandBase {
+  /** Creates a new ShootAllDumb. */
   Shooter m_shooter;
   Index m_index;
   boolean detected = false;
-  boolean shot = false; //keeps track of if a shot has already been made. Used with timer
-  Timer m_timer; 
 
-  public ShootAll(Index index, Shooter shooter) {
+  public ShootAllDumb(Index index) {
     m_index = index;
-    m_shooter = shooter;
-    m_timer = new Timer();
     detected = false;
-    shot = false;
     
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    if(!m_shooter.isRunning) {
-      m_shooter.setShooterVelo(14500);
-      m_shooter.isRunning = true;
-    }
-
-    m_timer.reset();
-    m_timer.stop();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -47,36 +33,20 @@ public class ShootAll extends CommandBase {
       detected = true;
     }
 
-    if(detected) {
-      if(!m_index.detectExit() ) {
-        detected = false;
+    if(detected){
+      if(!m_index.detectExit()) {
         m_index.decrementBallCount();
-        shot = true;
-        m_timer.reset();
-        m_timer.start();
+        detected = false;
       }
     }
 
-    if(!shot) {
-      m_index.moveIndex();
-    }
-    else if(shot && m_timer.get() > .5) {
-      m_index.moveIndex();
-    }
-    else {
-      m_index.stopIndex();
-    }
+    m_index.moveIndex();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_shooter.setShooter(0);
-    //m_shooter.isRunning = false;
     m_index.stopIndex();
-    m_timer.stop();
-    m_timer.reset();
-    m_index.setBallCount0();
   }
 
   // Returns true when the command should end.

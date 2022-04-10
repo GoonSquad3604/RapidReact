@@ -23,7 +23,7 @@ public class AimAndShootTeleop extends SequentialCommandGroup {
   private XboxController m_Controller;
   
   /** Creates a new AimAndShoot. */
-  public AimAndShootTeleop(Vision vision, Shooter shooter, Drivetrain driveTrain, Index index, XboxController controller) {
+  public AimAndShootTeleop(Vision vision, Shooter shooter, Drivetrain driveTrain, Index index) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     m_shooter = shooter;
@@ -40,9 +40,9 @@ public class AimAndShootTeleop extends SequentialCommandGroup {
     
     addCommands(
       new ToggleShooter(m_shooter, m_vision, true),
-      new Aim(m_vision, m_driveTrain, m_Controller)
-      //new ShootAll(m_index, m_shooter),
-      //new ToggleShooter(m_shooter, m_vision)
+      new Aim(m_vision, m_driveTrain),
+      new ShootAllDumb(m_index),
+      new ToggleShooter(m_shooter, m_vision)
       );
   }
 
