@@ -30,7 +30,8 @@ public class AimAndShoot extends SequentialCommandGroup {
     m_index = index;
 
     double distance = m_vision.getDistance();
-    double speed = m_shooter.getSpeedForDistance(distance);
+    double speed;
+    speed = m_shooter.getSpeedForDistance(distance);
     double angle = m_vision.tx;
     //set shooter based on distance
     // aim

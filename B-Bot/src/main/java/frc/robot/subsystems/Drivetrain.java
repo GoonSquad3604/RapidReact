@@ -45,6 +45,8 @@ public class Drivetrain extends SubsystemBase {
   private DifferentialDrive drive;
   private DifferentialDriveOdometry m_odometry;
 
+  private Rotation2d savedRotation; 
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     TalonFXConfiguration configs = new TalonFXConfiguration();
@@ -175,5 +177,13 @@ public class Drivetrain extends SubsystemBase {
     leftSide.setVoltage(leftVolts);
     rightSide.setVoltage(rightVolts);
     drive.feed();
+  }
+
+  public void saveRotation(double degrees) {
+    savedRotation = Rotation2d.fromDegrees(getHeading());
+  }
+
+  public Rotation2d getSavedRotation() {
+    return savedRotation;
   }
 }

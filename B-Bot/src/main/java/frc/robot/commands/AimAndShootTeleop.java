@@ -41,7 +41,7 @@ public class AimAndShootTeleop extends SequentialCommandGroup {
     addCommands(
       new ToggleShooter(m_shooter, m_vision, true),
       new Aim(m_vision, m_driveTrain),
-      new ShootAllDumb(m_index),
+      new ShootAllDumb(m_index, m_vision, m_shooter),
       new ToggleShooter(m_shooter, m_vision)
       );
   }

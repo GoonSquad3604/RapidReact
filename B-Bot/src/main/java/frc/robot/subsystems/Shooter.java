@@ -81,7 +81,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getSpeedForDistance(double meters) {
-    double speed = 13500;
+    double speed = 13200;
     if(meters < 1.9 && meters > 0.5) {
       speed = 6000;
     }
@@ -95,13 +95,13 @@ public class Shooter extends SubsystemBase {
       speed = 14000;
     } 
     else if(meters >= 3.25 && meters < 3.75 ) {
-      speed = 14500;
+      speed = 14800;
     } 
     else if(meters >= 3.75 && meters < 4.25 ) {
       speed = 15400;
     } 
     else if(meters >= 4.25 && meters < 4.75 ) {
-      speed = 16000;
+      speed = 16100;
     }  
     else if(meters >= 4.75 && meters < 5.5 ) {
       speed = 16600;
@@ -113,7 +113,7 @@ public class Shooter extends SubsystemBase {
       speed = 17750;
     }  
 
-    return speed + 800;
+    return speed + 600;
   }
 
 }

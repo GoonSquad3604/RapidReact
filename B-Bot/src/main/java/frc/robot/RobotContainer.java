@@ -235,7 +235,9 @@ public class RobotContainer {
 
 
     //driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
-    driverLeftTriggerP.whenActive(new AimAndShootTeleop(m_Vision, m_shooter, m_driveTrain, m_indexer));
+    driverRightTriggerP.whenActive(new AimAndShootTeleop(m_Vision, m_shooter, m_driveTrain, m_indexer));
+    driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_driveTrain, m_indexer));
+
 
 
     //operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));

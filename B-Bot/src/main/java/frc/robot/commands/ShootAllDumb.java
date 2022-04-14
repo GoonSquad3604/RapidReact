@@ -9,15 +9,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class ShootAllDumb extends CommandBase {
   /** Creates a new ShootAllDumb. */
   Shooter m_shooter;
   Index m_index;
+  Vision m_vision;
   boolean detected = false;
 
-  public ShootAllDumb(Index index) {
+  public ShootAllDumb(Index index, Vision vision, Shooter shooter) {
     m_index = index;
+    m_shooter = shooter;
+    m_vision = vision;
     detected = false;
     
   }
@@ -38,6 +42,7 @@ public class ShootAllDumb extends CommandBase {
         m_index.decrementBallCount();
         detected = false;
       }
+      if(m_index.getBallCount() == 1) m_shooter.setShooterVelo(m_shooter.getSpeedForDistance(m_vision.getDistance())+100);
     }
 
     m_index.moveIndex();

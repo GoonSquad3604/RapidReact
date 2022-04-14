@@ -35,6 +35,8 @@ public class ShootAll extends CommandBase {
       m_shooter.setShooterVelo(14500);
       m_shooter.isRunning = true;
     }
+    shot = false;
+    detected = false;
 
     m_timer.reset();
     m_timer.stop();
@@ -63,8 +65,14 @@ public class ShootAll extends CommandBase {
     else if(shot && m_timer.get() > .5) {
       m_index.moveIndex();
     }
-    else {
+    else if (m_index.getBallCount() == 2) {
+      m_index.moveIndex();
+    }
+    else if(shot && m_timer.get() < .5){
       m_index.stopIndex();
+    }
+    else {
+      m_index.moveIndex();
     }
   }
 
@@ -76,12 +84,12 @@ public class ShootAll extends CommandBase {
     m_index.stopIndex();
     m_timer.stop();
     m_timer.reset();
-    m_index.setBallCount0();
+    //m_index.setBallCount0();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_index.getBallCount() == 0;
+    return m_index.getBallCount() == 0 && m_timer.get() > 1;
   }
 }
