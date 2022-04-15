@@ -179,11 +179,14 @@ public class Drivetrain extends SubsystemBase {
     drive.feed();
   }
 
-  public void saveRotation(double degrees) {
+  public void saveRotation() {
     savedRotation = Rotation2d.fromDegrees(getHeading());
   }
 
-  public Rotation2d getSavedRotation() {
-    return savedRotation;
+  public double getSavedRotation() {
+    if(savedRotation == null) {
+      return 0;
+    }
+    return savedRotation.getDegrees();
   }
 }

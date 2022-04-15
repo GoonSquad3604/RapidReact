@@ -107,10 +107,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    SmartDashboard.putNumber("shooterVelo", 14500);
+    //SmartDashboard.putNumber("shooterVelo", 14500);
     //SmartDashboard.putNumber("shooter speed", 4000);
-    SmartDashboard.putNumber("shooterPower", .5);
-    SmartDashboard.putBoolean("isABot", Constants.isABot);
+    //SmartDashboard.putNumber("shooterPower", .5);
+    //SmartDashboard.putBoolean("isABot", Constants.isABot);
 
     m_driveTrain.setDefaultCommand(
       // A split-stick arcade command, with forward/backward controlled by the left

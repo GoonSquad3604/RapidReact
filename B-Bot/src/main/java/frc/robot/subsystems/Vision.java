@@ -29,10 +29,10 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Has Target", hasTarget);
     
-    SmartDashboard.putNumber("TX", tx);
+    //SmartDashboard.putNumber("TX", tx);
 
     updateTargetInfo();
-    SmartDashboard.putNumber("Target Distance", getDistance());
+    //SmartDashboard.putNumber("Target Distance", getDistance());
   }
 
   public void updateTargetInfo() {

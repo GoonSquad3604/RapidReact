@@ -38,15 +38,15 @@ public class TurnPID extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public void initialize() {
-    m_driveTrain.reset();
-    m_driveTrain.setCoastMode();
+    //m_driveTrain.reset();
+    //m_driveTrain.setCoastMode();
     super.initialize();
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_driveTrain.setBrakeMode();
-    m_driveTrain.reset();
+    //m_driveTrain.setBrakeMode();
+    //m_driveTrain.reset();
     m_driveTrain.ArcadeDrive(0, 0);
     super.end(interrupted);
     

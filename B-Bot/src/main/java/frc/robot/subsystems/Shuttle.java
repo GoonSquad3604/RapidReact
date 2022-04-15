@@ -86,8 +86,8 @@ public class Shuttle extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shuttle Left", getEncoderShuttleLeft());
-    SmartDashboard.putNumber("Shuttle Right", getEncoderShuttleRight());
+    //SmartDashboard.putNumber("Shuttle Left", getEncoderShuttleLeft());
+    //SmartDashboard.putNumber("Shuttle Right", getEncoderShuttleRight());
 
     SmartDashboard.putBoolean("Press Left-Back", leftBack.isPressed());
     SmartDashboard.putBoolean("Press Right-Back", rightBack.isPressed());

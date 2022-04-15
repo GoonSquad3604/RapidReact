@@ -116,16 +116,22 @@ public class FourBallAuton extends SequentialCommandGroup {
           new ToggleShooter(m_shooter, 14000),
           new ParallelCommandGroup(
             ramset1, 
+            
             new ToggleHingeCmd(intake)
+              // new ParallelCommandGroup(new InstantCommand( () -> m_intake.moveDown()), new Pause(.15)),
+              // new InstantCommand(() -> m_intake.stopPivot())  
+            
           ),
           new Pause(1)
           
         )
       ),
+      new InstantCommand(() -> m_driveTrain.saveRotation()),
       new ParallelCommandGroup(
         new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index), 
         new ToggleHingeCmd(m_intake)
       ),
+      new TurnPID(m_driveTrain.getSavedRotation(), driveTrain),
       new ParallelRaceGroup(
         new TakeBallCmd(m_index),
         new SequentialCommandGroup(
@@ -133,9 +139,9 @@ public class FourBallAuton extends SequentialCommandGroup {
             ramset2, 
             new ToggleHingeCmd(m_intake)
           ),
-          new ParallelCommandGroup(new InstantCommand( () -> m_intake.moveUp()), new Pause(.25)),
-          new InstantCommand(() -> m_intake.stopPivot()),
-          new Pause(1.75)
+          // new ParallelCommandGroup(new InstantCommand( () -> m_intake.moveUp()), new Pause(.25)),
+          // new InstantCommand(() -> m_intake.stopPivot()),
+          new Pause(2)
         )
       ),
       new ToggleShooter(m_shooter, m_vision, true),

@@ -131,9 +131,6 @@ public class Climber extends SubsystemBase {
   public void periodic() {
      SmartDashboard.putNumber("Telescope Left", getTelescopeLeftPosition());
      SmartDashboard.putNumber("Telescope Right", getTelescopeRightPosition());
-    SmartDashboard.putBoolean("Telescopes Running", isRunning);
-
-    SmartDashboard.putNumber("Left Telescope Speed", getLeftVelocity());
   }
 
   public void moveTelescopeUp() {

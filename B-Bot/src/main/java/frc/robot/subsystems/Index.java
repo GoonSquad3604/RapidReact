@@ -36,8 +36,8 @@ public class Index extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Has Ball", ballCount > 0);
-    SmartDashboard.putNumber("BallCount", ballCount);
+    //SmartDashboard.putBoolean("Has Ball", ballCount > 0);
+    //SmartDashboard.putNumber("BallCount", ballCount);
 
     SmartDashboard.putBoolean("Ball0", ballCount>=1);
     SmartDashboard.putBoolean("Ball1", ballCount==2);

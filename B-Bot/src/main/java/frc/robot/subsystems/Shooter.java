@@ -57,8 +57,8 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     //System.out.println(isRunning);
     SmartDashboard.putBoolean("Shooter Running", isRunning);
-    SmartDashboard.putNumber("shooterVelo", velo);
-    SmartDashboard.putNumber("shooter real speed", shooterMotor0.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("shooterVelo", velo);
+    //SmartDashboard.putNumber("shooter real speed", shooterMotor0.getSelectedSensorVelocity());
   }
 
   public void setShooter(double power) {

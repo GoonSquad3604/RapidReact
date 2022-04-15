@@ -56,6 +56,6 @@ public class ShuttleTo extends CommandBase {
 //    return (Math.abs(m_shuttle.getEncoderShuttleLeft()-leftPos) < 2) || (m_shuttle.getEncoderShuttleLeft() > max) || (m_shuttle.getEncoderShuttleLeft() < min
  //   || (moveForward && m_shuttle.getLeftForward()) || (!moveForward && m_shuttle.getLeftBack()));
 
-    return (moveForward && m_shuttle.getLeftForward()) || (!moveForward && m_shuttle.getLeftBack());
+    return (moveForward && m_shuttle.getLeftForward() && m_shuttle.getRightForward()) || (!moveForward && m_shuttle.getLeftBack() && m_shuttle.getRightBack());
   }
 }
