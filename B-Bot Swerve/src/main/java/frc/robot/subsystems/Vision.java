@@ -31,7 +31,6 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Has Target", hasTarget);
-    System.out.println(tx);
     
     //SmartDashboard.putNumber("TX", tx);
 
