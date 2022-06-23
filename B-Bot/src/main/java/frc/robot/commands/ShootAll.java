@@ -59,7 +59,7 @@ public class ShootAll extends CommandBase {
       }
     }
 
-    if(!shot) {
+    if(!shot &&  m_timer.get() > .5) {
       m_index.moveIndex();
     }
     else if(shot && m_timer.get() > .5) {

@@ -104,6 +104,8 @@ public final class Constants {
 
     public final static Gains kGains_Telescope = new Gains( 0.021744, 0, 0.0015771, 0,  0,  1.00);
 
+    public final static Gains kGains_Hinge = new Gains( 0.0058106, 0, 0, 0,  0,  1.00);
+
 
     //Vision Constants
     public final static double visionAngleDeg = 15.8;

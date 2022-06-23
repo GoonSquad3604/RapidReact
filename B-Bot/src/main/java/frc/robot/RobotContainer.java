@@ -42,6 +42,7 @@ import frc.robot.commands.ClimberAuton3;
 import frc.robot.commands.ClimberAuton4;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.FourBallAuton;
+import frc.robot.commands.SetHingePos;
 import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
@@ -66,12 +67,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //Subsystems
+  //Subsystems 69 !!!!!!!
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Intake m_intake = new Intake();
   private final Index m_indexer = new Index();
   private final Shooter m_shooter = new Shooter();
-  private final Climber m_climber = new Climber(); // LOLLLLLLLLLLLL 69
+  private final Climber m_climber = new Climber(); 
   private final Vision m_Vision = new Vision();
   private final Shuttle m_shuttle = new Shuttle();
 
@@ -185,6 +186,7 @@ public class RobotContainer {
 
     //  Toggle hinge
     operatorLeftBumper.whenPressed(new ToggleHingeCmd(m_intake));
+    //operatorLeftBumper.whileHeld(new SetHingePos(700, m_intake));
 
     // Run intake (In)
     operatorRightBumper.whileHeld(new ParallelCommandGroup(new RunCommand( () -> m_intake.take(-0.8)), new TakeBallCmd(m_indexer)));
@@ -194,14 +196,14 @@ public class RobotContainer {
     operatorAButton.whenHeld(new RunCommand(() -> m_indexer.moveIndex()));
     operatorAButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
-    // Run indexer (Out)
+    // Run indexer (Ou%t)
     operatorYButton.whileHeld(new RunCommand(() -> m_indexer.reverseIndex()));
     operatorYButton.whenInactive(new InstantCommand(() -> m_indexer.stopIndex()));
 
     // Toggle shooter
     operatorControlPadLeft.whenActive(new ToggleShooter(m_shooter, 14500));
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
-    operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 18000));
+    operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 17900));
     operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 8000));
     operatorBButton.whenPressed(new ToggleShooter(m_shooter, m_Vision));
 

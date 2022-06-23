@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.ConstantsA;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -29,12 +31,34 @@ public class Intake extends SubsystemBase {
   private Encoder hingeEncoder = new Encoder(Constants.kHingeEncoderA, Constants.kHingeEncoderB, Constants.kHingeEncoderIndex);
   
   public Intake() {
+
+    // pivot.configFactoryDefault();
+    // hingeEncoder.setReverseDirection(true);
+
+    // pivot.configNominalOutputForward(0, Constants.kTimeoutMs);
+		//   pivot.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		//   pivot.configPeakOutputForward(1, Constants.kTimeoutMs);
+		//   pivot.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+		//   pivot.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
+		// /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
+    //   pivot.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Hinge.kF, Constants.kTimeoutMs);
+    //   pivot.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Hinge.kP, Constants.kTimeoutMs);
+    //   pivot.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Hinge.kI, Constants.kTimeoutMs);
+    //   pivot.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Hinge.kD, Constants.kTimeoutMs);
+    //   pivot.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder, 
+    //                                         Constants.kPIDLoopIdx,
+		// 		                            Constants.kTimeoutMs);
+      
+
     calibrate();
   }
 
   @Override
   public void periodic() {
     //SmartDashboard.putNumber("Hinge Encoder", hingeEncoder.get());
+
   }
 
   public void calibrate() {
@@ -47,12 +71,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void moveUp() {
-    pivot.set(-0.35);
+    pivot.set(-0.85);
     //System.out.println("move up");
   }
 
   public void moveDown() {
-    pivot.set(0.35);
+    pivot.set(0.85);
   }
 
   public void moveUpAuto() {
@@ -78,6 +102,10 @@ public class Intake extends SubsystemBase {
 
   public void vomit(double speed) {
     intakeFront.set(speed);
+  }
+
+  public void setHingePosition(double position) {
+    pivot.set(TalonSRXControlMode.Position, position );
   }
 
   public HingePosition getHingePosition() {

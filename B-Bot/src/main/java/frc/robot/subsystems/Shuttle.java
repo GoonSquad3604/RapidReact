@@ -89,10 +89,10 @@ public class Shuttle extends SubsystemBase {
     //SmartDashboard.putNumber("Shuttle Left", getEncoderShuttleLeft());
     //SmartDashboard.putNumber("Shuttle Right", getEncoderShuttleRight());
 
-    SmartDashboard.putBoolean("Press Left-Back", leftBack.isPressed());
-    SmartDashboard.putBoolean("Press Right-Back", rightBack.isPressed());
-    SmartDashboard.putBoolean("Press Left-Forward", leftForward.isPressed());
-    SmartDashboard.putBoolean("Press Right-Forward", rightForward.isPressed());
+    //SmartDashboard.putBoolean("Press Left-Back", leftBack.isPressed());
+    //SmartDashboard.putBoolean("Press Right-Back", rightBack.isPressed());
+    //SmartDashboard.putBoolean("Press Left-Forward", leftForward.isPressed());
+    //SmartDashboard.putBoolean("Press Right-Forward", rightForward.isPressed());
 
     
   }
