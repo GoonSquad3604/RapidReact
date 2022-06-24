@@ -69,7 +69,6 @@ public class Shooter extends SubsystemBase {
     else {
       shooterMotor0.set(power);
     }
-    
   }
 
   public void setShooterVelo(double velocity) {
@@ -86,5 +85,4 @@ public class Shooter extends SubsystemBase {
 
     return speed;
   }
-
 }
