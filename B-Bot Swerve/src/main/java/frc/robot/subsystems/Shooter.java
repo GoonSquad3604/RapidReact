@@ -81,7 +81,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getSpeedForDistance(double meters) {
-    double speed = 1078.095203 * meters + 8022.780311;
+    //double speed = 1078.095203 * meters + 8022.780311;
+    double speed = 1078.095203 * meters + 8500;
 
     return speed;
   }

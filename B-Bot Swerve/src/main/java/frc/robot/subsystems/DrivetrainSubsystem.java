@@ -117,6 +117,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   }
 
+//   public void resetOdometry(Pose2d pose) {
+//         //m_pigeon.setYaw(0);
+//         //frontLeftMotor.setSelectedSensorPosition(0);
+//         //frontRightMotor.setSelectedSensorPosition(0);
+//         m_odometry.resetPosition(pose, getRotation());
+//       }
+
   public Rotation2d getGyroscopeRotation() {
    
     return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());

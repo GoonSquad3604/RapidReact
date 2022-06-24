@@ -42,14 +42,14 @@ public class AimSwerve extends CommandBase {
     
     if(m_vision.hasTarget) {
       speed = Math.abs(m_vision.tx)/27.0;
-      if(speed < 0.3) speed = 0.3;
+      if(speed < 0.15) speed = 0.15;
     }
     //else speed = 1;
 
     if(m_vision.tx > 0) direction = -1.0;
     else direction = 1.0;
 
-    m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, m_drive.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND*(speed/6.0)*direction, m_drive.getGyroscopeRotation()));
+    m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, m_drive.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND*(speed/6.5)*direction, m_drive.getGyroscopeRotation()));
 
   }
 

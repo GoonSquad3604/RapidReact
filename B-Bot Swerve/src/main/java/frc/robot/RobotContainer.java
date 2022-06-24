@@ -9,6 +9,10 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -83,24 +87,7 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(0);
   XboxController m_operatorController = new XboxController(1);
 
-  //Paths
-  private String Auton5Ball1 = "paths/5ball1.wpilib.json";
-  Trajectory Auton5BallTrajectory1 = new Trajectory();
-
-  private String Auton5Ball2 = "paths/5ball2.wpilib.json";
-  Trajectory Auton5BallTrajectory2 = new Trajectory();
-
-  private String Auton5Ball3 = "paths/5ball3.wpilib.json";
-  Trajectory Auton5BallTrajectory3 = new Trajectory();
-
-  private String Auton4Ball1 = "paths/4ball1.wpilib.json";
-  Trajectory Auton4BallTrajectory1 = new Trajectory();
-
-  private String Auton4Ball2 = "paths/4Ball2.wpilib.json";
-  Trajectory Auton4BallTrajectory2 = new Trajectory();
-
-  private String Auton4Ball3 = "paths/4Ball3.wpilib.json";
-  Trajectory Auton4BallTrajectory3 = new Trajectory();
+ 
 
   private SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
@@ -111,20 +98,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    //SmartDashboard.putNumber("shooterVelo", 14500);
-    //SmartDashboard.putNumber("shooter speed", 4000);
-    //SmartDashboard.putNumber("shooterPower", .5);
-    //SmartDashboard.putBoolean("isABot", Constants.isABot);
 
-  //   m_driveTrain.setDefaultCommand(
-  //     // A split-stick arcade command, with forward/backward controlled by the left
-  //     // hand, and turning controlled by the right.
-  //     new RunCommand(
-  //         () ->
-  //             m_driveTrain.ArcadeDrive(
-  //                 -m_driverController.getLeftY(), m_driverController.getRightX()),
-  //         m_driveTrain)
-  //     );
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
       m_drivetrainSubsystem,
@@ -228,29 +202,7 @@ public class RobotContainer {
     driverBackButton.whenInactive(new InstantCommand(() -> m_climber.stopTelescopeMotors(), m_climber));
     driverStartButton.whenInactive(new InstantCommand(() -> m_climber.stopTelescopeMotors(), m_climber));
 
-  
-    //driverStartButton.whenPressed(new InstantCommand(() -> m_drivetrainSubsystem.zeroGyroscope()));
-
-    // Shuttle
-    //driverLeftBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleBack(), m_shuttle));
-    //driverRightBumper.whenHeld(new RunCommand(() -> m_shuttle.shuttleForward(), m_shuttle));
-    //driverLeftBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors(), m_shuttle));
-    //driverRightBumper.whenInactive(new InstantCommand(() -> m_shuttle.stopMotors(), m_shuttle));
-
-    // driverYButton.whenPressed(new DeployClimber(m_shuttle, m_climber));
-    //driverStartButton.whenPressed(new ClimberAuton(m_climber, m_shuttle, m_driveTrain));
-    // driverBackButton.whenPressed(new ClimberAuton2(m_climber, m_shuttle, m_driveTrain));
-    // driverXButton.whenPressed(new ClimberAuton3(m_climber, m_shuttle, m_driveTrain));
-    // driverAButton.whenPressed(new ClimberAuton4(m_climber, m_shuttle, m_driveTrain));
-
-
-    //driverLeftTriggerP.whenActive(new AimSwerve(m_Vision, m_drivetrainSubsystem));
-    //driverRightTriggerP.whenActive(new AimAndShootTeleop(m_Vision, m_shooter, m_driveTrain, m_indexer));
     driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_drivetrainSubsystem, m_indexer));
-
-
-
-    //operatorRightStick.whenHeld(new InstantCommand( () -> CommandScheduler.getInstance().cancelAll()));
 
   }
 
@@ -274,34 +226,18 @@ public class RobotContainer {
   }
 
   public void loadTrajectories() {
-    try {
-      Path Auton5Ball1Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball1);
-      //Path Auton5Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball2);
-      //Path Auton5Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton5Ball3);
+    
 
-      Path Auton4Ball1Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball1);
-      Path Auton4Ball2Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball2);
-      Path Auton4Ball3Path = Filesystem.getDeployDirectory().toPath().resolve(Auton4Ball3);
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("2BallBlueSmall", 8, 5);
 
-      Auton5BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton5Ball1Path);
-      //Auton5BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton5Ball2Path);
-      //Auton5BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton5Ball3Path);
+// Sample the state of the path at 1.2 seconds
+// To access PathPlanner specific information, such as holonomic rotation, the state must be cast to a PathPlannerState
+    PathPlannerState exampleState = (PathPlannerState) examplePath.sample(1.2);
 
-      Auton4BallTrajectory1 = TrajectoryUtil.fromPathweaverJson(Auton4Ball1Path);
-      Auton4BallTrajectory2 = TrajectoryUtil.fromPathweaverJson(Auton4Ball2Path);
-      Auton4BallTrajectory3 = TrajectoryUtil.fromPathweaverJson(Auton4Ball3Path);
-    } catch(IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " , ex.getStackTrace());
-    }
-
-    //twoBall = new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter, m_Vision);
-
-    //fourBall = new FourBallAuton(m_driveTrain, Auton4BallTrajectory1, Auton4BallTrajectory2, Auton4BallTrajectory3, m_intake, m_indexer, m_shooter, m_Vision);
-
-    //m_chooser.setDefaultOption("TWO BALL AUTON", twoBall);
-    //m_chooser.addOption("FOUR BALL AUTON", fourBall);
-    testchooser.setDefaultOption("Two Ball Auton", "1");
-    testchooser.addOption("Four Ball Auton", "2");
+// Print the holonomic rotation at the sampled time
+    System.out.println("\n\n\n\n\n\n\\n\n\n test " + exampleState.holonomicRotation.getDegrees());
+    testchooser.setDefaultOption("Two Ball Auton Blue", "1");
+    testchooser.addOption("Two Ball Auton Red", "2");
 
     SmartDashboard.putData(testchooser);
     //SmartDashboard.putData(m_chooser);

@@ -56,7 +56,7 @@ public class Vision extends SubsystemBase {
     
     double targetOffsetAngle_Vertical = ty != 0 ? ty : lastTY;
 
-    if(hasTarget) {
+    //if(hasTarget) {
 
       
       double angleToGoalDegrees = Constants.visionAngleDeg + targetOffsetAngle_Vertical;
@@ -66,8 +66,8 @@ public class Vision extends SubsystemBase {
       double distanceFromLimeLight = (Constants.visionTargetHeight - Constants.visionHeight)/Math.tan(angleToGoalRadians);
 
       return distanceFromLimeLight; //meters  
-    }
-    else return 0;
+    //}
+    //else return 0;
   }
 
 
