@@ -53,6 +53,7 @@ import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
 import frc.robot.commands.ToggleShooter;
 import frc.robot.commands.TwoBallAuton;
+import frc.robot.commands.TwoBallAutonSwerve;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -94,6 +95,8 @@ public class RobotContainer {
   private SendableChooser<String> testchooser = new SendableChooser<String>();
   private TwoBallAuton twoBall; 
   private FourBallAuton fourBall;
+
+  private PathPlannerTrajectory twoBallPath;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -215,32 +218,16 @@ public class RobotContainer {
 
     //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
     
-    if(testchooser.getSelected().equals("2")){
-      return null; //new FourBallAuton(m_driveTrain, Auton4BallTrajectory1, Auton4BallTrajectory2, Auton4BallTrajectory3, m_intake, m_indexer, m_shooter, m_Vision);
-    }
-    else
-    {
-      return null; //new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, m_intake, m_indexer, m_shooter, m_Vision);
-    }
-    //return m_chooser.getSelected();
+    return new TwoBallAutonSwerve(m_drivetrainSubsystem, twoBallPath, m_intake, m_indexer, m_shooter, m_Vision);
   }
 
   public void loadTrajectories() {
     
 
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("2BallBlueSmall", 8, 5);
-
-// Sample the state of the path at 1.2 seconds
-// To access PathPlanner specific information, such as holonomic rotation, the state must be cast to a PathPlannerState
-    PathPlannerState exampleState = (PathPlannerState) examplePath.sample(1.2);
-
-// Print the holonomic rotation at the sampled time
-    System.out.println("\n\n\n\n\n\n\\n\n\n test " + exampleState.holonomicRotation.getDegrees());
+    twoBallPath = PathPlanner.loadPath("2BallSmall", m_drivetrainSubsystem.getMaxVelocity(), 4);
     testchooser.setDefaultOption("Two Ball Auton Blue", "1");
-    testchooser.addOption("Two Ball Auton Red", "2");
-
+    
     SmartDashboard.putData(testchooser);
-    //SmartDashboard.putData(m_chooser);
 
   }
 

@@ -4,8 +4,22 @@
 
 package frc.robot.commands;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -16,93 +30,44 @@ import frc.robot.subsystems.Vision;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoBallAutonSwerve extends SequentialCommandGroup {
   /** Creates a new TwoBallAutonSwerve. */
-//   DrivetrainSubsystem m_driveTrain;
-//   Trajectory m_auton1; 
-//   Trajectory m_auton2;
-//   Trajectory m_auton3;
-//   Intake m_intake;
-//   Vision m_vision;
-//   Index m_index;
-//   Shooter m_shooter;
+  DrivetrainSubsystem m_driveTrain;
+  PathPlannerTrajectory path;
+  Intake m_intake;
+  Vision m_vision;
+  Index m_index;
+  Shooter m_shooter;
 
-//   public TwoBallAutonSwerve(DrivetrainSubsystem driveTrain, Trajectory auton1, Intake intake, Index index, Shooter shooter, Vision vision) {
+   public TwoBallAutonSwerve(DrivetrainSubsystem driveTrain, PathPlannerTrajectory auton1, Intake intake, Index index, Shooter shooter, Vision vision) {
 
-//     m_driveTrain = driveTrain;
-//     m_auton1 = auton1;
-//     m_intake = intake;
-//     m_index = index;
-//     m_shooter = shooter;
-//     m_vision = vision;
+    PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+      path, 
+      m_driveTrain::getPose, 
+      m_driveTrain.getKinematics(),
+      new PIDController(8, 0, 0), new PIDController(8, 0, 0), 
+      new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(m_driveTrain.getAngularVelocity(), m_driveTrain.getAngularVelocity())), 
+      m_driveTrain::setStates, 
+      m_driveTrain);
 
-//     //m_driveTrain.setBrakeMode();
-
-//     //m_index.incrementBallCount();
-
-//     // Create config for trajectory
-//     TrajectoryConfig config =
-//         new TrajectoryConfig(
-//                 Constants.kMaxSpeedMetersPerSecond,
-//                 Constants.kMaxAccelerationMetersPerSecondSquared)
-//             // Add kinematics to ensure max speed is actually obeyed
-//             .setKinematics(Constants.kDriveKinematics)
-//             // Apply the voltage constraint
-//             .addConstraint(autoVoltageConstraint);
-
-            
-//     // RamseteCommand ramset1 =
-//     // new RamseteCommand(
-//     //   m_auton1,
-//     //     m_driveTrain::getPose,
-//     //     new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-//     //     new SimpleMotorFeedforward(
-//     //         Constants.ksVolts,
-//     //         Constants.kvVoltSecondsPerMeter,
-//     //         Constants.kaVoltSecondsSquaredPerMeter),
-//     //     Constants.kDriveKinematics,
-//     //     m_driveTrain::getWheelSpeeds,
-//     //     new PIDController(Constants.kPDriveVel, 0, 0),
-//     //     new PIDController(Constants.kPDriveVel, 0, 0),
-//     //     // RamseteCommand passes volts to the callback
-//     //     m_driveTrain::tankDriveVolts,
-//     //     m_driveTrain);
-
-// // Reset odometry to the starting pose of the trajectory.
-// //m_driveTrain.resetOdometry(m_auton1.getInitialPose());
-//     m_driveTrain.resetOdometry(m_auton1.getInitialPose());
-
-
-//     // Add your commands in the addCommands() call, e.g.
-//     // addCommands(new FooCommand(), new BarCommand());
-//     addCommands(
-//       //new ToggleHingeCmd(m_intake), 
-//       new InstantCommand(() -> m_driveTrain.resetOdometry(m_auton1.getInitialPose())),
-//       new InstantCommand(() -> m_index.setBallCount0()),
-//       new InstantCommand(() -> m_index.incrementBallCount()),
-//       new ParallelRaceGroup(new TakeBallCmd(m_index), 
-//         new SequentialCommandGroup(
-//           new ToggleIntake(m_intake),
-//           new ToggleShooter(m_shooter, 14000),
-//           new ParallelCommandGroup(
-//             ramset1, 
-//             new ToggleHingeCmd(intake)
-//           ),
-//           new Pause(1)
-          
-//         )
-//       ),
+    addCommands(
+      //new ToggleHingeCmd(m_intake), 
       
-//       //new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
-
-//       //new ShootAll(m_index, m_shooter),
-//       new InstantCommand(() -> m_driveTrain.setCoastMode()),
-//       new ToggleIntake(m_intake),
-//       new ToggleHingeCmd(m_intake)
-//     );
-//   }
-// }
-//   public TwoBallAutonSwerve() {
-//     // Add your commands in the addCommands() call, e.g.
-//     // addCommands(new FooCommand(), new BarCommand());
-//     addCommands();
-//   }
+      new InstantCommand(() -> m_index.setBallCount0()),
+      new InstantCommand(() -> m_index.incrementBallCount()),
+      new ParallelRaceGroup(new TakeBallCmd(m_index), 
+        new SequentialCommandGroup(
+          new ToggleIntake(m_intake),
+          new ToggleShooter(m_shooter, 14000),
+          new ParallelCommandGroup(
+            swerveCommand,
+            new ToggleHingeCmd(intake)
+          ),
+          new Pause(1)
+          
+        )
+      ),
+      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
+      new ToggleIntake(m_intake),
+      new ToggleHingeCmd(m_intake)
+    );
+   }
 }
