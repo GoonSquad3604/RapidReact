@@ -48,6 +48,8 @@ public class TwoBallAutonSwerve extends SequentialCommandGroup {
       m_driveTrain::setStates, 
       m_driveTrain);
 
+    m_driveTrain.resetOdometry(auton1.getInitialPose());
+
     addCommands(
       //new ToggleHingeCmd(m_intake), 
       
