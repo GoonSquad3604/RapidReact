@@ -37,39 +37,46 @@ public class TwoBallAutonSwerve extends SequentialCommandGroup {
   Index m_index;
   Shooter m_shooter;
 
-   public TwoBallAutonSwerve(DrivetrainSubsystem driveTrain, PathPlannerTrajectory auton1, Intake intake, Index index, Shooter shooter, Vision vision) {
+   public TwoBallAutonSwerve(DrivetrainSubsystem driveTrain, Intake intake, Index index, Shooter shooter, Vision vision) {
 
-    PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-      path, 
-      m_driveTrain::getPose, 
-      m_driveTrain.getKinematics(),
-      new PIDController(8, 0, 0), new PIDController(8, 0, 0), 
-      new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(m_driveTrain.getAngularVelocity(), m_driveTrain.getAngularVelocity())), 
-      m_driveTrain::setStates, 
-      m_driveTrain);
+    // PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+    //   path, 
+    //   m_driveTrain::getPose, 
+    //   m_driveTrain.getKinematics(),
+    //   new PIDController(8, 0, 0), new PIDController(8, 0, 0), 
+    //   new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(m_driveTrain.getAngularVelocity(), m_driveTrain.getAngularVelocity())), 
+    //   m_driveTrain::setStates, 
+    //   m_driveTrain);
 
-    m_driveTrain.resetOdometry(auton1.getInitialPose());
+    // m_driveTrain.resetOdometry(auton1.getInitialPose());
 
     addCommands(
-      //new ToggleHingeCmd(m_intake), 
+      // new ToggleHingeCmd(m_intake), 
       
+      // new InstantCommand(() -> m_index.setBallCount0()),
+      // new InstantCommand(() -> m_index.incrementBallCount()),
+      // new ParallelRaceGroup(new TakeBallCmd(m_index), 
+      //   new SequentialCommandGroup(
+      //     new ToggleIntake(m_intake),
+      //     new ToggleShooter(m_shooter, 14000),
+      //     new ParallelCommandGroup(
+      //       swerveCommand,
+      //       new ToggleHingeCmd(intake)
+      //     ),
+      //     new Pause(1)
+          
+      //   )
+      // ),
+      // new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
+      // new ToggleIntake(m_intake),
+      // new ToggleHingeCmd(m_intake)
+
       new InstantCommand(() -> m_index.setBallCount0()),
       new InstantCommand(() -> m_index.incrementBallCount()),
-      new ParallelRaceGroup(new TakeBallCmd(m_index), 
-        new SequentialCommandGroup(
-          new ToggleIntake(m_intake),
-          new ToggleShooter(m_shooter, 14000),
-          new ParallelCommandGroup(
-            swerveCommand,
-            new ToggleHingeCmd(intake)
-          ),
-          new Pause(1)
-          
-        )
-      ),
-      new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
-      new ToggleIntake(m_intake),
-      new ToggleHingeCmd(m_intake)
+      new ToggleShooter(m_shooter, 8000),
+      new ShootAll(m_index, m_shooter),
+      new Pause(2),
+      new ToggleShooter(shooter)
     );
    }
 }

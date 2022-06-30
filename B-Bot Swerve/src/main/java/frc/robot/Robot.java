@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 
     //Load Trajectory Files
 
-    m_robotContainer.loadTrajectories();
+    //m_robotContainer.loadTrajectories();
     
 
   }
@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. 69 hahahaha */
   @Override
   public void autonomousInit() {
-    m_robotContainer.setBrakeMode();
+    //m_robotContainer.setBrakeMode();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

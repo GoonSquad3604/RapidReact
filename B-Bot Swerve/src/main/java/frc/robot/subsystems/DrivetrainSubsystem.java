@@ -53,8 +53,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getGyroscopeRotation());
-
+  SwerveDriveOdometry m_odometry;
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -111,6 +110,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
 
     zeroGyroscope();
+
+    m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d(0));
+
   }
 
   /**
@@ -150,12 +152,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
-
-//     SmartDashboard.putNumber("Front Left", m_frontLeftModule.getSteerAngle());
-//     SmartDashboard.putNumber("Front Right", m_frontRightModule.getSteerAngle());
-
-//     SmartDashboard.putNumber("Back Left", m_backLeftModule.getSteerAngle());
-//     SmartDashboard.putNumber("Back Right", m_backRightModule.getSteerAngle());
 
     setStates(states);
     m_odometry.update(getGyroscopeRotation(), states[0], states[1], states[2], states[3]);

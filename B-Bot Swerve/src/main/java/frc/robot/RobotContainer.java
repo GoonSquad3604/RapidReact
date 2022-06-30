@@ -207,6 +207,8 @@ public class RobotContainer {
 
     driverLeftTriggerP.whenActive(new AimAndShoot(m_Vision, m_shooter, m_drivetrainSubsystem, m_indexer));
 
+    driverRightBumper.whenPressed(new InstantCommand(() -> m_drivetrainSubsystem.zeroGyroscope()));
+
   }
 
   /**
@@ -217,17 +219,17 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
-    
-    return new TwoBallAutonSwerve(m_drivetrainSubsystem, twoBallPath, m_intake, m_indexer, m_shooter, m_Vision);
+    return null;
+    //return new TwoBallAutonSwerve(m_drivetrainSubsystem,  m_intake, m_indexer, m_shooter, m_Vision);
   }
 
   public void loadTrajectories() {
     
 
-    twoBallPath = PathPlanner.loadPath("2BallSmall", m_drivetrainSubsystem.getMaxVelocity(), 4);
-    testchooser.setDefaultOption("Two Ball Auton Blue", "1");
+    // twoBallPath = PathPlanner.loadPath("2BallSmall", m_drivetrainSubsystem.getMaxVelocity(), 4);
+    // testchooser.setDefaultOption("Two Ball Auton Blue", "1");
     
-    SmartDashboard.putData(testchooser);
+    // SmartDashboard.putData(testchooser);
 
   }
 
