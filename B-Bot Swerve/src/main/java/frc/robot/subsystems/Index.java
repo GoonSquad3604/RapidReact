@@ -20,7 +20,7 @@ public class Index extends SubsystemBase {
   CANSparkMax indexMotor0;
   CANSparkMax indexMotor1;
   
-  
+   
   DigitalInput sensor0 = new DigitalInput(Constants.kSensor0Id);
   DigitalInput sensor1 = new DigitalInput(Constants.kSensor1Id);
 
@@ -42,8 +42,10 @@ public class Index extends SubsystemBase {
     SmartDashboard.putBoolean("Ball0", ballCount>=1);
     SmartDashboard.putBoolean("Ball1", ballCount==2);
 
-    //SmartDashboard.putBoolean("Sensor 0", detectBall());
-    //SmartDashboard.putBoolean("Sensor 1", detectExit());
+  
+
+    SmartDashboard.putBoolean("Sensor 0", detectBall());
+    SmartDashboard.putBoolean("Sensor 1", detectExit());
   }
 
   public boolean detectBall() {
