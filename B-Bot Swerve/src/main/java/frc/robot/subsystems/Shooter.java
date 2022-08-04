@@ -16,10 +16,19 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
+  private static Shooter _instance;
+
   private WPI_TalonFX shooterMotor0 = new WPI_TalonFX(Constants.kShooterMotor0Id);
   //private WPI_TalonFX shooterMotor1 = new WPI_TalonFX(Constants.kShooterMotor1Id);
   public boolean isRunning = false;
   public double velo;
+
+  public static final Shooter getInstance() {
+    if (_instance == null) {
+            _instance = new Shooter();
+    }
+    return _instance;
+  } 
   
   /** Creates a new Shooter. */
   public Shooter() {

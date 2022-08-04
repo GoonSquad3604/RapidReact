@@ -42,7 +42,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
           new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0)
   );
 
-  // FIXME Remove if you are using a Pigeon
+  private static DrivetrainSubsystem _instance;
+
+  //FIXME Remove if you are using a Pigeon
   private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
 
   // These are our modules. We initialize them in the constructor.
@@ -54,6 +56,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   SwerveDriveOdometry m_odometry;
+
+    public static final DrivetrainSubsystem getInstance() {
+        if (_instance == null) {
+                _instance = new DrivetrainSubsystem();
+        }
+        return _instance;
+    }       
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -168,7 +177,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   //replace these two functions with constants. Just lazy right now.
 
-  public double getMaxVelocity() {
+  public static double  getMaxVelocity() {
       return MAX_VELOCITY_METERS_PER_SECOND;
   }
 

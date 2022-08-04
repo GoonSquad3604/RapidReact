@@ -24,6 +24,14 @@ public class Vision extends SubsystemBase {
   public double tv, ty, ta, tx;
   public double lastTY = 0;
   
+  private static Vision _instance;
+  public static final Vision getInstance() {
+    if (_instance == null) {
+            _instance = new Vision();
+    }
+    return _instance;
+  } 
+
   public Vision() {
 
   }

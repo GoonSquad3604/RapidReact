@@ -24,59 +24,57 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.util;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TwoBallAutonSwerve extends SequentialCommandGroup {
   /** Creates a new TwoBallAutonSwerve. */
-  DrivetrainSubsystem m_driveTrain;
+  
   PathPlannerTrajectory path;
-  Intake m_intake;
-  Vision m_vision;
-  Index m_index;
-  Shooter m_shooter;
+  
 
-   public TwoBallAutonSwerve(DrivetrainSubsystem driveTrain, Intake intake, Index index, Shooter shooter, Vision vision) {
+   public TwoBallAutonSwerve() {
 
     // PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
     //   path, 
-    //   m_driveTrain::getPose, 
-    //   m_driveTrain.getKinematics(),
+    //   DrivetrainSubsystem.getInstance()::getPose, 
+    //   DrivetrainSubsystem.getInstance().getKinematics(),
     //   new PIDController(8, 0, 0), new PIDController(8, 0, 0), 
-    //   new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(m_driveTrain.getAngularVelocity(), m_driveTrain.getAngularVelocity())), 
-    //   m_driveTrain::setStates, 
-    //   m_driveTrain);
+    //   new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(DrivetrainSubsystem.getInstance().getAngularVelocity(), DrivetrainSubsystem.getInstance().getAngularVelocity())), 
+    //   DrivetrainSubsystem.getInstance()::setStates, 
+    //   DrivetrainSubsystem.getInstance());
 
-    // m_driveTrain.resetOdometry(auton1.getInitialPose());
+    // DrivetrainSubsystem.getInstance().resetOdometry(auton1.getInitialPose());
 
     addCommands(
-      // new ToggleHingeCmd(m_intake), 
+      new ToggleHingeCmd(Intake.getInstance()), 
       
-      // new InstantCommand(() -> m_index.setBallCount0()),
-      // new InstantCommand(() -> m_index.incrementBallCount()),
-      // new ParallelRaceGroup(new TakeBallCmd(m_index), 
-      //   new SequentialCommandGroup(
-      //     new ToggleIntake(m_intake),
-      //     new ToggleShooter(m_shooter, 14000),
-      //     new ParallelCommandGroup(
-      //       swerveCommand,
-      //       new ToggleHingeCmd(intake)
-      //     ),
-      //     new Pause(1)
+      new InstantCommand(() -> Index.getInstance().setBallCount0()),
+      new InstantCommand(() -> Index.getInstance().incrementBallCount()),
+      new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
+        new SequentialCommandGroup(
+          new ToggleIntake(Intake.getInstance()),
+          new ToggleShooter(Shooter.getInstance(), 14000),
+          new ParallelCommandGroup(
+            util.getPathPlannerSwerveControllerCommand(util.twoBallAutonTrajectory()),
+            new ToggleHingeCmd(Intake.getInstance())
+          ),
+          new Pause(1)
           
-      //   )
-      // ),
-      // new AimAndShoot(m_vision, m_shooter, m_driveTrain, m_index),
-      // new ToggleIntake(m_intake),
-      // new ToggleHingeCmd(m_intake)
+        )
+      ),
+      new AimAndShoot(Vision.getInstance(), Shooter.getInstance(), DrivetrainSubsystem.getInstance(), Index.getInstance()),
+      new ToggleIntake(Intake.getInstance()),
+      new ToggleHingeCmd(Intake.getInstance()),
 
-      new InstantCommand(() -> m_index.setBallCount0()),
-      new InstantCommand(() -> m_index.incrementBallCount()),
-      new ToggleShooter(m_shooter, 8000),
-      new ShootAll(m_index, m_shooter),
+      new InstantCommand(() -> Index.getInstance().setBallCount0()),
+      new InstantCommand(() -> Index.getInstance().incrementBallCount()),
+      new ToggleShooter(Shooter.getInstance(), 8000),
+      new ShootAll(Index.getInstance(), Shooter.getInstance()),
       new Pause(2),
-      new ToggleShooter(shooter)
+      new ToggleShooter(Shooter.getInstance())
     );
    }
 }

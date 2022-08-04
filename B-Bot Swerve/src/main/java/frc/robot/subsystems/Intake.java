@@ -25,12 +25,20 @@ public class Intake extends SubsystemBase {
   private int hingeTop;
   private int hingeBottom;
   public boolean isToggled = false;
+  private static Intake _instance;
   
   private Encoder hingeEncoder = new Encoder(Constants.kHingeEncoderA, Constants.kHingeEncoderB, Constants.kHingeEncoderIndex);
   
   public Intake() {
     calibrate();
   }
+
+  public static final Intake getInstance() {
+    if (_instance == null) {
+            _instance = new Intake();
+    }
+    return _instance;
+  } 
 
   @Override
   public void periodic() {

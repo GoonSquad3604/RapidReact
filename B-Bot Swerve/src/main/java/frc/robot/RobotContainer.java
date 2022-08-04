@@ -75,13 +75,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here... 69 hahahahaha
 
   //Subsystems
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem = DrivetrainSubsystem.getInstance();
   //private final Drivetrain m_driveTrain = new Drivetrain();
-  private final Intake m_intake = new Intake();
-  private final Index m_indexer = new Index();
-  private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = Intake.getInstance();
+  private final Index m_indexer = Index.getInstance();
+  private final Shooter m_shooter = Shooter.getInstance();
   private final Climber m_climber = new Climber(); // LOLLLLLLLLLLLL 69
-  private final Vision m_Vision = new Vision();
+  private final Vision m_Vision = Vision.getInstance();
   //private final Shuttle m_shuttle = new Shuttle();
 
   //Controllers
@@ -219,8 +219,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
-    return null;
-    //return new TwoBallAutonSwerve(m_drivetrainSubsystem,  m_intake, m_indexer, m_shooter, m_Vision);
+    //return null;
+    return new TwoBallAutonSwerve();
   }
 
   public void loadTrajectories() {

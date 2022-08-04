@@ -20,6 +20,7 @@ public class Index extends SubsystemBase {
   CANSparkMax indexMotor0;
   CANSparkMax indexMotor1;
   
+  private static Index _instance;
   
   DigitalInput sensor0 = new DigitalInput(Constants.kSensor0Id);
   DigitalInput sensor1 = new DigitalInput(Constants.kSensor1Id);
@@ -33,6 +34,13 @@ public class Index extends SubsystemBase {
     indexMotor1.setIdleMode(IdleMode.kBrake);
     
   }
+
+  public static final Index getInstance() {
+    if (_instance == null) {
+            _instance = new Index();
+    }
+    return _instance;
+  } 
 
   @Override
   public void periodic() {
