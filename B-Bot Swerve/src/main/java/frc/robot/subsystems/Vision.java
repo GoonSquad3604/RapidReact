@@ -18,24 +18,24 @@ import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
+  private static Vision _instance;
 
   NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight"); 
   public boolean hasTarget = false;
   public double tv, ty, ta, tx;
   public double lastTY = 0;
+
+
   
-  private static Vision _instance;
+  public Vision() {
+
+  }
   public static final Vision getInstance() {
     if (_instance == null) {
             _instance = new Vision();
     }
     return _instance;
   } 
-
-  public Vision() {
-
-  }
-
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Has Target", hasTarget);
@@ -64,9 +64,7 @@ public class Vision extends SubsystemBase {
     
     double targetOffsetAngle_Vertical = ty != 0 ? ty : lastTY;
 
-    //if(hasTarget) {
-
-      
+    //if(hasTarget) {      
       double angleToGoalDegrees = Constants.visionAngleDeg + targetOffsetAngle_Vertical;
       double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
 

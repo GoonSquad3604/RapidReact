@@ -100,7 +100,7 @@ public final class Constants {
     public static final int kSlotIdx = 0;
 	public static final int kPIDLoopIdx = 0;
     public static final int kTimeoutMs = 30;  
-    public final static Gains kGains_Velocit  = new Gains( 0.038253, 0, 0, 1023.0/20660.0,  300,  1.00);
+    public final static Gains kGains_Velocit  = new Gains( 0.12545, 0, 0, 1023.0/20660.0,  300,  1.00);
 
     public final static Gains kGains_Telescope = new Gains( 0.021744, 0, 0.0015771, 0,  0,  1.00);
 

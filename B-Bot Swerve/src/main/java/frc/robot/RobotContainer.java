@@ -186,7 +186,7 @@ public class RobotContainer {
     operatorXButton.whenPressed(new ShootAll(m_indexer, m_shooter));
     operatorControlPadUp.whenActive(new ToggleShooter(m_shooter, 18000));
     operatorControlPadDown.whenActive(new ToggleShooter(m_shooter, 14400));
-    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 7000));
+    operatorBButton.whenPressed(new ToggleShooter(m_shooter, 10000));
 
     operatorRightStick.whenActive(new InstantCommand(() -> m_indexer.setBallCount0()));
     operatorLeftStick.whenActive(new InstantCommand(()-> {m_indexer.incrementBallCount(); m_indexer.incrementBallCount();}));

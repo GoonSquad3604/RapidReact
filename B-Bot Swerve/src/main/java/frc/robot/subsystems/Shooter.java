@@ -67,7 +67,7 @@ public class Shooter extends SubsystemBase {
     //System.out.println(isRunning);
     SmartDashboard.putBoolean("Shooter Running", isRunning);
     //SmartDashboard.putNumber("shooterVelo", velo);
-    //SmartDashboard.putNumber("shooter real speed", shooterMotor0.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("shooter real speed", shooterMotor0.getSelectedSensorVelocity());
   }
 
   public void setShooter(double power) {
@@ -90,8 +90,8 @@ public class Shooter extends SubsystemBase {
 
   public double getSpeedForDistance(double meters) {
     //double speed = 1078.095203 * meters + 8022.780311;
-    double speed = 1078.095203 * meters + 8500;
-
+    //double speed = 1078.095203 * meters + 8500;
+    double speed = 1888.056981 * meters + 5643.629455;
     return speed;
   }
 }
