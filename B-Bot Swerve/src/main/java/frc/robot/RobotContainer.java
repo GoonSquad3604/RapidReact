@@ -48,6 +48,7 @@ import frc.robot.commands.ClimberAuton3;
 import frc.robot.commands.ClimberAuton4;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.FourBallAuton;
+import frc.robot.commands.GoonAutonCommand;
 import frc.robot.commands.ShootAll;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
@@ -90,18 +91,10 @@ public class RobotContainer {
 
  
 
-  private SendableChooser<Command> m_chooser = new SendableChooser<Command>();
-
-  private SendableChooser<String> testchooser = new SendableChooser<String>();
-  private TwoBallAuton twoBall; 
-  private FourBallAuton fourBall;
-
-  private PathPlannerTrajectory twoBallPath;
+  private SendableChooser<GoonAutonCommand> autonChooser = new SendableChooser<GoonAutonCommand>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
       m_drivetrainSubsystem,
@@ -110,6 +103,8 @@ public class RobotContainer {
       () -> -modifyAxis(m_driverController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
     configureButtonBindings();
+
+    initAutonChooser();
   
   }
 
@@ -220,25 +215,8 @@ public class RobotContainer {
 
     //return new TwoBallAuton(m_driveTrain, Auton5BallTrajectory1, Auton5BallTrajectory2, Auton5BallTrajectory3, m_intake, m_indexer, m_shooter);
     //return null;
-    return new TwoBallAutonSwerve();
-  }
-
-  public void loadTrajectories() {
-    
-
-    // twoBallPath = PathPlanner.loadPath("2BallSmall", m_drivetrainSubsystem.getMaxVelocity(), 4);
-    // testchooser.setDefaultOption("Two Ball Auton Blue", "1");
-    
-    // SmartDashboard.putData(testchooser);
-
-  }
-
-  public void setCoastMode() {
-    //m_driveTrain.setCoastMode();
-  }
-
-  public void setBrakeMode() {
-    //m_driveTrain.setBrakeMode();
+    m_drivetrainSubsystem.resetOdometry(autonChooser.getSelected().getInitialPose());  
+    return autonChooser.getSelected();
   }
 
   private static double deadband(double value, double deadband) {
@@ -261,6 +239,10 @@ public class RobotContainer {
     value = Math.copySign(value * value, value);
   
     return value;
+  }
+
+  private void initAutonChooser() {
+    autonChooser.setDefaultOption("Two Ball Top", new TwoBallAutonSwerve());
   }
   
 }

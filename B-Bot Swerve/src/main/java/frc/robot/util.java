@@ -25,7 +25,7 @@ public final class util {
 
     public static PathPlannerTrajectory twoBallAutonTrajectory() {
         return PathPlanner.loadPath(
-                "FourBall_BackupReturnToShoot",
+                "servemid1",
                 DrivetrainSubsystem.getMaxVelocity(),
                 4);
     }

@@ -29,7 +29,9 @@ import frc.robot.util;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoBallAutonSwerve extends SequentialCommandGroup {
+
+//2 ball auton from mid tarmac
+public class TwoBallAutonSwerve extends GoonAutonCommand {
   /** Creates a new TwoBallAutonSwerve. */
   
   PathPlannerTrajectory path;
@@ -37,18 +39,7 @@ public class TwoBallAutonSwerve extends SequentialCommandGroup {
 
    public TwoBallAutonSwerve() {
 
-    // PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-    //   path, 
-    //   DrivetrainSubsystem.getInstance()::getPose, 
-    //   DrivetrainSubsystem.getInstance().getKinematics(),
-    //   new PIDController(8, 0, 0), new PIDController(8, 0, 0), 
-    //   new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(DrivetrainSubsystem.getInstance().getAngularVelocity(), DrivetrainSubsystem.getInstance().getAngularVelocity())), 
-    //   DrivetrainSubsystem.getInstance()::setStates, 
-    //   DrivetrainSubsystem.getInstance());
-
-    // DrivetrainSubsystem.getInstance().resetOdometry(auton1.getInitialPose());
-
-    addCommands(
+    super.addCommands(
       new ToggleHingeCmd(Intake.getInstance()), 
       
       new InstantCommand(() -> Index.getInstance().setBallCount0()),
@@ -76,5 +67,7 @@ public class TwoBallAutonSwerve extends SequentialCommandGroup {
       new Pause(2),
       new ToggleShooter(Shooter.getInstance())
     );
-   }
+
+    super.setInitialPose(util.twoBallAutonTrajectory());
+  } 
 }

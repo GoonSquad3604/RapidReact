@@ -32,15 +32,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    UsbCamera camera = CameraServer.startAutomaticCapture();
+    //UsbCamera camera = CameraServer.startAutomaticCapture();
     // Set the resolution
-    camera.setResolution(80, 60);
-
-    //Load Trajectory Files
-
-    //m_robotContainer.loadTrajectories();
+    //camera.setResolution(80, 60);
     
-
   }
 
   /**
@@ -69,7 +64,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. 69 hahahaha */
   @Override
   public void autonomousInit() {
-    //m_robotContainer.setBrakeMode();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -90,8 +84,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    m_robotContainer.setCoastMode();
   }
 
   /** This function is called periodically during operator control. */
