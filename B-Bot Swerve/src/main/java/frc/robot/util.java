@@ -25,7 +25,7 @@ public final class util {
 
     public static PathPlannerTrajectory twoBallAutonTrajectory() {
         return PathPlanner.loadPath(
-                "servemid1",
+                "twoballswervetop",
                 DrivetrainSubsystem.getMaxVelocity(),
                 4);
     }

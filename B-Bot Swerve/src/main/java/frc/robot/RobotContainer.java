@@ -66,7 +66,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
+/** // LOLLLLLLLLLLLL 69
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
@@ -81,7 +81,7 @@ public class RobotContainer {
   private final Intake m_intake = Intake.getInstance();
   private final Index m_indexer = Index.getInstance();
   private final Shooter m_shooter = Shooter.getInstance();
-  private final Climber m_climber = new Climber(); // LOLLLLLLLLLLLL 69
+  private final Climber m_climber = new Climber(); 
   private final Vision m_Vision = Vision.getInstance();
   //private final Shuttle m_shuttle = new Shuttle();
 
@@ -243,6 +243,7 @@ public class RobotContainer {
 
   private void initAutonChooser() {
     autonChooser.setDefaultOption("Two Ball Top", new TwoBallAutonSwerve());
+    SmartDashboard.putData(autonChooser);
   }
   
 }
