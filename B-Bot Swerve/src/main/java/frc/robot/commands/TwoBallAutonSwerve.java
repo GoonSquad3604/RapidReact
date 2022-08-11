@@ -40,8 +40,6 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
    public TwoBallAutonSwerve() {
 
     super.addCommands(
-      new ToggleHingeCmd(Intake.getInstance()), 
-      
       new InstantCommand(() -> Index.getInstance().setBallCount0()),
       new InstantCommand(() -> Index.getInstance().incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
@@ -53,7 +51,6 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
             new ToggleHingeCmd(Intake.getInstance())
           ),
           new Pause(1)
-          
         )
       ),
       new AutonShoot(),

@@ -31,8 +31,6 @@ public class FiveBallAutonSwerve extends GoonAutonCommand {
   public FiveBallAutonSwerve() {
     
     super.addCommands(
-      new ToggleHingeCmd(Intake.getInstance()), 
-      
       new InstantCommand(() -> Index.getInstance().setBallCount0()),
       new InstantCommand(() -> Index.getInstance().incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
@@ -73,8 +71,10 @@ public class FiveBallAutonSwerve extends GoonAutonCommand {
         )
       ),
       new ToggleIntake(Intake.getInstance()),
-      new AutonShoot(),
-      new ToggleHingeCmd(Intake.getInstance())
+      new ParallelCommandGroup(
+        new AutonShoot(),
+        new ToggleHingeCmd(Intake.getInstance())
+      )
     );
 
     super.setInitialPose(util.fiveBall1Trajectory());

@@ -35,8 +35,6 @@ public class SingleBallAutonSwerve extends GoonAutonCommand {
     // Add your commands in the addCommands() call, e.g.
     
     super.addCommands(
-      new ToggleHingeCmd(Intake.getInstance()), 
-      
       new InstantCommand(() -> Index.getInstance().setBallCount0()),
       new InstantCommand(() -> Index.getInstance().incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 

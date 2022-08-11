@@ -35,8 +35,6 @@ public class TwoBallBottomRightSwerve extends GoonAutonCommand {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     super.addCommands(
-      new ToggleHingeCmd(Intake.getInstance()), 
-      
       new InstantCommand(() -> Index.getInstance().setBallCount0()),
       new InstantCommand(() -> Index.getInstance().incrementBallCount()),
       new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
