@@ -4,9 +4,6 @@
 
 package frc.robot.commands;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -29,16 +26,10 @@ import frc.robot.util;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-
-//2 ball auton from mid tarmac
-public class TwoBallAutonSwerve extends GoonAutonCommand {
-  /** Creates a new TwoBallAutonSwerve. */
-  
-  PathPlannerTrajectory path;
-  
-
-   public TwoBallAutonSwerve() {
-
+public class FiveBallAutonSwerve extends GoonAutonCommand {
+  /** Creates a new FiveBallAutonSwerve. */
+  public FiveBallAutonSwerve() {
+    
     super.addCommands(
       new ToggleHingeCmd(Intake.getInstance()), 
       
@@ -49,18 +40,43 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
           new ToggleIntake(Intake.getInstance()),
           new ToggleShooter(Shooter.getInstance(), 14000),
           new ParallelCommandGroup(
-            util.getPathPlannerSwerveControllerCommand(util.twoBallAutonTrajectory()),
+            util.getPathPlannerSwerveControllerCommand(util.fiveBall1Trajectory()),
             new ToggleHingeCmd(Intake.getInstance())
           ),
           new Pause(1)
           
         )
       ),
-      new AutonShoot(),
       new ToggleIntake(Intake.getInstance()),
+      new AutonShoot(),
+      
+      //second path to shoot middle ball
+      new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
+        new SequentialCommandGroup(
+          new ToggleIntake(Intake.getInstance()),
+          new ToggleShooter(Shooter.getInstance(), 14000, true),
+          util.getPathPlannerSwerveControllerCommand(util.fiveBall2Trajectory()),
+          new Pause(1)
+        )
+      ),
+      new ToggleIntake(Intake.getInstance()),
+      new AutonShoot(),
+      // Third path to grab balls from human player station
+      new ParallelRaceGroup(new TakeBallCmd(Index.getInstance()), 
+        new SequentialCommandGroup(
+          new ToggleIntake(Intake.getInstance()),
+          new ToggleShooter(Shooter.getInstance(), 14000, true),
+          util.getPathPlannerSwerveControllerCommand(util.fiveBall3Trajectory()),
+          new Pause(1),
+          // Fourth path to go shoot
+          util.getPathPlannerSwerveControllerCommand(util.fiveBall4Trajectory())
+        )
+      ),
+      new ToggleIntake(Intake.getInstance()),
+      new AutonShoot(),
       new ToggleHingeCmd(Intake.getInstance())
     );
 
-    super.setInitialPose(util.twoBallAutonTrajectory());
-  } 
+    super.setInitialPose(util.fiveBall1Trajectory());
+  }
 }

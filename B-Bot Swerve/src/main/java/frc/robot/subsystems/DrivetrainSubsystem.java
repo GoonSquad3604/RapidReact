@@ -24,9 +24,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public static final double MAX_VOLTAGE = 12.0;
 
-  public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-          SdsModuleConfigurations.MK4_L2.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.96822625827;
 
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
@@ -181,7 +179,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       return MAX_VELOCITY_METERS_PER_SECOND;
   }
 
-  public double getAngularVelocity() {
+  public static double getAngularVelocity() {
       return MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
   }
 }

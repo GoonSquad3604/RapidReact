@@ -18,7 +18,7 @@ public final class util {
                 DrivetrainSubsystem.getInstance().getKinematics(),
                 new PIDController(8, 0, 0), 
                 new PIDController(8, 0, 0), 
-                new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(DrivetrainSubsystem.getInstance().getAngularVelocity(), DrivetrainSubsystem.getInstance().getAngularVelocity())),
+                new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(DrivetrainSubsystem.getAngularVelocity(), DrivetrainSubsystem.getAngularVelocity())),
                 DrivetrainSubsystem.getInstance()::setStates,
                 DrivetrainSubsystem.getInstance());
     }
@@ -26,6 +26,41 @@ public final class util {
     public static PathPlannerTrajectory twoBallAutonTrajectory() {
         return PathPlanner.loadPath(
                 "twoballswervetop",
+                DrivetrainSubsystem.getMaxVelocity(),
+                4);
+    }
+
+    public static PathPlannerTrajectory singleBallAutonTrajectory() {
+        return PathPlanner.loadPath(
+                "singleBallStraightOn",
+                DrivetrainSubsystem.getMaxVelocity(),
+                4);
+    }
+
+    public static PathPlannerTrajectory fiveBall1Trajectory() {
+        return PathPlanner.loadPath(
+                "FiveBall1",
+                DrivetrainSubsystem.getMaxVelocity(),
+                4);
+    }
+
+    public static PathPlannerTrajectory fiveBall2Trajectory() {
+        return PathPlanner.loadPath(
+                "FiveBall2",
+                DrivetrainSubsystem.getMaxVelocity(),
+                4);
+    }
+
+    public static PathPlannerTrajectory fiveBall3Trajectory() {
+        return PathPlanner.loadPath(
+                "FiveBall3",
+                DrivetrainSubsystem.getMaxVelocity(),
+                4);
+    }
+
+    public static PathPlannerTrajectory fiveBall4Trajectory() {
+        return PathPlanner.loadPath(
+                "FiveBall4",
                 DrivetrainSubsystem.getMaxVelocity(),
                 4);
     }

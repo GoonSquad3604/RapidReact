@@ -29,16 +29,11 @@ import frc.robot.util;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-
-//2 ball auton from mid tarmac
-public class TwoBallAutonSwerve extends GoonAutonCommand {
-  /** Creates a new TwoBallAutonSwerve. */
-  
-  PathPlannerTrajectory path;
-  
-
-   public TwoBallAutonSwerve() {
-
+public class SingleBallAutonSwerve extends GoonAutonCommand {
+  /** Creates a new SingleBallAutonSwerve. */
+  public SingleBallAutonSwerve() {
+    // Add your commands in the addCommands() call, e.g.
+    
     super.addCommands(
       new ToggleHingeCmd(Intake.getInstance()), 
       
@@ -49,7 +44,7 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
           new ToggleIntake(Intake.getInstance()),
           new ToggleShooter(Shooter.getInstance(), 14000),
           new ParallelCommandGroup(
-            util.getPathPlannerSwerveControllerCommand(util.twoBallAutonTrajectory()),
+            util.getPathPlannerSwerveControllerCommand(util.singleBallAutonTrajectory()),
             new ToggleHingeCmd(Intake.getInstance())
           ),
           new Pause(1)
@@ -61,6 +56,6 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
       new ToggleHingeCmd(Intake.getInstance())
     );
 
-    super.setInitialPose(util.twoBallAutonTrajectory());
-  } 
+    super.setInitialPose(util.singleBallAutonTrajectory());
+  }
 }

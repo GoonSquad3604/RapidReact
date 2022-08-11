@@ -47,14 +47,17 @@ import frc.robot.commands.ClimberAuton2;
 import frc.robot.commands.ClimberAuton3;
 import frc.robot.commands.ClimberAuton4;
 import frc.robot.commands.DeployClimber;
+import frc.robot.commands.FiveBallAutonSwerve;
 import frc.robot.commands.FourBallAuton;
 import frc.robot.commands.GoonAutonCommand;
 import frc.robot.commands.ShootAll;
+import frc.robot.commands.SingleBallAutonSwerve;
 import frc.robot.commands.TakeBallCmd;
 import frc.robot.commands.ToggleHingeCmd;
 import frc.robot.commands.ToggleShooter;
 import frc.robot.commands.TwoBallAuton;
 import frc.robot.commands.TwoBallAutonSwerve;
+import frc.robot.commands.TwoBallBottomRightSwerve;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -242,7 +245,10 @@ public class RobotContainer {
   }
 
   private void initAutonChooser() {
-    autonChooser.setDefaultOption("Two Ball Top", new TwoBallAutonSwerve());
+    autonChooser.setDefaultOption("Two Ball Left - Starts left side pointed at ball and at the line.", new TwoBallAutonSwerve());
+    autonChooser.addOption("Single Ball Straight - Starts in mid, parallel and facing driver station wall.", new SingleBallAutonSwerve());
+    autonChooser.addOption("Five Ball - Starts at right side, on line pointed at ball.", new FiveBallAutonSwerve());
+    autonChooser.addOption("Two Ball Right - Starts same position as five ball.", new TwoBallBottomRightSwerve());
     SmartDashboard.putData(autonChooser);
   }
   
