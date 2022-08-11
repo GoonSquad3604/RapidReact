@@ -49,7 +49,7 @@ public class SingleBallAutonSwerve extends GoonAutonCommand {
           
         )
       ),
-      new AutonShoot(),
+      new AimAndShoot(Vision.getInstance(), Shooter.getInstance(), DrivetrainSubsystem.getInstance(), Index.getInstance()),
       new ToggleIntake(Intake.getInstance()),
       new ToggleHingeCmd(Intake.getInstance())
     );

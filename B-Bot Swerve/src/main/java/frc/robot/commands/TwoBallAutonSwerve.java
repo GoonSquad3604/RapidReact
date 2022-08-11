@@ -53,7 +53,7 @@ public class TwoBallAutonSwerve extends GoonAutonCommand {
           new Pause(1)
         )
       ),
-      new AutonShoot(),
+      new AimAndShoot(Vision.getInstance(), Shooter.getInstance(), DrivetrainSubsystem.getInstance(), Index.getInstance()),
       new ToggleIntake(Intake.getInstance()),
       new ToggleHingeCmd(Intake.getInstance())
     );
