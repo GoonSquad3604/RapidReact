@@ -53,7 +53,7 @@ public class TakeBallCmd extends CommandBase {
       
         if(!m_indexer.detectBall()) {
           m_indexer.incrementBallCount();
-          System.out.println();
+          //System.out.println();
           m_indexer.stopIndex();
           detected = false;
         }
