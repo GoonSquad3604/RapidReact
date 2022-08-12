@@ -247,8 +247,8 @@ public class RobotContainer {
   private void initAutonChooser() {
     autonChooser.setDefaultOption("Two Ball Left - Starts left side pointed at ball and at the line.", new TwoBallAutonSwerve());
     autonChooser.addOption("Single Ball Straight - Starts in mid, parallel and facing driver station wall.", new SingleBallAutonSwerve());
-    autonChooser.addOption("Five Ball - Starts at right side, on line pointed at ball.", new FiveBallAutonSwerve());
-    autonChooser.addOption("Two Ball Right - Starts same position as five ball.", new TwoBallBottomRightSwerve());
+    //autonChooser.addOption("Five Ball - Starts at right side, on line pointed at ball.", new FiveBallAutonSwerve());
+    //autonChooser.addOption("Two Ball Right - Starts same position as five ball.", new TwoBallBottomRightSwerve());
     SmartDashboard.putData(autonChooser);
   }
   
