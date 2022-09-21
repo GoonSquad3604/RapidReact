@@ -16,10 +16,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake extends SubsystemBase {
  
-  private CANSparkMax intakeFront = new CANSparkMax(Constants.kIntakeFrontId, MotorType.kBrushless);
+  private CANSparkMax intakeFront = new CANSparkMax(Constants.kIntakeFrontId, MotorType.kBrushed);
   //private CANSparkMax pivot = new CANSparkMax(Constants.kPivotId, MotorType.kBrushless);
   private WPI_TalonSRX pivot = new WPI_TalonSRX(Constants.kPivotId);
-
   //private CANSparkMax intakeRear = new CANSparkMax(Constants.kIntakeRear, MotorType.kBrushless);
 
   private int hingeTop;

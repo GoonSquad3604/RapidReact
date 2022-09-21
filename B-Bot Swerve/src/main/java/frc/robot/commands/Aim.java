@@ -66,6 +66,6 @@ public class Aim extends CommandBase {
   @Override
   public boolean isFinished() {
     //boolean cancel = hasController && m_controller.getAButton();
-    return ((Math.abs(m_vision.tx) < 0.1) || !m_vision.hasTarget || timer.get() > 1.75);
+    return ((Math.abs(m_vision.tx) < 0.1) || !m_vision.hasTarget || timer.get() > 0.5);
   }
 }
