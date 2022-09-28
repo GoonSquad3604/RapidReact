@@ -41,7 +41,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //SmartDashboard.putNumber("Hinge Encoder", hingeEncoder.get());
+    SmartDashboard.putNumber("Intake Current", getIntakeCurrent());
+    
   }
 
   public void calibrate() {
@@ -77,14 +78,24 @@ public class Intake extends SubsystemBase {
   }
 
   public void take(double speed) {
-    intakeFront.set(-speed);
-
-    //System.out.println(speed);
-    //intakeRear.set(speed);
+    
+    if(getIntakeCurrent() > .5) {
+      intakeFront.set(0);
+    }
+    else {
+      intakeFront.set(-speed);
+    }
   }
 
   public void vomit(double speed) {
     intakeFront.set(speed);
+  }
+
+  public double getIntakeCurrent() {
+
+    double current = intakeFront.getOutputCurrent();
+
+    return current;
   }
 
   public HingePosition getHingePosition() {

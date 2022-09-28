@@ -37,6 +37,8 @@ public final class Constants {
     public static final int kHingeEncoderB = 8;
     public static final int kHingeEncoderIndex = 9;
     public static final int kHingeBottomPosition = -700;
+
+    public static final double kIntakeCurrentLimit = .5;
     
     //Climber IDs
     public static final int kTelescopeMotorRightId = 13;
