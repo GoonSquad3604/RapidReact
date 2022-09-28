@@ -42,7 +42,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Intake Current", getIntakeCurrent());
-    
   }
 
   public void calibrate() {
@@ -78,8 +77,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void take(double speed) {
-    
-    if(getIntakeCurrent() > .5) {
+    if(getIntakeCurrent() > Constants.kIntakeCurrentLimit) {
       intakeFront.set(0);
     }
     else {
@@ -95,7 +93,7 @@ public class Intake extends SubsystemBase {
 
     double current = intakeFront.getOutputCurrent();
 
-    return current;
+    return Math.abs(current);
   }
 
   public HingePosition getHingePosition() {
